@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.page-heading {
+  @apply text-4xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-[#EDEDEC];
+}
+
+.users-table {
+  thead {
+    th {
+      @apply px-3 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600;
+    }
+  }
+
+  tbody {
+    td {
+      @apply px-3 py-3 border-b border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100;
+    }
+  }
+}
+
+.menu {
+    li {
+      a {
+        @apply block p-2;
+      }
+      @apply hover:bg-white hover:text-black rounded;
+    }
+}
+.menu-btns {
+  .btn {
+    @apply hover:bg-white hover:text-black p-2 border rounded
+  }
+}
+
+.navigation button {
+    @apply cursor-pointer;
+}
