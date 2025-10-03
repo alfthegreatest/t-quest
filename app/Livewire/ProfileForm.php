@@ -8,11 +8,18 @@ use Illuminate\Support\Facades\Auth;
 class ProfileForm extends Component
 {
     public $name;
+    public $email;
+    public $contact_telegram;
+    public $contact_whatsapp; 
     public $success;
 
     public function mount()
     {
-        $this->name = Auth::user()->name;
+        $user = Auth::user();
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->contact_telegram = $user->contact_telegram;
+        $this->contact_whatsapp = $user->contact_whatsapp;
     }
 
     public function updated($field)
@@ -21,14 +28,18 @@ class ProfileForm extends Component
 
         $this->validateOnly($field, [
             'name' => 'required|min:3',
+            'contact_telegram' => 'min:3',
+            'contact_whatsapp' => 'min:3',
         ]);
 
         $user->update([
             $field => $this->$field,
         ]);
 
-        $this->dispatch('profileNameUpdated', $this->name);
-        $this->dispatch('show-success');
+        if ($field === 'name')
+            $this->dispatch('profileNameUpdated', $this->name);
+        
+        $this->dispatch($field);
     }
 
     public function render()

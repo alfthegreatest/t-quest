@@ -1,5 +1,5 @@
-<div class="mx-auto overflow-x-auto shadow rounded-lg dark:bg-gray-800 max-w-[800px]">
-    <div class="p-4">
+<div class="mx-auto overflow-x-auto shadow rounded-lg dark:bg-gray-800 max-w-[1200px]">
+    <div class="p-4 navigation">
         {{ $users->links() }}
     </div>
 
@@ -9,6 +9,8 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Telegram</th>
+                <th>Whatsapp</th>
                 <th>Role</th>
                 <th>Created</th>
             </tr>
@@ -19,14 +21,26 @@
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->role }}</td>
+                    <td class='text-center'>
+                    @if($user->contact_telegram)
+                        <a href="https://t.me/{{ ltrim($user->contact_telegram, '@') }}" 
+                        target="_blank" 
+                        class="hover:underline">
+                            {{ $user->contact_telegram }}
+                        </a>
+                    @else
+                        –
+                    @endif
+                    </td>
+                    <td class='text-center'>{{ $user->contact_whatsapp ?? '-'}}</td>
+                    <td class='text-center'>{{ $user->role }}</td>
                     <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    <div class="p-4">
+    <div class="p-4 navigation">
         {{ $users->links() }}
     </div>
 </div>

@@ -17,7 +17,7 @@
 .users-table {
   thead {
     th {
-      @apply px-3 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600;
+      @apply px-3 py-3 text-center text-sm font-medium text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600;
     }
   }
 
