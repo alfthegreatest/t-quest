@@ -39,6 +39,7 @@ class CreateGame extends Component
             'title' => $this->title,
             'description' => $this->description,
             'image' => $path,
+            'created_by' => auth()->id(),
         ]);
 
         $this->reset(['title', 'description', 'image', 'showAddGameModal']);

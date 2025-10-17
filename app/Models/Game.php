@@ -21,6 +21,7 @@ class Game extends Model
         'title',
         'description',
         'image',
+        'created_by',
     ];
 
     /**
