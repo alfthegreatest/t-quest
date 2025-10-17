@@ -39,8 +39,7 @@
 				@endauth
 			</nav>
         </header>
-
-        <main class="flex-1 flex-col items-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
+        <main class="max-w-[1200px] flex-1 flex-col items-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             @yield('content')
         </main>
 

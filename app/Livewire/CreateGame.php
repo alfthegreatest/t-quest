@@ -21,6 +21,14 @@ class CreateGame extends Component
         'image' => 'nullable|image|max:2048',
     ];
 
+    protected $listeners = ['descriptionUpdated'];
+
+    public function descriptionUpdated($content)
+    {
+        $this->description = $content;
+    }
+
+
     public function save()
     {
         $this->validate();
