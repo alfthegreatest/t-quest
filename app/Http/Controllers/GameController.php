@@ -39,6 +39,11 @@ class GameController extends Controller
         return view('games.show', compact('game'));
     }
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
