@@ -20,7 +20,7 @@
                 @foreach($games as $game)
                     <tr wire:key="game-{{ $game->id }}" class="">
                         <td>{{ $game->id }}</td>
-                        <td>{{ $game->title }}</td>
+                        <td><a class="hover:font-bold" href="/game/{{ $game->id }}">{{ $game->title }}</a></td>
                         <td>{{ $game->description }}</td>
                         <td><button type="button" wire:click="edit({{ $game->id }})" class="bg-gray-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-gray-500">edit</button></td>
                         <td><button type="button" wire:click="confirmDelete({{ $game->id }})" class="bg-red-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-red-500">del</button></td>
