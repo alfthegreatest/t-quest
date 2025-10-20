@@ -10,7 +10,9 @@ class GameManager extends Component
     public $games;
 
     public function mount() {
-        $this->games = Game::orderBy('id', 'desc')->get();
+        $this->games = Game::where('active', true)
+            ->orderBy('id', 'desc')
+            ->get();
     }
 
     public function render() {

@@ -10,6 +10,7 @@
             <thead class="bg-gray-100 dark:bg-gray-700">
                 <tr>
                     <th>ID</th>
+                    <th>Active</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th></th>
@@ -20,6 +21,7 @@
                 @foreach($games as $game)
                     <tr wire:key="game-{{ $game->id }}" class="">
                         <td>{{ $game->id }}</td>
+                        <td class="text-center"><input type="checkbox" disabled {{ $game->active ? 'checked' : '' }} /></td>
                         <td><a class="hover:font-bold" href="/game/{{ $game->id }}">{{ $game->title }}</a></td>
                         <td>{{ $game->description }}</td>
                         <td><button type="button" wire:click="edit({{ $game->id }})" class="bg-gray-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-gray-500">edit</button></td>
@@ -52,6 +54,16 @@
             <div wire:click.stop class="bg-gray-800 text-white rounded-lg w-96 p-6 shadow-lg">
                 <h2 class="text-xl font-bold mb-4">Edit game #{{$gameId}}</h2>
                 <form wire:submit.prevent="update" class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <input 
+                            type="checkbox" 
+                            wire:model="active" 
+                            id="active" 
+                            class="hover:cursor-pointer w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                        >
+                        <label for="active" class="hover:cursor-pointer text-gray-300">Active</label>
+                    </div>
+
                     @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
                     <input
                         type="text"

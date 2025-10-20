@@ -20,11 +20,13 @@ class GamesList extends Component
 
     public $showModal = false;
     public $showEditGameModal = false;
+    public $active = false;
     public $gameId, $title, $description, $image, $imagePath;
 
     protected $rules = [
         'title' => 'required|string|min:3|max:255',
         'description' => 'nullable|string',
+        'active' => 'boolean',
         'image' => 'nullable|image|max:2048',
     ];
 
@@ -58,6 +60,7 @@ class GamesList extends Component
             'gameId' => $game->id,
             'title' => $game->title,
             'description' => $game->description,
+            'active' => (bool)$game->active,
             'image' => null,
             'imagePath' => $game->image,
         ]);
@@ -86,6 +89,7 @@ class GamesList extends Component
 
         $game->title = $this->title;
         $game->description = $this->description;
+        $game->active = $this->active;
 
         // Если выбрали новый файл → сохранить и обновить путь
         if ($this->image) {
@@ -98,7 +102,7 @@ class GamesList extends Component
 
         $game->save();
 
-        $this->reset(['title', 'description', 'image', 'imagePath', 'gameId', 'showEditGameModal']);
+        $this->reset(['title', 'active', 'description', 'image', 'imagePath', 'gameId', 'showEditGameModal']);
         $this->dispatch('toast', 'Changes saved');
     }
 

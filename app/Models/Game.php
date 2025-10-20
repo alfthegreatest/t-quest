@@ -23,6 +23,7 @@ class Game extends Model
         'description',
         'image',
         'created_by',
+        'active',
     ];
 
     /**
