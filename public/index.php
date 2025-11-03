@@ -18,6 +18,3 @@ require __DIR__.'/../vendor/autoload.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $app->handleRequest(Request::capture());
-//changes from github2
-//changes from github1
-//changes from IDE1
