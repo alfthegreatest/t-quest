@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Livewire;
 
-
 use App\Livewire\CreateGame;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
