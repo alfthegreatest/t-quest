@@ -25,7 +25,8 @@ class CreateGameTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        Storage::fake('public');
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $publicDisk */
+        $publicDisk = Storage::fake('public');
 
         $image = UploadedFile::fake()->image('game.jpg');
         Livewire::test(CreateGame::class)
@@ -40,7 +41,7 @@ class CreateGameTest extends TestCase
             'description' => 'This is a test game',
             'created_by' => $user->id,
         ]);
-        Storage::disk('public')->assertExists('games/' . $image->hashName());
+        $publicDisk->assertExists('games/' . $image->hashName());
     }
 
     public function test_validation_rules()
