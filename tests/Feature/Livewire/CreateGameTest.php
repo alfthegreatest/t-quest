@@ -22,7 +22,6 @@ class CreateGameTest extends TestCase
             ->assertStatus(200);
     }
 
-
     public function test_can_create_game()
     {
         $user = User::factory()->create();
