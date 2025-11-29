@@ -28,6 +28,7 @@ jobs:
           extensions: mbstring, sqlite, sqlite3, pdo_sqlite, gd, bcmath
           coverage: none
 
+
       # ----- Composer install -----
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
