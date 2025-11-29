@@ -16,7 +16,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: mbstring, sqlite3, pdo_sqlite, gd, bcmath
+          extensions: mbstring, sqlite, sqlite3, pdo_sqlite, gd, bcmath
           coverage: none
 
       - name: Install Composer dependencies
@@ -26,16 +26,17 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
+          mkdir -p database
           touch database/database.sqlite
 
       - name: Run migrations
         env:
-          DB_CONNECTION=sqlite
-          DB_DATABASE=database/database.sqlite
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
         run: php artisan migrate --force
 
       - name: Run tests
         env:
-          DB_CONNECTION=sqlite
-          DB_DATABASE=database/database.sqlite
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
         run: php artisan test --testdox
