@@ -2,15 +2,19 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class ProfileForm extends Component
 {
     public $name;
+
     public $email;
+
     public $contact_telegram;
-    public $contact_whatsapp; 
+
+    public $contact_whatsapp;
+
     public $success;
 
     public function mount()
@@ -36,9 +40,10 @@ class ProfileForm extends Component
             $field => $this->$field,
         ]);
 
-        if ($field === 'name')
+        if ($field === 'name') {
             $this->dispatch('profileNameUpdated', $this->name);
-        
+        }
+
         $this->dispatch($field);
     }
 

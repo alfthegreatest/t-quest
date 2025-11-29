@@ -21,5 +21,4 @@ class GameFactory extends Factory
             'description' => fake()->sentence(),
         ];
     }
-
 }

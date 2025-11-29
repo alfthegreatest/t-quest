@@ -2,10 +2,9 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use App\Models\Game;
 use App\Livewire\Traits\WithImageValidation;
-
+use App\Models\Game;
+use Livewire\Component;
 
 class CreateGame extends Component
 {
@@ -13,7 +12,12 @@ class CreateGame extends Component
     use WithImageValidation;
 
     public $showAddGameModal = false;
-    public $title, $description, $image;
+
+    public $title;
+
+    public $description;
+
+    public $image;
 
     protected $rules = [
         'title' => 'required|string|min:3|max:255',
@@ -27,7 +31,6 @@ class CreateGame extends Component
     {
         $this->description = $content;
     }
-
 
     public function save()
     {
@@ -55,7 +58,7 @@ class CreateGame extends Component
 
     public function canPreview($file)
     {
-        return $file && in_array($file->getClientOriginalExtension(), ['jpg','jpeg','png','gif','bmp','svg','webp']);
+        return $file && in_array($file->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp']);
     }
 
     public function render()

@@ -26,13 +26,13 @@ class GameManagerTest extends TestCase
         $activeGame = Game::factory()->create([
             'title' => 'Active Game',
             'active' => true,
-            'created_by' => $user->id
+            'created_by' => $user->id,
         ]);
 
         $inactiveGame = Game::factory()->create([
             'title' => 'Inactive Game',
             'active' => false,
-            'created_by' => $user->id
+            'created_by' => $user->id,
         ]);
 
         Livewire::test(GameManager::class)

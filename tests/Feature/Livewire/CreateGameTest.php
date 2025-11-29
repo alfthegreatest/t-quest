@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Livewire;
 
-
 use App\Livewire\CreateGame;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -41,7 +40,7 @@ class CreateGameTest extends TestCase
             'description' => 'This is a test game',
             'created_by' => $user->id,
         ]);
-        $publicDisk->assertExists('games/' . $image->hashName());
+        $publicDisk->assertExists('games/'.$image->hashName());
     }
 
     public function test_validation_rules()
