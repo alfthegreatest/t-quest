@@ -2,26 +2,35 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Traits\WithImageValidation;
+use App\Models\Game;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Game;
-use App\Livewire\GameManager;
-use Illuminate\Support\Facades\Storage;
-use App\Livewire\Traits\WithImageValidation;
 
 class GamesList extends Component
 {
-    use WithPagination;
-    use WithImageValidation;
     use \Livewire\WithFileUploads;
-
+    use WithImageValidation;
+    use WithPagination;
 
     protected $listeners = ['refreshComponentGameList' => '$refresh'];
 
     public $showModal = false;
+
     public $showEditGameModal = false;
+
     public $active = false;
-    public $gameId, $title, $description, $image, $imagePath;
+
+    public $gameId;
+
+    public $title;
+
+    public $description;
+
+    public $image;
+
+    public $imagePath;
 
     protected $rules = [
         'title' => 'required|string|min:3|max:255',
@@ -40,11 +49,13 @@ class GamesList extends Component
     {
         $game = Game::find($this->gameId);
 
-        if (!$game)
+        if (! $game) {
             return;
+        }
 
-        if ($game->image)
+        if ($game->image) {
             Storage::disk('public')->delete($game->image);
+        }
 
         $game->delete();
         $this->showModal = false;
@@ -54,13 +65,15 @@ class GamesList extends Component
     public function edit($id)
     {
         $game = Game::find($id);
-        if (!$game) return;
+        if (! $game) {
+            return;
+        }
 
         $this->fill([
             'gameId' => $game->id,
             'title' => $game->title,
             'description' => $game->description,
-            'active' => (bool)$game->active,
+            'active' => (bool) $game->active,
             'image' => null,
             'imagePath' => $game->image,
         ]);
@@ -85,7 +98,9 @@ class GamesList extends Component
         $this->validate($rules);
 
         $game = Game::find($this->gameId);
-        if (!$game) return;
+        if (! $game) {
+            return;
+        }
 
         $game->title = $this->title;
         $game->description = $this->description;
@@ -93,8 +108,9 @@ class GamesList extends Component
 
         // Если выбрали новый файл → сохранить и обновить путь
         if ($this->image) {
-            if ($this->imagePath)
+            if ($this->imagePath) {
                 Storage::disk('public')->delete($this->imagePath);
+            }
 
             $path = $this->image->store('games', 'public');
             $game->image = $path;

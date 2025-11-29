@@ -24,6 +24,7 @@ class User extends Authenticatable
         'contact_telegram',
         'contact_whatsapp',
     ];
+
     /**
      * The attributes that should be hidden for serialization.
      *

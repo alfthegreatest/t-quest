@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\GameController;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/game/{game}', [GameController::class, 'show']);
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -22,16 +20,15 @@ Route::get('/profile', function () {
     return view('profile');
 })->middleware('auth')->name('profile');
 
-
 Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::get('/logout', function() {
+Route::get('/logout', function () {
     Auth::logout();
+
     return redirect('/');
 })->name('logout');
-
 
 Route::get('/admin', function () {
     return view('admin');
@@ -40,7 +37,6 @@ Route::get('/admin', function () {
 Route::get('/admin/users', [UserController::class, 'index'])->middleware('admin')->name('admin.users');
 Route::get('/admin/games', [GameController::class, 'index'])->middleware('admin')->name('admin.games');
 Route::get('/admin/games/delete', [GameController::class, 'delete'])->middleware('admin')->name('admin.games.delete');
-
 
 // Route to redirect to Google's OAuth page
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])

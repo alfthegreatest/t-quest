@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\User;
 
 class UsersTable extends Component
 {
