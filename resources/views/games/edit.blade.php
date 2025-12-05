@@ -1,0 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
+    <x-page-heading>Game editing</x-page-heading>
+    <livewire:game-editor :game="$game" />
+@endsection

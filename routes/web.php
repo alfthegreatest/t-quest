@@ -11,6 +11,7 @@ Route::get('/', function () {
 });
 
 Route::get('/game/{game}', [GameController::class, 'show']);
+Route::get('/game/{game}/edit', [GameController::class, 'edit']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
