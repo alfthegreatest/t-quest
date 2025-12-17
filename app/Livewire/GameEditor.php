@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Mews\Purifier\Facades\Purifier;
 use App\Models\Game;
 use Livewire\Component;
 use Carbon\Carbon;
@@ -35,7 +36,12 @@ class GameEditor extends Component
     {
         $this->game->update([
             'title' => $this->title,
-            'description' => $this->description,
+            'description' => Purifier::clean(
+                $this->description,
+                [
+                    'HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS,
+                ]
+            ),
         ]);
     }
 
