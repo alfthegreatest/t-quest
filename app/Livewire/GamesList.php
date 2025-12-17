@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Mews\Purifier\Facades\Purifier;
 use App\Livewire\Traits\WithImageValidation;
 use App\Models\Game;
 use Illuminate\Support\Facades\Storage;
@@ -49,7 +50,7 @@ class GamesList extends Component
     {
         $game = Game::find($this->gameId);
 
-        if (! $game) {
+        if (!$game) {
             return;
         }
 
@@ -65,7 +66,7 @@ class GamesList extends Component
     public function edit($id)
     {
         $game = Game::find($id);
-        if (! $game) {
+        if (!$game) {
             return;
         }
 
@@ -98,12 +99,17 @@ class GamesList extends Component
         $this->validate($rules);
 
         $game = Game::find($this->gameId);
-        if (! $game) {
+        if (!$game) {
             return;
         }
 
         $game->title = $this->title;
-        $game->description = $this->description;
+        $game->description = Purifier::clean(
+            $this->description,
+            [
+                'HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS,
+            ]
+        );
         $game->active = $this->active;
 
         // Если выбрали новый файл → сохранить и обновить путь
