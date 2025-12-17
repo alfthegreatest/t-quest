@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
+use Mews\Purifier\Facades\Purifier;
 use App\Livewire\Traits\WithImageValidation;
 use App\Models\Game;
 use Livewire\Component;
+
 
 class CreateGame extends Component
 {
@@ -40,7 +42,12 @@ class CreateGame extends Component
 
         $game = Game::create([
             'title' => $this->title,
-            'description' => $this->description,
+            'description' => Purifier::clean(
+                $this->description,
+                [
+                    'HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS,
+                ]
+            ),
             'image' => $path,
             'created_by' => auth()->id(),
         ]);
