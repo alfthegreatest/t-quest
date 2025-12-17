@@ -1515,6 +1515,8 @@
             }
         </style>
     @endif
+
+    @livewireStyles
 </head>
 
 <body
@@ -1589,6 +1591,7 @@
         </div>
     </div>
 
+    @livewireScripts
 </body>
 
 </html>
