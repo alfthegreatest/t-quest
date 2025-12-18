@@ -21,6 +21,8 @@ class Game extends Model
         'title',
         'description',
         'image',
+        'start_date',
+        'finish_date',
         'created_by',
         'active',
     ];
