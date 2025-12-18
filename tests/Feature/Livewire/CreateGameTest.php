@@ -4,6 +4,7 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\CreateGame;
 use App\Models\User;
+use App\Constants;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +32,8 @@ class CreateGameTest extends TestCase
         Livewire::test(CreateGame::class)
             ->set('title', 'Test Game')
             ->set('description', 'This is a test game')
+            ->set('start_date', now()->addMinutes(10)->format(Constants\Formats::DATE_TIME_FORMAT))
+            ->set('finish_date', now()->addMinutes(20)->format(Constants\Formats::DATE_TIME_FORMAT))
             ->set('image', $image)
             ->call('save')
             ->assertHasNoErrors();
@@ -40,7 +43,7 @@ class CreateGameTest extends TestCase
             'description' => 'This is a test game',
             'created_by' => $user->id,
         ]);
-        $publicDisk->assertExists('games/'.$image->hashName());
+        $publicDisk->assertExists('games/' . $image->hashName());
     }
 
     public function test_validation_rules()
