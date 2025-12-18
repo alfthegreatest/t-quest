@@ -28,13 +28,16 @@ class GameEditor extends Component
 
     public function updated()
     {
+        $this->title = Purifier::clean(
+            $this->title,
+            ['HTML.Allowed' => '']
+        );
+
         $this->game->update([
-            'title' => $this->title,
+            'title' => trim($this->title),
             'description' => Purifier::clean(
                 $this->description,
-                [
-                    'HTML.Allowed' => Constants\Html::ALLOWED_TAGS,
-                ]
+                ['HTML.Allowed' => Constants\Html::ALLOWED_TAGS]
             ),
         ]);
     }
