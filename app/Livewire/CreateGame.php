@@ -50,16 +50,19 @@ class CreateGame extends Component
     public function save()
     {
         $this->validate();
+        $this->title = Purifier::clean(
+            $this->title,
+            ['HTML.Allowed' => '']
+        );
         $path = $this->image ? $this->image->store('games', 'public') : null;
+
         $game = Game::create([
-            'title' => $this->title,
+            'title' => trim($this->title),
             'start_date' => Carbon::parse($this->start_date),
             'finish_date' => Carbon::parse($this->finish_date),
             'description' => Purifier::clean(
                 $this->description,
-                [
-                    'HTML.Allowed' => Constants\Html::ALLOWED_TAGS,
-                ]
+                ['HTML.Allowed' => Constants\Html::ALLOWED_TAGS]
             ),
             'image' => $path,
             'created_by' => auth()->id(),
