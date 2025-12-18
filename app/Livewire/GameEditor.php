@@ -6,10 +6,10 @@ use Mews\Purifier\Facades\Purifier;
 use App\Models\Game;
 use Livewire\Component;
 use Carbon\Carbon;
+use App\Constants;
 
 class GameEditor extends Component
 {
-    const DATE_TIME_FORMAT = 'Y-m-d\TH:i';
     public Game $game;
 
     public $title;
@@ -22,14 +22,8 @@ class GameEditor extends Component
     {
         $this->title = $game->title;
         $this->description = $game->description;
-
-        $this->start_date = $game->start_date
-            ? $game->start_date
-            : now()->addMinutes(5)->format(self::DATE_TIME_FORMAT);
-
-        $this->finish_date = $game->finish_date
-            ? $game->finish_date
-            : now()->addDays(7)->format(self::DATE_TIME_FORMAT);
+        $this->start_date = $game->start_date;
+        $this->finish_date = $game->finish_date;
     }
 
     public function updated()
@@ -39,7 +33,7 @@ class GameEditor extends Component
             'description' => Purifier::clean(
                 $this->description,
                 [
-                    'HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS,
+                    'HTML.Allowed' => Constants\Html::ALLOWED_TAGS,
                 ]
             ),
         ]);
@@ -47,13 +41,13 @@ class GameEditor extends Component
 
     public function updatedStartDate($value)
     {
-        $this->game->start_date = Carbon::createFromFormat(self::DATE_TIME_FORMAT, $value);
+        $this->game->start_date = Carbon::createFromFormat(Constants\Formats::DATE_TIME_FORMAT, $value);
         $this->game->save();
     }
 
     public function updatedFinishDate($value)
     {
-        $this->game->finish_date = Carbon::createFromFormat(self::DATE_TIME_FORMAT, $value);
+        $this->game->finish_date = Carbon::createFromFormat(Constants\Formats::DATE_TIME_FORMAT, $value);
         $this->game->save();
     }
 

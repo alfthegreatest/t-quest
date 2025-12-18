@@ -19,6 +19,17 @@
                     focus:border-blue-500 @error('title') border-red-500 ring-red-500 @enderror"
                 >
 
+                <div class="w-full">
+                    <label class="label-base">Start date</label>
+                    <input type="datetime-local" wire:model.lazy="start_date" class="input-base">
+                </div>
+
+                <div class="w-full">
+                    <label class="label-base">Finish date</label>
+                    <input type="datetime-local" wire:model.lazy="finish_date" class="input-base">
+                </div>
+
+
                 <textarea
                     wire:model.live="description"
                     placeholder="Description"
@@ -35,7 +46,7 @@
                     @enderror
                     
                     @if ($image && $this->canPreview($image))
-                        <img src="{{ $image->temporaryUrl() }}" class="w-32 h-32 mt-2 object-cover rounded">
+                        <img src="{{ $image->temporaryUrl() }}" class="w-full h-full max-h-32 mt-2 object-cover rounded">
                     @endif
                 </div>
 
