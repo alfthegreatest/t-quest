@@ -6,6 +6,9 @@ use Mews\Purifier\Facades\Purifier;
 use App\Livewire\Traits\WithImageValidation;
 use App\Models\Game;
 use Livewire\Component;
+use Carbon\Carbon;
+use App\Constants;
+
 
 
 class CreateGame extends Component
@@ -17,6 +20,10 @@ class CreateGame extends Component
 
     public $title;
 
+    public $start_date;
+
+    public $finish_date;
+
     public $description;
 
     public $image;
@@ -25,9 +32,16 @@ class CreateGame extends Component
         'title' => 'required|string|min:3|max:255',
         'description' => 'nullable|string',
         'image' => 'nullable|image|max:2048',
+        'start_date' => 'required|date',
+        'finish_date' => 'required|date|after:start_date',
     ];
 
     protected $listeners = ['descriptionUpdated'];
+
+    public function mount()
+    {
+        $this->start_date = now()->addMinutes(10)->format(Constants\Formats::DATE_TIME_FORMAT);
+    }
 
     public function descriptionUpdated($content)
     {
@@ -37,16 +51,19 @@ class CreateGame extends Component
     public function save()
     {
         $this->validate();
-
+        $this->title = Purifier::clean(
+            $this->title,
+            ['HTML.Allowed' => '']
+        );
         $path = $this->image ? $this->image->store('games', 'public') : null;
 
         $game = Game::create([
-            'title' => $this->title,
+            'title' => trim($this->title),
+            'start_date' => Carbon::parse($this->start_date),
+            'finish_date' => Carbon::parse($this->finish_date),
             'description' => Purifier::clean(
                 $this->description,
-                [
-                    'HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS,
-                ]
+                ['HTML.Allowed' => Constants\Html::ALLOWED_TAGS]
             ),
             'image' => $path,
             'created_by' => auth()->id(),

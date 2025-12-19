@@ -70,6 +70,11 @@ class GamesList extends Component
             return;
         }
 
+        $game->title = Purifier::clean(
+            $game->title,
+            ['HTML.Allowed' => '']
+        );
+        $game->title = trim($game->title);
         $this->fill([
             'gameId' => $game->id,
             'title' => $game->title,
@@ -103,12 +108,15 @@ class GamesList extends Component
             return;
         }
 
-        $game->title = $this->title;
+        $game->title = Purifier::clean(
+            $this->title,
+            ['HTML.Allowed' => '']
+        );
+        $game->title = trim($game->title);
+
         $game->description = Purifier::clean(
             $this->description,
-            [
-                'HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS,
-            ]
+            ['HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS]
         );
         $game->active = $this->active;
 
