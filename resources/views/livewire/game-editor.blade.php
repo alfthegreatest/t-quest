@@ -36,8 +36,20 @@
         @endif
     </div>
 
-    <div>
+    <div x-data="{ description: @js($description) }">
         <label class="label-base">Description (html allowed)</label>
-        <textarea wire:model.lazy="description" rows="4" class="input-base"></textarea>
+        <div wire:ignore>
+            <textarea 
+                x-model="description" 
+                wire:model.blur="description" 
+                x-init="$el.style.height = $el.scrollHeight + 'px'"
+                @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
+                class="input-base"
+                style="overflow:hidden; resize:none; min-height: 6rem;"
+            ></textarea>
+        </div>
+        <div class="preview-box border rounded p-4 bg-gray-900" 
+            x-html="description"
+        ></div>
     </div>
 </div>
