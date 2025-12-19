@@ -1515,6 +1515,8 @@
             }
         </style>
     @endif
+
+    @livewireStyles
 </head>
 
 <body
@@ -1546,7 +1548,8 @@
     <footer class="p-10 w-full text-center dark:text-[#EDEDEC]"><?= date('Y') ?></footer>
 
     @auth
-        <div x-data="{ open: false }" class="absolute h-screen">
+        <div x-data="{ open: JSON.parse(localStorage.getItem('nav_open') || 'false') }"
+            x-init="$watch('open', value => localStorage.setItem('nav_open', value))" class="absolute h-screen">
             <button @click="open = !open"
                 class="fixed top-4 right-4 z-50 p-2 rounded text-white hover:bg-gray-700 cursor-pointer">
                 ☰
@@ -1556,8 +1559,8 @@
                 x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
                 x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0"
                 x-transition:leave-end="translate-x-full"
-                class="fixed top-0 right-0 w-full md:w-64 h-full dark:bg-gray-700 shadow-xl p-6 z-40 text-white"
-                @click.away="open = false">
+                class="fixed top-0 right-0 w-full md:w-64 h-full dark:bg-gray-700 shadow-xl p-6 z-40 text-white" {{--
+                @click.away="open = false" --}}>
                 <h2 class="text-xl font-bold">Menu</h2>
                 <ul class="menu">
                     <li><a href="/">Main page</a></li>
@@ -1589,6 +1592,7 @@
         </div>
     </div>
 
+    @livewireScripts
 </body>
 
 </html>
