@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
-use App\Constants;
-use Carbon\Carbon;
 
 class GameController extends Controller
 {
@@ -38,9 +36,6 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        $game->start_date = Carbon::parse($game->start_date)->format(Constants\Formats::DATE_TIME_FORMAT_TO_SHOW);
-        $game->finish_date = Carbon::parse($game->finish_date)->format(Constants\Formats::DATE_TIME_FORMAT_TO_SHOW);
-
         return view('games.show', compact('game'));
     }
 
