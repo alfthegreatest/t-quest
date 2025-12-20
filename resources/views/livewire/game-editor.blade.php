@@ -1,7 +1,7 @@
 <div class="max-w-xl mx-auto space-y-6 text-gray-200">
     <div>
         <label class="label-base">Title</label>
-        <input type="text" wire:model.lazy="title" class="input-base">
+        <input type="text" wire:model.live.debounce.2000="title" class="input-base">
     </div>
 
     <div class="flex flex-col sm:flex-row gap-4">
@@ -36,8 +36,22 @@
         @endif
     </div>
 
-    <div>
+    <div x-data="{ description: @js($description) }">
         <label class="label-base">Description (html allowed)</label>
-        <textarea wire:model.lazy="description" rows="4" class="input-base"></textarea>
+        <div class="preview-box px-4 bg-gray-900" 
+            x-html="description"
+            x-show="description && description.trim() !== ''"
+        ></div>
+        <div wire:ignore>
+            <textarea 
+                x-model="description" 
+                wire:model.blur="description" 
+                x-init="$el.style.height = $el.scrollHeight + 'px'"
+                @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
+                @input.debounce.2000ms="$wire.set('description', description)"
+                class="input-base"
+                style="overflow:hidden; resize:none; min-height: 6rem;"
+            ></textarea>
+        </div>
     </div>
 </div>
