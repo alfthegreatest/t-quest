@@ -16,12 +16,26 @@
                 <span>{{ $game->creator->name ?? '-' }}</span>
             </div>
 
-            <div class="text-white">
-                <span class="font-extrabold">Start: &nbsp;</span><span>{{ $game->start_date }}</span>
-            </div>
+            <div x-data="{
+                    formatDate(isoDate) {
+                        const date = new Date(isoDate);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const year = date.getFullYear();
+                        const hours = String(date.getHours()).padStart(2, '0');
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+                        return `${day}.${month}.${year}, ${hours}:${minutes}`;
+                    }
+                }">
+                <div class="text-white">
+                    <span class="font-extrabold">Start: &nbsp;</span>
+                    <span x-text="formatDate('{{ $game->start_date }}')">{{ $game->start_date }}</span>
+                </div>
 
-            <div class="text-white">
-                <span class="font-extrabold">Finish: &nbsp;</span><span>{{ $game->finish_date }}</span>
+                <div class="text-white">
+                    <span class="font-extrabold">Finish: &nbsp;</span>
+                    <span x-text="formatDate('{{ $game->finish_date }}')">{{ $game->finish_date }}</span>
+                </div>
             </div>
         </div>
     </div>
