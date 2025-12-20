@@ -43,6 +43,8 @@ class Game extends Model
     {
         return [
             'created_at' => 'datetime',
+            'start_date' => 'datetime',
+            'finish_date' => 'datetime',
         ];
     }
 

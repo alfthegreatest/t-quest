@@ -1,4 +1,7 @@
-<div>
+<div x-data x-init="
+    $wire.user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    $wire.call('timezoneDetected');"
+    >
     <button wire:click="$set('showAddGameModal', true)"
         class="bg-gray-700 hover:cursor-pointer hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow">Add
         new game</button>
@@ -12,11 +15,11 @@
                     @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
                     <input type="text" wire:model.live="title" placeholder="Title"
                         class="w-full p-2 rounded bg-gray-700 
-                                                                        border border-gray-600 focus:outline-none 
-                                                                        focus:border-blue-500 @error('title') border-red-500 ring-red-500 @enderror">
+                        border border-gray-600 focus:outline-none 
+                        focus:border-blue-500 @error('title') border-red-500 ring-red-500 @enderror">
 
                     <div class="w-full">
-                        <label class="label-base">Start date</label>
+                        <label class="label-base">Start date ({{ $user_timezone }})</label>
                         <input type="datetime-local" wire:model.lazy="start_date" class="input-base">
                         @error('start_date') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
