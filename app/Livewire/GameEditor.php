@@ -15,7 +15,7 @@ class GameEditor extends Component
 {
     use WithImageValidation;
     use WithFileUploads;
-    
+
     public Game $game;
     public $title;
     public $description;
@@ -23,6 +23,7 @@ class GameEditor extends Component
     public $imagePath;
     public $start_date;
     public $finish_date;
+    public $user_timezone = 'UTC';
 
     protected $rules = [
         'title' => 'required|string|max:255',
@@ -38,9 +39,20 @@ class GameEditor extends Component
         $this->description = $game->description;
         $this->image = null;
         $this->imagePath = $game->image;
-        $this->start_date = $game->start_date;
-        $this->finish_date = $game->finish_date;
+        $this->initializeDates();
     }
+
+    private function initializeDates()
+    {
+        $this->start_date = $this->game->start_date->timezone($this->user_timezone)->format(Constants\Formats::DATE_TIME_FORMAT);
+        $this->finish_date = $this->game->finish_date->timezone($this->user_timezone)->format(Constants\Formats::DATE_TIME_FORMAT);
+    }
+
+    public function timezoneDetected()
+    {
+        $this->initializeDates();
+    }
+
 
     public function updated()
     {
@@ -67,7 +79,6 @@ class GameEditor extends Component
         $this->validate($rules);
 
         if ($this->game->image) {
-            // Delete old image if it exists
             Storage::disk('public')->delete($this->game->image);
         }
 
@@ -93,23 +104,25 @@ class GameEditor extends Component
         $this->dispatch('toast', 'Image removed.');
     }
 
-    public function updatedTitle($value) {
+    public function updatedTitle($value)
+    {
         $this->dispatch('toast', 'Title updated.');
     }
 
-    public function updatedDescription($value) {
+    public function updatedDescription($value)
+    {
         $this->dispatch('toast', 'Description updated.');
     }
 
     public function updatedStartDate($value)
     {
-        $this->game->start_date = Carbon::createFromFormat(Constants\Formats::DATE_TIME_FORMAT, $value);
+        $this->game->start_date = Carbon::parse($value, $this->user_timezone)->setTimezone('UTC');
         $this->game->save();
     }
 
     public function updatedFinishDate($value)
     {
-        $this->game->finish_date = Carbon::createFromFormat(Constants\Formats::DATE_TIME_FORMAT, $value);
+        $this->game->finish_date = Carbon::parse($value, $this->user_timezone)->setTimezone('UTC');
         $this->game->save();
     }
 

@@ -1,4 +1,6 @@
-<div class="max-w-xl mx-auto space-y-6 text-gray-200">
+<div class="max-w-xl mx-auto space-y-6 text-gray-200" x-data x-init="
+    $wire.user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    $wire.call('timezoneDetected');">
     <div>
         <label class="label-base">Title</label>
         <input type="text" wire:model.live.debounce.2000="title" class="input-base">
@@ -6,12 +8,12 @@
 
     <div class="flex flex-col sm:flex-row gap-4">
         <div class="w-full sm:flex-1">
-            <label class="label-base">Start date</label>
+            <label class="label-base">Start ({{ $user_timezone }})</label>
             <input type="datetime-local" wire:model.lazy="start_date" class="input-base">
         </div>
 
         <div class="w-full sm:flex-1">
-            <label class="label-base">Finish date</label>
+            <label class="label-base">Finish ({{ $user_timezone }})</label>
             <input type="datetime-local" wire:model.lazy="finish_date" class="input-base">
         </div>
     </div>
@@ -38,20 +40,14 @@
 
     <div x-data="{ description: @js($description) }">
         <label class="label-base">Description (html allowed)</label>
-        <div class="preview-box px-4 bg-gray-900" 
-            x-html="description"
-            x-show="description && description.trim() !== ''"
-        ></div>
+        <div class="preview-box px-4 bg-gray-900" x-html="description"
+            x-show="description && description.trim() !== ''"></div>
         <div wire:ignore>
-            <textarea 
-                x-model="description" 
-                wire:model.blur="description" 
+            <textarea x-model="description" wire:model.blur="description"
                 x-init="$el.style.height = $el.scrollHeight + 'px'"
                 @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
-                @input.debounce.2000ms="$wire.set('description', description)"
-                class="input-base"
-                style="overflow:hidden; resize:none; min-height: 6rem;"
-            ></textarea>
+                @input.debounce.2000ms="$wire.set('description', description)" class="input-base"
+                style="overflow:hidden; resize:none; min-height: 6rem;"></textarea>
         </div>
     </div>
 </div>
