@@ -8,9 +8,7 @@ use Livewire\Component;
 class AccountName extends Component
 {
     public $name;
-
     protected $listeners = ['profileNameUpdated' => 'setProfileName'];
-
     public function mount()
     {
         $this->name = Auth::user()->name;

@@ -53,7 +53,6 @@ class GameEditor extends Component
         $this->initializeDates();
     }
 
-
     public function updated()
     {
         $this->title = Purifier::clean(
@@ -87,7 +86,7 @@ class GameEditor extends Component
         $this->game->save();
 
         $this->imagePath = $path;
-        $this->dispatch('toast', 'Image updated.');
+        $this->dispatch('image');
     }
 
     public function removeImage()
@@ -106,26 +105,27 @@ class GameEditor extends Component
 
     public function updatedTitle($value)
     {
-        $this->dispatch('toast', 'Title updated.');
+        $this->dispatch('title');
     }
 
     public function updatedDescription($value)
     {
-        $this->dispatch('toast', 'Description updated.');
+        $this->dispatch('description');
     }
 
     public function updatedStartDate($value)
     {
         $this->game->start_date = Carbon::parse($value, $this->user_timezone)->setTimezone('UTC');
         $this->game->save();
+        $this->dispatch('start_date');
     }
 
     public function updatedFinishDate($value)
     {
         $this->game->finish_date = Carbon::parse($value, $this->user_timezone)->setTimezone('UTC');
         $this->game->save();
+        $this->dispatch('finish_date');
     }
-
 
     public function getImageUrlProperty()
     {
