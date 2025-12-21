@@ -8,13 +8,9 @@ use Livewire\Component;
 class ProfileForm extends Component
 {
     public $name;
-
     public $email;
-
     public $contact_telegram;
-
     public $contact_whatsapp;
-
     public $success;
 
     public function mount()
