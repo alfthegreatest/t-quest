@@ -51,6 +51,19 @@ class CreateGame extends Component
             ->format(Constants\Formats::DATE_TIME_FORMAT);
     }
 
+    public function timezoneDetected()
+    {
+        $this->initializeDates();
+    }
+
+    private function initializeDates()
+    {
+        $this->start_date = now()
+            ->timezone($this->user_timezone)
+            ->addMinutes(10)
+            ->format(Constants\Formats::DATE_TIME_FORMAT);
+    }
+
     public function descriptionUpdated($content)
     {
         $this->description = $content;
@@ -59,7 +72,6 @@ class CreateGame extends Component
     public function save()
     {
         $this->validate();
-
         $this->title = Purifier::clean(
             $this->title,
             ['HTML.Allowed' => '']

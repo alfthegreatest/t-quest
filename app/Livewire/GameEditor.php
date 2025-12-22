@@ -15,7 +15,6 @@ class GameEditor extends Component
 {
     use WithImageValidation;
     use WithFileUploads;
-
     public Game $game;
     public $title;
     public $description;
@@ -126,6 +125,7 @@ class GameEditor extends Component
         $this->game->save();
         $this->dispatch('finish_date');
     }
+
 
     public function getImageUrlProperty()
     {
