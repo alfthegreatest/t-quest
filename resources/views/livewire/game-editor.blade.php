@@ -1,23 +1,25 @@
-<div class="max-w-xl mx-auto space-y-6 text-gray-200">
+<div class="max-w-xl mx-auto space-y-6 text-gray-200" x-data x-init="
+    $wire.user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    $wire.call('timezoneDetected');">
     <div>
-        <label class="label-base">Title</label>
+        <label class="label-base">Title <x-field-notification field="title" /></label>
         <input type="text" wire:model.live.debounce.2000="title" class="input-base">
     </div>
 
     <div class="flex flex-col sm:flex-row gap-4">
         <div class="w-full sm:flex-1">
-            <label class="label-base">Start date</label>
+            <label class="label-base">Start ({{ $user_timezone }}) <x-field-notification field="start_date" /></label>
             <input type="datetime-local" wire:model.lazy="start_date" class="input-base">
         </div>
 
         <div class="w-full sm:flex-1">
-            <label class="label-base">Finish date</label>
+            <label class="label-base">Finish ({{ $user_timezone }}) <x-field-notification field="finish_date" /></label>
             <input type="datetime-local" wire:model.lazy="finish_date" class="input-base">
         </div>
     </div>
 
     <div class="relative">
-        <label class="label-base">Image</label>
+        <label class="label-base">Image <x-field-notification field="image" /></label>
         <label
             class="flex items-center justify-center w-full h-12 px-4 bg-gray-700 text-gray-300 rounded cursor-pointer hover:bg-gray-600 transition">
             <span>Choose file (max {{$this->getMaxImageSizeMbProperty()}}Mb)</span>
@@ -37,21 +39,15 @@
     </div>
 
     <div x-data="{ description: @js($description) }">
-        <label class="label-base">Description (html allowed)</label>
-        <div class="preview-box px-4 bg-gray-900" 
-            x-html="description"
-            x-show="description && description.trim() !== ''"
-        ></div>
+        <label class="label-base">Description (html allowed) <x-field-notification field="description" /></label>
+        <div class="preview-box px-4 bg-gray-900" x-html="description"
+            x-show="description && description.trim() !== ''"></div>
         <div wire:ignore>
-            <textarea 
-                x-model="description" 
-                wire:model.blur="description" 
+            <textarea x-model="description" wire:model.blur="description"
                 x-init="$el.style.height = $el.scrollHeight + 'px'"
                 @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
-                @input.debounce.2000ms="$wire.set('description', description)"
-                class="input-base"
-                style="overflow:hidden; resize:none; min-height: 6rem;"
-            ></textarea>
+                @input.debounce.2000ms="$wire.set('description', description)" class="input-base"
+                style="overflow:hidden; resize:none; min-height: 6rem;"></textarea>
         </div>
     </div>
 </div>
