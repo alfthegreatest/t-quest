@@ -6,43 +6,35 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn() => view('welcome'))->name('welcome');
 
 Route::get('/game/{game}', [GameController::class, 'show']);
-Route::get('/game/{game}/edit', [GameController::class, 'edit']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', fn() => view('login'))->name('login');
 
-Route::get('/profile', function () {
-    return view('profile');
-})->middleware('auth')->name('profile');
+    // Google OAuth
+    Route::prefix('auth/google')->name('auth.google.')->group(function () {
+        Route::get('/redirect', [GoogleAuthController::class, 'redirect'])->name('redirect');
+        Route::get('/callback', [GoogleAuthController::class, 'callback'])->name('callback');
+    });
+});
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    Route::get('/profile', fn() => view('profile'))->name('profile');
+    Route::get('/logout', fn() => Auth::logout() ?: redirect('/'))->name('logout');
+});
 
-Route::get('/logout', function () {
-    Auth::logout();
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', fn() => view('admin'))->name('dashboard');
 
-    return redirect('/');
-})->name('logout');
+    Route::get('/users', [UserController::class, 'index'])->name('users');
 
-Route::get('/admin', function () {
-    return view('admin');
-})->middleware('admin')->name('admin.dashboard');
+    Route::prefix('games')->name('games.')->group(function () {
+        Route::get('/', [GameController::class, 'index'])->name('index');
+        Route::get('/delete', [GameController::class, 'delete'])->name('delete');
+    });
+});
 
-Route::get('/admin/users', [UserController::class, 'index'])->middleware('admin')->name('admin.users');
-Route::get('/admin/games', [GameController::class, 'index'])->middleware('admin')->name('admin.games');
-Route::get('/admin/games/delete', [GameController::class, 'delete'])->middleware('admin')->name('admin.games.delete');
-
-// Route to redirect to Google's OAuth page
-Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])
-    ->name('auth.google.redirect');
-
-// Route to handle the callback from Google
-Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])
-    ->name('auth.google.callback');
+Route::get('game/{game}/edit', [GameController::class, 'edit'])->middleware('auth', 'admin')->name('game.edit');

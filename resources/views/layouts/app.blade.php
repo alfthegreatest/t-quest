@@ -1570,9 +1570,9 @@
                 @if(auth()->check() && auth()->user()->role === 'admin')
                     <h2 class="text-xl font-bold mt-8">Admin menu</h2>
                     <ul class="menu mb-4">
-                        <li><a href="{{ route('admin.dashboard') }}">Admin dashboard</a></li>
+                        <li><a href="{{ route('dashboard') }}">Admin dashboard</a></li>
                         <li><a href="{{ route('admin.users') }}">Users</a></li>
-                        <li><a href="{{ route('admin.games') }}">Games</a></li>
+                        <li><a href="{{ route('admin.games.index') }}">Games</a></li>
                     </ul>
                 @endif
                 <ul class="menu-btns flex justify-between space-x-4 pt-4">
