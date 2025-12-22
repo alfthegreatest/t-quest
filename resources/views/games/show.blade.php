@@ -17,20 +17,20 @@
             </div>
 
             <div x-data="{
-                    formatDate(isoDate) {
-                        let dateString = isoDate;
-                        if (!dateString.endsWith('Z') && !dateString.includes('+'))
-                            dateString = dateString.replace(' ', 'T') + 'Z';
+                        formatDate(isoDate) {
+                            let dateString = isoDate;
+                            if (!dateString.endsWith('Z') && !dateString.includes('+'))
+                                dateString = dateString.replace(' ', 'T') + 'Z';
 
-                        const date = new Date(dateString);
-                        const day = String(date.getDate()).padStart(2, '0');
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const year = date.getFullYear();
-                        const hours = String(date.getHours()).padStart(2, '0');
-                        const minutes = String(date.getMinutes()).padStart(2, '0');
-                        return `${day}.${month}.${year}, ${hours}:${minutes}`;
-                    }
-            }">
+                            const date = new Date(dateString);
+                            const day = String(date.getDate()).padStart(2, '0');
+                            const month = String(date.getMonth() + 1).padStart(2, '0');
+                            const year = date.getFullYear();
+                            const hours = String(date.getHours()).padStart(2, '0');
+                            const minutes = String(date.getMinutes()).padStart(2, '0');
+                            return `${day}.${month}.${year}, ${hours}:${minutes}`;
+                        }
+                }">
                 <div class="text-white">
                     <span class="font-extrabold">Start: &nbsp;</span>
                     <span x-text="formatDate('{{ $game->start_date }}')">{{ $game->start_date }}</span>
@@ -44,9 +44,10 @@
         </div>
     </div>
 
-
-    <div class="mt-4 text-white">
-        <div class="font-extrabold">Description:</div>
-        <div>{!! $game->description !!}</div>
-    </div>
+    @if ($game->description)
+        <div class="mt-4 text-white">
+            <div class="font-extrabold">Description:</div>
+            <div>{!! $game->description !!}</div>
+        </div>
+    @endif
 @endsection
