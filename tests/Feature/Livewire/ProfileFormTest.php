@@ -41,7 +41,7 @@ class ProfileFormTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'name' => 'New Name',
-            'contact_telegram' => '@newtelegram',
+            'contact_telegram' => 'newtelegram',
         ]);
     }
 
