@@ -11,12 +11,20 @@
                 <img src="{{ $game->image ? asset('storage/' . $game->image) : '/games/game-icon.webp' }}"
                     alt="{{ $game->title }}" title="{{ $game->title }}" class="w-full h-40 object-cover">
 
-                <div class="bg-[#bebebe] w-fit px-2">
-                    <livewire:timer :start-timestamp="$game->start_date->timestamp"
-                        :finish-timestamp="$game->finish_date->timestamp" :key="'timer-' . $game->id" />
+                <div>
+                    <div class="bg-[#bebebe] w-fit px-2">
+                        <livewire:timer :start-timestamp="$game->start_date->timestamp"
+                            :finish-timestamp="$game->finish_date->timestamp" :key="'timer-' . $game->id" />
+                    </div>
                 </div>
+
                 <div class="p-4">
-                    <h3 class="text-lg font-bold mb-2">{{ $game->title }}</h3>
+                    <h3 class="text-lg font-bold mb-2">
+                        @if($game->is_in_progress)
+                            <x-in-progress-indicator class="mr-[5px]" />
+                        @endif
+                        {{ $game->title }}
+                    </h3>
                     <p class="text-gray-300 line-clamp-4">{!! $game->description !!}</p>
                 </div>
             </a>

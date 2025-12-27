@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <x-page-heading>{{ $game->title }}</x-page-heading>
+    <x-page-heading>
+        @if($game->is_in_progress)
+            <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
+        @endif
+        {{ $game->title }}
+    </x-page-heading>
 
     <div class="flex md:flex-row flex-col">
         @if ($game->image)
