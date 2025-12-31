@@ -25,6 +25,9 @@
                         @endif
                         {{ $game->title }}
                     </h3>
+
+                    <div><span class="font-extrabold">Location:</span> <span>{{ $game->location?->title ?: 'not specified' }}</span></div>
+
                     <p class="text-gray-300 line-clamp-4">{!! $game->description !!}</p>
                 </div>
             </a>
