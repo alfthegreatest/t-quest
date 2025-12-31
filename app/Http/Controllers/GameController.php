@@ -14,12 +14,10 @@ class GameController extends Controller
 
     public function create()
     {
-        //
     }
 
     public function store(Request $request)
     {
-        //
     }
 
     public function show(Game $game)
@@ -39,11 +37,9 @@ class GameController extends Controller
 
     public function update(Request $request, Game $game)
     {
-        //
     }
 
     public function destroy(Game $game)
     {
-        //
     }
 }
