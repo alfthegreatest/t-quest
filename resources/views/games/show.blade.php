@@ -26,14 +26,19 @@
                 <span>{{ $game->creator->name ?? '-' }}</span>
             </div>
 
+            <div class="text-white">
+                <span class="font-extrabold">Location: </span>
+                <span>{{ $game->location?->title ?: 'not specified'}}</span>
+            </div>
+
             <div>
                 <div class="text-white">
-                    <span class="font-extrabold">Start: &nbsp;</span>
+                    <span class="font-extrabold">Start: </span>
                     <span x-data x-text="formatUserDate('{{ $game->start_date }}')"></span>
                 </div>
 
                 <div class="text-white">
-                    <span class="font-extrabold">Finish: &nbsp;</span>
+                    <span class="font-extrabold">Finish: </span>
                     <span x-data x-text="formatUserDate('{{ $game->finish_date }}')"></span>
                 </div>
 

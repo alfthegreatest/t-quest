@@ -5,7 +5,15 @@
         <label class="label-base">Title <x-field-notification field="title" /></label>
         <input type="text" wire:model.live.debounce.2000="title" class="input-base">
     </div>
-
+    <div class="w-full sm:flex-1">
+        <label class="label-base">Location <x-field-notification field="location_id" /></label>
+        <select wire:model.lazy="location_id" class="input-base">
+            <option value=''>not chosen</option>
+            @foreach($locations as $loc)
+            <option value="{{ $loc->id }}">{{ $loc->title }}</option>
+            @endforeach
+        </select>
+    </div>
     <div class="flex flex-col sm:flex-row gap-4">
         <div class="w-full sm:flex-1">
             <label class="label-base">Start ({{ $user_timezone }}) <x-field-notification field="start_date" /></label>

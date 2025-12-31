@@ -11,15 +11,19 @@ use Illuminate\Support\Facades\Storage;
 use App\Livewire\Traits\WithImageValidation;
 use Livewire\WithFileUploads;
 
+
 class GameEditor extends Component
 {
     use WithImageValidation;
     use WithFileUploads;
+
     public Game $game;
     public $title;
     public $description;
     public $image;
     public $imagePath;
+    public $location_id;
+    public $locations;
     public $start_date;
     public $finish_date;
     public $user_timezone = 'UTC';
@@ -28,6 +32,7 @@ class GameEditor extends Component
         'title' => 'required|string|max:255',
         'description' => 'required|string',
         'image' => 'nullable|image|max:2048',
+        'location_id' => 'nullable',
         'start_date' => 'required|date',
         'finish_date' => 'required|date|after:start_date',
     ];
@@ -38,6 +43,8 @@ class GameEditor extends Component
         $this->description = $game->description;
         $this->image = null;
         $this->imagePath = $game->image;
+        $this->location_id = $game->location_id;
+        $this->locations = \App\Models\Location::orderBy('title')->get();
         $this->initializeDates();
     }
 
@@ -126,6 +133,13 @@ class GameEditor extends Component
         $this->dispatch('finish_date');
     }
 
+    public function updatedLocationId($value)
+    {
+        $this->game->location_id = $value ?: null;
+        $this->game->save();
+
+        $this->dispatch('location_id');
+    }
 
     public function getImageUrlProperty()
     {
