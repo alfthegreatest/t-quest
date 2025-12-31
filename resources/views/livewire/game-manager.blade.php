@@ -16,6 +16,18 @@
                         <livewire:timer :start-timestamp="$game->start_date->timestamp"
                             :finish-timestamp="$game->finish_date->timestamp" :key="'timer-' . $game->id" />
                     </div>
+
+                    <div class="text-xs">
+                        <div class="text-white">
+                            <span class="font-extrabold">Start: </span>
+                            <span x-data x-text="formatUserDate('{{ $game->start_date }}')"></span>
+                        </div>
+
+                        <div class="text-white">
+                            <span class="font-extrabold">Finish: </span>
+                            <span x-data x-text="formatUserDate('{{ $game->finish_date }}')"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="p-4">
