@@ -59,3 +59,19 @@
 .google-auth-btn > div {
   @apply p-0 float-right
 }
+
+
+
+div#social-links {
+    margin: 0 auto;
+}
+div#social-links ul li {
+    display: inline-block;
+}          
+div#social-links ul li a {
+    padding: 5px 10px;
+    border: none;
+    margin-right: 1px;
+    font-size: 20px;
+    background-color: #ffffff;
+}
