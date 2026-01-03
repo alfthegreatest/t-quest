@@ -16,7 +16,6 @@ class GameEditor extends Component
 {
     use WithImageValidation;
     use WithFileUploads;
-
     public Game $game;
     public $title;
     public $description;
