@@ -20,9 +20,19 @@ class GameController extends Controller
     {
     }
 
-    public function show(Game $game)
+    public function show(Game $game, Request $request)
     {
-        return view('games.show', compact('game'));
+        $shareButtons = \Share::page($request->url())
+            ->facebook()
+            ->twitter()
+            ->telegram();
+
+            $metaTitle = $game->title;
+            $metaDescription = $game->description;
+            $metaImage = asset('storage/' . $game->image);
+            $metaUrl = $request->url();
+    
+        return view('games.show', compact(['game', 'shareButtons', 'metaTitle', 'metaDescription', 'metaImage', 'metaUrl']));
     }
 
     public function creator()

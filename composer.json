@@ -12,6 +12,7 @@
     "require": {
         "php": "^8.4",
         "firebase/php-jwt": "^6.11",
+        "jorenvanhocht/laravel-share": "^4.2",
         "laravel/framework": "^12.0",
         "laravel/socialite": "^5.19",
         "laravel/tinker": "^2.10.1",
