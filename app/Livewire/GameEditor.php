@@ -59,22 +59,6 @@ class GameEditor extends Component
         $this->initializeDates();
     }
 
-    public function updated()
-    {
-        $this->title = Purifier::clean(
-            $this->title,
-            ['HTML.Allowed' => '']
-        );
-
-        $this->game->update([
-            'title' => trim($this->title),
-            'description' => Purifier::clean(
-                $this->description,
-                ['HTML.Allowed' => Constants\Html::ALLOWED_TAGS]
-            ),
-        ]);
-    }
-
     public function updatedImage($value)
     {
         $rules['image'] = $this->image instanceof \Livewire\TemporaryUploadedFile
@@ -83,15 +67,17 @@ class GameEditor extends Component
 
         $this->validate($rules);
 
-        if ($this->game->image) {
-            Storage::disk('public')->delete($this->game->image);
-        }
+        DB::transaction(function () {
+            if ($this->game->image) {
+                Storage::disk('public')->delete($this->game->image);
+            }
 
-        $path = $this->image->store('games', 'public');
-        $this->game->image = $path;
-        $this->game->save();
+            $this->game->update([
+                'image' => $this->image->store('games', 'public')
+            ]);
+        });
 
-        $this->imagePath = $path;
+        $this->imagePath = $this->game->image;
         $this->dispatch('image');
     }
 
@@ -111,33 +97,51 @@ class GameEditor extends Component
 
     public function updatedTitle($value)
     {
+        $this->title = Purifier::clean(
+            $value,
+            ['HTML.Allowed' => '']
+        );
+        $this->game->update(['title' => trim($this->title)]);
         $this->dispatch('title');
     }
 
     public function updatedDescription($value)
     {
+        $this->description = Purifier::clean(
+            $value,
+            ['HTML.Allowed' => Constants\Html::ALLOWED_TAGS]
+        );
+        $this->game->update(['description' => trim($this->description)]);
         $this->dispatch('description');
     }
 
     public function updatedStartDate($value)
     {
-        $this->game->start_date = Carbon::parse($value, $this->user_timezone)->setTimezone('UTC');
-        $this->game->save();
-        $this->dispatch('start_date');
+        try {
+            $this->game->update([
+                'start_date' => Carbon::parse($value, $this->user_timezone)->setTimezone($this->user_timezone)
+            ]);
+            $this->dispatch('start_date');
+        } catch (\Exception $e) {
+            $this->addError('start_date', 'Invalid date format');
+        }
     }
 
     public function updatedFinishDate($value)
     {
-        $this->game->finish_date = Carbon::parse($value, $this->user_timezone)->setTimezone('UTC');
-        $this->game->save();
-        $this->dispatch('finish_date');
+        try {
+            $this->game->update([
+                'finish_date' => Carbon::parse($value, $this->user_timezone)->setTimezone($this->user_timezone)
+            ]);
+            $this->dispatch('finish_date');
+        } catch (\Exception $e) {
+            $this->addError('finish_date', 'Invalid date format');
+        }
     }
 
     public function updatedLocationId($value)
     {
-        $this->game->location_id = $value ?: null;
-        $this->game->save();
-
+        $this->game->update(['location_id' => $value ?: null]);
         $this->dispatch('location_id');
     }
 
@@ -147,11 +151,9 @@ class GameEditor extends Component
             return $this->image->temporaryUrl();
         }
 
-        if ($this->game?->image) {
-            return asset('storage/' . $this->game->image);
-        }
-
-        return null;
+        return $this->game?->image
+            ? asset('storage/' . $this->game->image)
+            : null;
     }
 
     public function render()
