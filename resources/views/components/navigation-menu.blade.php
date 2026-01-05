@@ -43,6 +43,11 @@
                         Games
                     </x-nav-link>
                 </li>
+                <li>
+                    <x-nav-link href="{{ route('admin.locations.index') }}" :active="request()->routeIs('admin.locations')">
+                        Locations
+                    </x-nav-link>
+                </li>    
             </ul>
         @endcan
         <ul class="menu-btns flex justify-between space-x-4 pt-4">
