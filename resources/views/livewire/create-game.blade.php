@@ -3,7 +3,7 @@
     $wire.call('timezoneDetected');">
     <button wire:click="$set('showAddGameModal', true)"
         class="bg-gray-700 hover:cursor-pointer hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow">Add
-        new game</button>
+        new</button>
 
     @if($showAddGameModal)
         <div wire:click="$set('showAddGameModal', false)"
