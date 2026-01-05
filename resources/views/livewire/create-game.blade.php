@@ -2,8 +2,8 @@
     $wire.user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     $wire.call('timezoneDetected');">
     <button wire:click="$set('showAddGameModal', true)"
-        class="bg-gray-700 hover:cursor-pointer hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow">Add
-        new</button>
+        class="bg-gray-700 hover:cursor-pointer hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow"
+    >Add new</button>
 
     @if($showAddGameModal)
         <div wire:click="$set('showAddGameModal', false)"
@@ -15,6 +15,16 @@
                     <input type="text" wire:model.live="title" placeholder="Title" class="w-full p-2 rounded bg-gray-700 
                                         border border-gray-600 focus:outline-none 
                                         focus:border-blue-500 @error('title') border-red-500 ring-red-500 @enderror">
+
+                    <div class="w-full sm:flex-1">
+                        <label class="label-base">Location </label>
+                        <select wire:model.lazy="location_id" class="input-base">
+                            <option value=''>not chosen</option>
+                            @foreach($locations as $loc)
+                            <option value="{{ $loc->id }}">{{ $loc->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="w-full">
                         <label class="label-base">Start ({{ $user_timezone }})</label>
