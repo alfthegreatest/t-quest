@@ -32,10 +32,12 @@
                         @endif
                         {{ $game->title }}
                     </h3>
+                    <div class="mt-2.5"><span class="font-extrabold">Location:</span> <span>{{ $game->location?->title ?: 'not specified' }}</span></div>
+                </div>
 
-                    <div><span class="font-extrabold">Location:</span> <span>{{ $game->location?->title ?: 'not specified' }}</span></div>
-
-                    <p class="text-gray-300 line-clamp-4">{!! $game->description !!}</p>
+                <div class="bg-[#bebebe] w-fit px-2 absolute bottom-0">
+                    <livewire:timer :start-timestamp="$game->start_date->timestamp"
+                        :finish-timestamp="$game->finish_date->timestamp" :key="'timer-' . $game->id" />
                 </div>
             </a>
         @endforeach
