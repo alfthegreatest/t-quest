@@ -12,7 +12,8 @@ class GameManager extends Component
     public function mount()
     {
         $currentDate = now();
-        $this->games = Game::where('active', true)
+        $this->games = Game::with('location')
+            ->where('active', true)
             ->orderByRaw("
                 CASE
                     WHEN start_date <= ? AND finish_date >= ? THEN 1
