@@ -10,7 +10,6 @@ use Carbon\Carbon;
 use App\Constants;
 
 
-
 class CreateGame extends Component
 {
     use \Livewire\WithFileUploads;
@@ -22,6 +21,8 @@ class CreateGame extends Component
     public $image;
     public $start_date;
     public $finish_date;
+    public $location_id;
+    public $locations;
     public $user_timezone = 'UTC';
     protected $rules = [
         'title' => 'required|string|min:3|max:255',
@@ -35,6 +36,7 @@ class CreateGame extends Component
 
     public function mount()
     {
+        $this->locations = \App\Models\Location::orderBy('title')->get();
         $this->initializeDates();
     }
 
@@ -67,9 +69,9 @@ class CreateGame extends Component
 
         $startDateUtc = Carbon::parse($this->start_date, $this->user_timezone)->setTimezone('UTC');
         $finishDateUtc = Carbon::parse($this->finish_date, $this->user_timezone)->setTimezone('UTC');
-
         $game = Game::create([
             'title' => trim($this->title),
+            'location_id' => $this->location_id,
             'start_date' => $startDateUtc,
             'finish_date' => $finishDateUtc,
             'description' => Purifier::clean(
@@ -80,7 +82,7 @@ class CreateGame extends Component
             'created_by' => auth()->id(),
         ]);
 
-        $this->reset(['title', 'description', 'image', 'showAddGameModal']);
+        $this->reset(['title', 'location_id', 'description', 'image', 'showAddGameModal']);
         $this->dispatch('refreshComponentGameList');
         $this->dispatch('toast', 'Game created successfully!');
     }
