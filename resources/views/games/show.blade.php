@@ -11,12 +11,14 @@
     <div class="flex md:flex-row flex-col">
         @if ($game->image)
             <div class="mb-4 flex-1">
-                <div class="relative">
+                <div class="relative w-fit">
                     @can('admin')
                         <x-edit-link :class="'absolute top-2 left-2'" :href="route('game.edit', $game->id)">Edit game</x-edit-link>
                     @endcan
-                    <img class="mx-auto w-auto max-w-[400px] h-auto float-none md:float-left object-cover rounded"
+                    <img class="mx-auto w-auto max-w-[400px] h-auto object-cover rounded"
                         src="{{ asset('storage/' . $game->image) }}" alt="{{ $game->title }}" title="{{ $game->title }}">
+
+                    {!! $shareButtons !!}    
                 </div>
             </div>
         @endif
