@@ -16,21 +16,12 @@ class GamesList extends Component
     use WithPagination;
 
     protected $listeners = ['refreshComponentGameList' => '$refresh'];
-
     public $showModal = false;
-
-    public $showEditGameModal = false;
-
     public $active = false;
-
     public $gameId;
-
     public $title;
-
     public $description;
-
     public $image;
-
     public $imagePath;
 
     protected $rules = [
@@ -63,87 +54,10 @@ class GamesList extends Component
         $this->dispatch('toast', 'Game deleted');
     }
 
-    public function edit($id)
-    {
-        $game = Game::find($id);
-        if (!$game) {
-            return;
-        }
-
-        $game->title = Purifier::clean(
-            $game->title,
-            ['HTML.Allowed' => '']
-        );
-        $game->title = trim($game->title);
-        $this->fill([
-            'gameId' => $game->id,
-            'title' => $game->title,
-            'description' => $game->description,
-            'active' => (bool) $game->active,
-            'image' => null,
-            'imagePath' => $game->image,
-        ]);
-
-        $this->showEditGameModal = true;
-    }
-
     public function render()
     {
         return view('livewire.games-list', [
             'games' => Game::orderBy('id', 'desc')->paginate(10),
         ]);
-    }
-
-    public function update()
-    {
-        $rules = $this->rules;
-        $rules['image'] = $this->image instanceof \Livewire\TemporaryUploadedFile
-            ? 'image|max:2048'
-            : 'nullable';
-
-        $this->validate($rules);
-
-        $game = Game::find($this->gameId);
-        if (!$game) {
-            return;
-        }
-
-        $game->title = Purifier::clean(
-            $this->title,
-            ['HTML.Allowed' => '']
-        );
-        $game->title = trim($game->title);
-
-        $game->description = Purifier::clean(
-            $this->description,
-            ['HTML.Allowed' => \App\Constants\Html::ALLOWED_TAGS]
-        );
-        $game->active = $this->active;
-
-        // Если выбрали новый файл → сохранить и обновить путь
-        if ($this->image) {
-            if ($this->imagePath) {
-                Storage::disk('public')->delete($this->imagePath);
-            }
-
-            $path = $this->image->store('games', 'public');
-            $game->image = $path;
-        }
-
-        $game->save();
-
-        $this->reset(['title', 'active', 'description', 'image', 'imagePath', 'gameId', 'showEditGameModal']);
-        $this->dispatch('toast', 'Changes saved');
-    }
-
-    // live autovalidation
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
-
-    public function updatedImage()
-    {
-        $this->validateOnly('image');
     }
 }
