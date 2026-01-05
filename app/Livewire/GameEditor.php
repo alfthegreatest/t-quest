@@ -18,6 +18,7 @@ class GameEditor extends Component
     use WithFileUploads;
 
     public Game $game;
+    public $active;
     public $title;
     public $description;
     public $image;
@@ -39,6 +40,7 @@ class GameEditor extends Component
 
     public function mount(Game $game)
     {
+        $this->active = (bool) $game->active;
         $this->title = $game->title;
         $this->description = $game->description;
         $this->image = null;
@@ -58,6 +60,13 @@ class GameEditor extends Component
     {
         $this->initializeDates();
     }
+
+    public function updatedActive($value)
+    {
+        $this->game->update(['active' => (bool) $value]);
+        $this->dispatch('active');
+    }
+
 
     public function updatedImage($value)
     {
