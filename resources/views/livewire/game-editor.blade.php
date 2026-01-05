@@ -2,12 +2,12 @@
     $wire.user_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     $wire.call('timezoneDetected');">
     <div>
-        <label class="label-base">
+        <label class="label-base w-fit cursor-pointer">
             <input
                 type="checkbox"
                 wire:model.live="active"
                 id="active"
-                class="hover:cursor-pointer w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                class="cursor-pointer w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
             >
             Active <x-field-notification field="active" />
         </label>
