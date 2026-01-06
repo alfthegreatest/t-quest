@@ -25,6 +25,7 @@ class Game extends Model
         'description',
         'image',
         'location',
+        'location_id',
         'start_date',
         'finish_date',
         'created_by',
