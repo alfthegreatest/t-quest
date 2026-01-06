@@ -22,7 +22,7 @@ class GameController extends Controller
 
     public function show(Game $game, Request $request)
     {
-        $shareButtons = \Share::page($request->url())
+        $shareButtons = \Share::page($request->url(), $game->title)
             ->facebook()
             ->x()
             ->telegram();
