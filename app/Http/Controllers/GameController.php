@@ -24,7 +24,7 @@ class GameController extends Controller
     {
         $shareButtons = \Share::page($request->url())
             ->facebook()
-            ->twitter()
+            ->x()
             ->telegram();
 
             $metaTitle = $game->title;

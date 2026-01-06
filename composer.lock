@@ -4,8 +4,69 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "960e71d2172113d71a33eab1b019696a",
+    "content-hash": "db3aa6be4f7fbc341abf3ebc16ee6789",
     "packages": [
+        {
+            "name": "alfthegreatest/laravel_social-share-buttons",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alfthegreatest/laravel_social-share-buttons.git",
+                "reference": "9b53635fcc9774c57673c1ac098dc77bab58f89a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alfthegreatest/laravel_social-share-buttons/zipball/9b53635fcc9774c57673c1ac098dc77bab58f89a",
+                "reference": "9b53635fcc9774c57673c1ac098dc77bab58f89a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Share": "Alfthegreatest\\Share\\ShareFacade"
+                    },
+                    "providers": [
+                        "Alfthegreatest\\Share\\Providers\\ShareServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alfthegreatest\\Share\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aliaksandr Broika",
+                    "email": "aliaksandr.broika@gmail.com",
+                    "homepage": "https://github.com/alfthegreatest/laravel_social-share-buttons",
+                    "role": "Web Developer"
+                }
+            ],
+            "description": "Optional package for Laravel to generate social share links.",
+            "homepage": "https://github.com/alfthegreatest/laravel_social-share-buttons",
+            "keywords": [
+                "share",
+                "social links",
+                "social share links"
+            ],
+            "support": {
+                "issues": "https://github.com/alfthegreatest/laravel_social-share-buttons/issues",
+                "source": "https://github.com/alfthegreatest/laravel_social-share-buttons/tree/v1.2.0"
+            },
+            "time": "2026-01-04T22:46:02+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.14.1",
@@ -1175,69 +1236,6 @@
                 }
             ],
             "time": "2025-08-22T14:27:06+00:00"
-        },
-        {
-            "name": "jorenvanhocht/laravel-share",
-            "version": "4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jorenvh/laravel-share.git",
-                "reference": "86af334068038a840567ed62f2082fe3ac981476"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jorenvh/laravel-share/zipball/86af334068038a840567ed62f2082fe3ac981476",
-                "reference": "86af334068038a840567ed62f2082fe3ac981476",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^6.13|^7.0",
-                "phpunit/phpunit": "^9.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Share": "Jorenvh\\Share\\ShareFacade"
-                    },
-                    "providers": [
-                        "Jorenvh\\Share\\Providers\\ShareServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jorenvh\\Share\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joren Van Hocht",
-                    "email": "joren@codeswitch.be",
-                    "homepage": "https://codeswitch.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Optional package for Laravel to generate social share links.",
-            "homepage": "https://github.com/jorenvh/laravel-share",
-            "keywords": [
-                "laravel",
-                "share",
-                "social links",
-                "social share links"
-            ],
-            "support": {
-                "issues": "https://github.com/jorenvh/laravel-share/issues",
-                "source": "https://github.com/jorenvh/laravel-share/tree/4.2.0"
-            },
-            "time": "2022-02-11T17:20:09+00:00"
         },
         {
             "name": "laravel/framework",

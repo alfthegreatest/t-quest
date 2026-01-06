@@ -14,7 +14,6 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $loader = AliasLoader::getInstance();
-        $loader->alias('Share', \Jorenvh\Share\ShareFacade::class);
     }
 
     /**
