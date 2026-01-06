@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "alfthegreatest/laravel_social-share-buttons",
-            "version": "v1.2.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alfthegreatest/laravel_social-share-buttons.git",
-                "reference": "9b53635fcc9774c57673c1ac098dc77bab58f89a"
+                "reference": "a8aa490fea06ddd54c48ca7deb0538e37058385b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alfthegreatest/laravel_social-share-buttons/zipball/9b53635fcc9774c57673c1ac098dc77bab58f89a",
-                "reference": "9b53635fcc9774c57673c1ac098dc77bab58f89a",
+                "url": "https://api.github.com/repos/alfthegreatest/laravel_social-share-buttons/zipball/a8aa490fea06ddd54c48ca7deb0538e37058385b",
+                "reference": "a8aa490fea06ddd54c48ca7deb0538e37058385b",
                 "shasum": ""
             },
             "require": {
@@ -63,9 +63,9 @@
             ],
             "support": {
                 "issues": "https://github.com/alfthegreatest/laravel_social-share-buttons/issues",
-                "source": "https://github.com/alfthegreatest/laravel_social-share-buttons/tree/v1.2.0"
+                "source": "https://github.com/alfthegreatest/laravel_social-share-buttons/tree/v1.3.1"
             },
-            "time": "2026-01-04T22:46:02+00:00"
+            "time": "2026-01-06T11:01:56+00:00"
         },
         {
             "name": "brick/math",
