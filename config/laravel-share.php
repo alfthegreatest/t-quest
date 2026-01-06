@@ -8,17 +8,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | Specify the base uri for each service.
-    |
-    |
-    |
     */
 
     'services' => [
         'facebook' => [
             'uri' => 'https://www.facebook.com/sharer/sharer.php?u=',
         ],
-        'twitter' => [
-            'uri' => 'https://twitter.com/intent/tweet',
+        'x' => [
+            'uri' => 'https://x.com/intent/tweet',
             'text' => 'Default share text',
         ],
         'linkedin' => [
