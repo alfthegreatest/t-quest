@@ -129,7 +129,7 @@ class GameEditor extends Component
     {
         try {
             $this->game->update([
-                'start_date' => Carbon::parse($value, $this->user_timezone)->setTimezone($this->user_timezone)
+                'start_date' => Carbon::parse($value, $this->user_timezone)->setTimezone('UTC')
             ]);
             $this->dispatch('start_date');
         } catch (\Exception $e) {
@@ -141,7 +141,7 @@ class GameEditor extends Component
     {
         try {
             $this->game->update([
-                'finish_date' => Carbon::parse($value, $this->user_timezone)->setTimezone($this->user_timezone)
+                'finish_date' => Carbon::parse($value, $this->user_timezone)->setTimezone('UTC')
             ]);
             $this->dispatch('finish_date');
         } catch (\Exception $e) {
