@@ -56,10 +56,13 @@
   @apply w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded focus:ring focus:ring-indigo-600/30;
 }
 
+.input-text {
+  @apply w-full p-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500
+}
+
 .google-auth-btn > div {
   @apply p-0 float-right
 }
-
 
 div#social-links {
     margin: 0 auto;
@@ -82,7 +85,47 @@ ul.levels > li {
   border: 1px solid;
 
   @apply rounded;
-  a {
-    @apply block w-full px-4 py-2 hover:bg-gray-100 hover:text-black
+  a.level {
+    @apply block w-full px-4 py-2 hover:bg-gray-300 hover:text-black
   }
+}
+
+.overlay {
+  @apply fixed inset-0 bg-black/90 flex items-center justify-center z-60
+}
+
+.popup {
+  @apply bg-gray-800 text-white rounded-lg w-96 p-6 shadow-lg
+}
+
+.add-level-btn {
+    @apply block w-full px-4 py-2 bg-white text-black hover:bg-gray-700 hover:text-white hover:cursor-pointer
+}
+
+.add-new-btn {
+  @apply bg-gray-700 hover:cursor-pointer hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow
+}
+
+.btn-group {
+  @apply flex justify-end gap-2 mt-4
+}
+
+.save-btn {
+  @apply text-white py-2 px-4 rounded font-semibold transition-colors
+}
+
+.cancel-btn {
+  @apply bg-red-700 hover:bg-red-600 hover:cursor-pointer text-white py-2 px-4 rounded font-semibold transition-colors
+}
+
+.del-btn {
+  @apply bg-red-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-red-500
+}
+
+.yes-btn {
+  @apply bg-red-600 text-white px-3 py-1 rounded cursor-pointer
+}
+
+.no-btn {
+  @apply ml-2 bg-gray-300 px-3 py-1 rounded cursor-pointer
 }
