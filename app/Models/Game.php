@@ -66,7 +66,14 @@ class Game extends Model
     protected function isInProgress(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->start_date->timestamp < now()->timestamp && $this->finish_date->timestamp > now()->timestamp,
+            get: function () {
+                if (!$this->start_date || !$this->finish_date) {
+                    return false;
+                }
+                
+                return $this->start_date->timestamp < now()->timestamp 
+                    && $this->finish_date->timestamp > now()->timestamp;
+            }
         );
     }
 }

@@ -22,7 +22,7 @@ class LocationSeeder extends Seeder
             'Rome (Italy)',
             'Vilnius (Lithuania)',
             'Warsaw (Poland)',
-            'Wraclaw (Poland)',
+            'Wroclaw (Poland)',
         ];
 
         $timestamp = now();
