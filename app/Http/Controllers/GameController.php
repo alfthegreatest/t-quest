@@ -14,17 +14,25 @@ class GameController extends Controller
 
     public function create()
     {
-        //
     }
 
     public function store(Request $request)
     {
-        //
     }
 
-    public function show(Game $game)
+    public function show(Game $game, Request $request)
     {
-        return view('games.show', compact('game'));
+        $shareButtons = \Share::page($request->url(), $game->title, ['target' => '_blank'])
+            ->facebook()
+            ->x()
+            ->telegram();
+
+        $metaTitle = $game->title;
+        $metaDescription = $game->description;
+        $metaImage = asset('storage/' . $game->image);
+        $metaUrl = $request->url();
+
+        return view('games.show', compact(['game', 'shareButtons', 'metaTitle', 'metaDescription', 'metaImage', 'metaUrl']));
     }
 
     public function creator()
@@ -39,11 +47,9 @@ class GameController extends Controller
 
     public function update(Request $request, Game $game)
     {
-        //
     }
 
     public function destroy(Game $game)
     {
-        //
     }
 }

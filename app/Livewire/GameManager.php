@@ -11,8 +11,17 @@ class GameManager extends Component
 
     public function mount()
     {
-        $this->games = Game::where('active', true)
-            ->orderBy('id', 'desc')
+        $currentDate = now();
+        $this->games = Game::with('location')
+            ->where('active', true)
+            ->orderByRaw("
+                CASE
+                    WHEN start_date <= ? AND finish_date >= ? THEN 1
+                    WHEN start_date > ? THEN 2
+                    WHEN finish_date < ? THEN 3
+                END
+            ", [$currentDate, $currentDate, $currentDate, $currentDate])
+            ->orderBy('start_date', 'asc')
             ->get();
     }
 

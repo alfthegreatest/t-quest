@@ -20,19 +20,17 @@
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
+                    <td><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></td>
                     <td class='text-center'>
-                    @if($user->contact_telegram)
-                        <a href="https://t.me/{{ ltrim($user->contact_telegram, '@') }}" 
-                        target="_blank" 
-                        class="hover:underline">
-                            {{ $user->contact_telegram }}
-                        </a>
-                    @else
-                        –
-                    @endif
+                        @if($user->contact_telegram)
+                            <a href="https://t.me/{{ $user->contact_telegram }}" target="_blank" class="hover:underline">
+                                {{ $user->contact_telegram }}
+                            </a>
+                        @else
+                            –
+                        @endif
                     </td>
-                    <td class='text-center'>{{ $user->contact_whatsapp ?? '-'}}</td>
+                    <td class='text-center'>{{ $user->contact_whatsapp ?: '-'}}</td>
                     <td class='text-center'>{{ $user->role }}</td>
                     <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
                 </tr>

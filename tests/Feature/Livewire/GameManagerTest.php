@@ -27,12 +27,17 @@ class GameManagerTest extends TestCase
             'title' => 'Active Game',
             'active' => true,
             'created_by' => $user->id,
+            'start_date' => now()->subHours(2), // началась 2 часа назад
+            'finish_date' => now()->addHours(2), // закончится через 2 часа
         ]);
 
+        // Неактивная игра
         $inactiveGame = Game::factory()->create([
             'title' => 'Inactive Game',
             'active' => false,
             'created_by' => $user->id,
+            'start_date' => now()->subWeek(), // началась неделю назад
+            'finish_date' => now()->subDays(6), // закончилась 6 дней назад
         ]);
 
         Livewire::test(GameManager::class)

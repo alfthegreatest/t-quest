@@ -3,6 +3,7 @@
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::prefix('games')->name('games.')->group(function () {
         Route::get('/', [GameController::class, 'index'])->name('index');
         Route::get('/delete', [GameController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('locations')->name('locations.')->group(function() {
+        Route::get('/', [LocationController::class, 'index'])->name('index');
     });
 });
 

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Location;
+
 
 class Game extends Model
 {
@@ -21,6 +24,8 @@ class Game extends Model
         'title',
         'description',
         'image',
+        'location',
+        'location_id',
         'start_date',
         'finish_date',
         'created_by',
@@ -51,5 +56,24 @@ class Game extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
+    protected function isInProgress(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!$this->start_date || !$this->finish_date) {
+                    return false;
+                }
+                
+                return $this->start_date->timestamp < now()->timestamp 
+                    && $this->finish_date->timestamp > now()->timestamp;
+            }
+        );
     }
 }

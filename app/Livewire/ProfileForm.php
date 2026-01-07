@@ -22,13 +22,27 @@ class ProfileForm extends Component
         $this->contact_whatsapp = $user->contact_whatsapp;
     }
 
+    public function updatedContactTelegram($value)
+    {
+        $this->contact_telegram = ltrim($value, '@');
+
+        $this->validateOnly('contact_telegram', [
+            'contact_telegram' => 'min:3',
+        ]);
+
+        Auth::user()->update([
+            'contact_telegram' => $this->contact_telegram,
+        ]);
+
+        $this->dispatch('contact_telegram');
+    }
+
     public function updated($field)
     {
         $user = Auth::user();
 
         $this->validateOnly($field, [
             'name' => 'required|min:3',
-            'contact_telegram' => 'min:3',
             'contact_whatsapp' => 'min:3',
         ]);
 
