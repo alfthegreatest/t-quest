@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('games', function (Blueprint $table) {
-            $table->date('start_date')->nullable();
-            $table->date('finish_date')->nullable();
+            $table->datetime('start_date')->nullable();
+            $table->datetime('finish_date')->nullable();
         });
     }
 
