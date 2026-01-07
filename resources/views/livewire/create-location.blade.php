@@ -10,7 +10,7 @@
                 <h2 class="text-xl font-bold mb-4">New location</h2>
                 <form wire:submit.prevent="save" class="space-y-4">
                     @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
-                    <input type="text" wire:model.live="title" placeholder="Title" class="w-full p-2 rounded bg-gray-700 
+                    <input type="text" wire:model.blur="title" placeholder="Title" class="w-full p-2 rounded bg-gray-700 
                                         border border-gray-600 focus:outline-none 
                                         focus:border-blue-500 @error('title') border-red-500 ring-red-500 @enderror">
 

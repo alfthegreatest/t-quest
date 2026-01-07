@@ -12,7 +12,7 @@ class CreateLocation extends Component
     public $showAddLocationModal = false;
     public $title;
     protected $rules = [
-        'title' => 'required|string|min:3|max:255',
+        'title' => 'required|string|min:3|max:255|unique:locations,title',
     ];
 
     public function mount()
