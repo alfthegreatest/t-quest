@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('availability_time');
             $table->timestamps();
             
-            $table->spatialIndex('coordinates'); // for performance
+            //$table->spatialIndex('coordinates'); // for performance
         });
     }
 
