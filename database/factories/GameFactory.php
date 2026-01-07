@@ -19,6 +19,8 @@ class GameFactory extends Factory
         return [
             'title' => fake()->unique()->sentence(3),
             'description' => fake()->sentence(),
+            'start_date' => now(),
+            'finish_date' => now()->addWeek(),
         ];
     }
 }
