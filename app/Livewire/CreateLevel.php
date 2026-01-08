@@ -10,6 +10,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Mews\Purifier\Facades\Purifier;
 
+
 class CreateLevel extends Component {
 
     public $showAddLevelModal = false;
@@ -77,14 +78,13 @@ class CreateLevel extends Component {
         
         $totalSeconds = $this->availabilityTime();
         
-        // Проверка диапазона
         if ($totalSeconds < 60) {
             $this->addError('availability_time', 'Time has to be one minute at least');
             return;
         }
         
         if ($totalSeconds > 31536000) {
-            $this->addError('availability_time', 'Time cannot be grater than one minute');
+            $this->addError('availability_time', 'Time cannot be grater than one year');
             return;
         }
         
