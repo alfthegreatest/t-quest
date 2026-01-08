@@ -10,7 +10,6 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Mews\Purifier\Facades\Purifier;
 
-
 class CreateLevel extends Component {
 
     public $showAddLevelModal = false;
