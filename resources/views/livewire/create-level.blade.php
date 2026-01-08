@@ -9,9 +9,9 @@
             <form wire:submit.prevent="save" class="space-y-4">
                 @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
                 <input 
-                    type="text" 
+                    type="text"
                     wire:model.live="name"
-                    placeholder="Name" 
+                    placeholder="Name"
                     class="input-text @error('name') border-red-500 ring-red-500 @enderror"
                 >
 
