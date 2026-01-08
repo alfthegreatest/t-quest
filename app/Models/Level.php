@@ -39,4 +39,17 @@ class Level extends Model
         }
         return null;
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($level) {
+            if (is_null($level->order)) {
+                $maxOrder = static::where('game_id', $level->game_id)
+                    ->max('order') ?? 0;
+                $level->order = $maxOrder + 1;
+            }
+        });
+    }
 }
