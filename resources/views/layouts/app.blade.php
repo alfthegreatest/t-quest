@@ -24,6 +24,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @stack('styles')
+    @stack('leaflet_styles')
 </head>
 
 <body
@@ -68,6 +69,7 @@
 
     @livewireScripts
     @stack('scripts')
+    @stack('leaflet_scripts')
 </body>
 
 </html>

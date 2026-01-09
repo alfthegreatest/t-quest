@@ -10,12 +10,15 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Mews\Purifier\Facades\Purifier;
 
+
 class CreateLevel extends Component {
 
     public $showAddLevelModal = false;
+    public $showMapModal = false;
     public $name;
     public $description;
-    public $coordinates;
+    public $latitude;
+    public $longitude;
     
     public $availability_time_days = 0;
     public $availability_time_hours = 0;
@@ -28,10 +31,19 @@ class CreateLevel extends Component {
         return [
             'name' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
-            'availability_time_days' => 'required|integer|min:0|max:364',
-            'availability_time_hours' => 'required|integer|min:0|max:23',
-            'availability_time_minutes' => 'required|integer|min:0|max:59',
+            'availability_time_days' => 'integer|min:0|max:364',
+            'availability_time_hours' => 'integer|min:0|max:23',
+            'availability_time_minutes' => 'integer|min:0|max:59',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
         ];
+    }
+
+    public function clearCoordinates()
+    {
+        $this->latitude = null;
+        $this->longitude = null;
+        $this->showMapModal = false;
     }
 
     public function mount()
@@ -39,8 +51,8 @@ class CreateLevel extends Component {
         $this->gameId = request('game')->id;
     }
 
-    // Computed property
-    public function availabilityTime()
+    #[Computed]
+    public function availabilityTime(): int
     {
         $days = (int) $this->availability_time_days;
         $hours = (int) $this->availability_time_hours;
@@ -49,7 +61,8 @@ class CreateLevel extends Component {
         return ($days * 86400) + ($hours * 3600) + ($minutes * 60);
     }
 
-    public function getFormattedTime()
+    #[Computed]
+    public function availabilityTimeFormatted(): string
     {
         $parts = [];
         
@@ -75,21 +88,12 @@ class CreateLevel extends Component {
     {
         $this->validate();
         
-        $totalSeconds = $this->availabilityTime();
-        
-        if ($totalSeconds < 60) {
-            $this->addError('availability_time', 'Time has to be one minute at least');
-            return;
-        }
-        
-        if ($totalSeconds > 31536000) {
-            $this->addError('availability_time', 'Time cannot be grater than one year');
-            return;
-        }
-        
-        $this->name = Purifier::clean($this->name, ['HTML.Allowed' => '']);
-
-        $coordinates = DB::raw("ST_GeomFromText('POINT(55.751244 37.618423)', 4326)");
+        $totalSeconds = $this->availabilityTime;
+        $coordinates = DB::raw(sprintf(
+            'ST_GeomFromText("POINT(%F %F)", 4326)',
+            $this->longitude,
+            $this->latitude
+        ));
 
         Level::create([
             'name' => trim($this->name),
@@ -102,15 +106,7 @@ class CreateLevel extends Component {
             'availability_time' => $totalSeconds,
         ]);
 
-        $this->reset([
-            'showAddLevelModal',
-            'name', 
-            'description', 
-            'availability_time_days',
-            'availability_time_hours',
-            'availability_time_minutes'
-        ]);
-        
+        $this->reset();
         $this->dispatch('refreshComponentLevelsList');
         $this->dispatch('toast', 'Level created!');
     }
@@ -123,6 +119,6 @@ class CreateLevel extends Component {
 
     public function render()
     {
-        return view('livewire.create-level');
+        return view('livewire.create-level', ['availabilityTimeFormatted' => $this->availabilityTimeFormatted]);
     }
 }
