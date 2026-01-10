@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-
 class Level extends Model
 {
     protected $fillable = [
@@ -16,6 +15,9 @@ class Level extends Model
         'coordinates',
         'availability_time',
     ];
+
+    protected $hidden = ['coordinates'];
+    protected $appends = ['latitude', 'longitude'];
 
     public function setCoordinatesAttribute($value)
     {
@@ -28,16 +30,35 @@ class Level extends Model
         }
     }
 
-    public function getCoordinatesAttribute($value)
+    public function getLatitudeAttribute()
     {
-        if ($value) {
-            $point = DB::selectOne("SELECT ST_X(?) as lng, ST_Y(?) as lat", [$value, $value]);
-            return [
-                'lat' => $point->lat,
-                'lng' => $point->lng,
-            ];
+        return $this->getCoordsPart('lat');
+    }
+
+    public function getLongitudeAttribute()
+    {
+        return $this->getCoordsPart('lng');
+    }
+
+    private function getCoordsPart($part)
+    {
+        $value = $this->getRawOriginal('coordinates');
+    
+        if (!$value) {
+            return null;
         }
-        return null;
+
+        try {
+            $result = DB::table('levels')
+                ->selectRaw('ST_Y(coordinates) as lat, ST_X(coordinates) as lng')
+                ->where('id', $this->id)
+                ->first();
+            
+            return $part === 'lat' ? (float) $result->lat : (float) $result->lng;
+        } catch (\Exception $e) {
+            \Log::error('Coordinates parsing error: ' . $e->getMessage());
+            return null;
+        }
     }
 
     protected static function boot()

@@ -65,7 +65,8 @@
             <textarea x-model="description" wire:model.blur="description"
                 x-init="$el.style.height = $el.scrollHeight + 'px'"
                 @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
-                @input.debounce.2000ms="$wire.set('description', description)" class="input-base"
+                @input.debounce.2000ms="$wire.set('description', description)"
+                class="input-base"
                 style="overflow:hidden; resize:none; min-height: 6rem;"></textarea>
         </div>
     </div>
