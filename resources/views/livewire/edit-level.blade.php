@@ -11,18 +11,33 @@
                     placeholder="Name" 
                     class="input-text @error('name') border-red-500 ring-red-500 @enderror"
                 >
-
+                
+                @if(!$showDeleteLevelButtons)
                 <div class="btn-group">
-                    <button type="submit"
-                        class="save-btn {{ $errors->any() ? 'cursor-not-allowed bg-gray-500' : 'hover:cursor-pointer bg-green-700 hover:bg-green-600'}}"
-                        {{ $errors->any() ? 'disabled' : '' }}>
-                        Save
+                    <button type="button" wire:click.prevent="$set('showDeleteLevelButtons', true)"
+                        class="del-btn">
+                        Delete level
                     </button>
+
                     <button type="button" wire:click="$set('showEditLevelPopup', false)"
                         class="cancel-btn">
-                        Cancel
+                        Close
                     </button>
                 </div>
+                @endif
+                
+                @if($showDeleteLevelButtons)
+                <div class="btn-group">
+                    <div class="text-xl">Delete the level?</div>
+                    <button type="button" wire:click.prevent="deleteLevel( {{$id}} )" class="yes-btn">
+                        Yes
+                    </button>
+                    <button type="button" wire:click="$set('showDeleteLevelButtons', false)"
+                        class="no-btn">
+                        No
+                    </button>
+                </div>
+                @endif
             </form>
         </div>
     </div>

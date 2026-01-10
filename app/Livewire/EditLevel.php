@@ -11,6 +11,7 @@ class EditLevel extends Component
     protected $listeners = ['showEditLevelPopup' => 'showPopup'];
 
     public $showEditLevelPopup = false;
+    public $showDeleteLevelButtons = false;
     public $id;
     public $name;
     public $level;
@@ -25,7 +26,7 @@ class EditLevel extends Component
         $this->showEditLevelPopup = true;
     }
 
-    function save() {
+    public function save() {
         $this->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -37,8 +38,15 @@ class EditLevel extends Component
             $level->save();
             
             $this->showEditLevelPopup = false;
-            //$this->dispatch('levelUpdated');
         }
+    }
+
+    public function deleteLevel($id) {
+        Level::destroy($id);
+        $this->dispatch('refreshComponentLevelsList');
+        $this->dispatch('toast', "Level deleted");
+
+        $this->reset();
     }
 
     function render()

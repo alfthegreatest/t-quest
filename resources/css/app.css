@@ -115,11 +115,11 @@ ul.levels > li {
 }
 
 .cancel-btn {
-  @apply bg-red-700 hover:bg-red-600 hover:cursor-pointer text-white py-2 px-4 rounded font-semibold transition-colors
+  @apply bg-gray-300 hover:bg-gray-500 hover:cursor-pointer text-white py-2 px-4 rounded font-semibold transition-colors
 }
 
 .del-btn {
-  @apply bg-red-600 text-white px-3 py-1 rounded cursor-pointer hover:bg-red-500
+  @apply bg-red-700 hover:bg-red-600 hover:cursor-pointer text-white py-2 px-4 rounded font-semibold transition-colors
 }
 
 .yes-btn {
