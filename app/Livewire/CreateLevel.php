@@ -31,9 +31,9 @@ class CreateLevel extends Component {
         return [
             'name' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
-            'availability_time_days' => 'integer|min:0|max:364',
-            'availability_time_hours' => 'integer|min:0|max:23',
             'availability_time_minutes' => 'integer|min:0|max:59',
+            'availability_time_hours' => 'integer|min:0|max:23',
+            'availability_time_days' => 'integer|min:0|max:364',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
         ];
@@ -88,6 +88,11 @@ class CreateLevel extends Component {
     {
         $this->validate();
         
+        if ($this->availabilityTime <= 0) {
+            $this->addError('availability_time', 'Please specify at least some time.');
+            return;
+        }
+
         $totalSeconds = $this->availabilityTime;
         $coordinates = DB::raw(sprintf(
             'ST_GeomFromText("POINT(%F %F)", 4326)',
@@ -111,7 +116,6 @@ class CreateLevel extends Component {
         $this->dispatch('toast', 'Level created!');
     }
 
-    // live autovalidation
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
