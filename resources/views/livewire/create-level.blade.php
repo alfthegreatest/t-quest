@@ -9,7 +9,7 @@
                 @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
                 <input 
                     type="text"
-                    wire:model.live="name"
+                    wire:model.live.debounce.1000ms="name"
                     placeholder="Name"
                     class="input-text @error('name') border-red-500 ring-red-500 @enderror"
                 >
@@ -21,10 +21,11 @@
                 ></textarea>
                
                 <div class="space-y-2">
-                    @error('availability_time') 
-                        <span class="text-red-500 text-sm">{{ $message }}</span> 
+                    @error('availability_time')
+                        <span class="text-red-500">{{ $message }}</span>
                     @enderror
-                    
+                    <label class="block text-sm font-medium">Duration</label>
+
                     <div class="flex items-center gap-3">
                         <div class="relative flex-1">
                             <input 
