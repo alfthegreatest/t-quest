@@ -11,7 +11,8 @@ use Livewire\Component;
 use Mews\Purifier\Facades\Purifier;
 
 
-class CreateLevel extends Component {
+class CreateLevel extends Component
+{
 
     public $showAddLevelModal = false;
     public $showMapModal = false;
@@ -46,9 +47,9 @@ class CreateLevel extends Component {
         $this->showMapModal = false;
     }
 
-    public function mount()
+    public function mount($gameId)
     {
-        $this->gameId = request('game')->id;
+        $this->gameId = $gameId;
     }
 
     #[Computed]
