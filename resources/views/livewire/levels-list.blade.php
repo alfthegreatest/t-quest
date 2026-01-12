@@ -4,6 +4,6 @@
         @foreach($levels as $level)
         <li><a class="level" wire:click.prevent="$dispatch('showEditLevelPopup', { id: {{ $level->id }}, name: '{{ $level->name }}'})">{{$level->order}}</a></li>
         @endforeach
-        <li><livewire:create-level /></li>
+        <li><livewire:create-level :gameId="$gameId"/></li>
     </ul>
 </div>
