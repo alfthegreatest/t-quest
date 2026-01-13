@@ -1,16 +1,20 @@
 <div id="game-manager">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         @foreach($games as $game)
-            <a href="{{ route('game.detail', $game->id) }}"
-                class="relative bg-gray-800 text-white rounded-lg overflow-hidden shadow hover:shadow-lg transition hover:cursor-pointer min-h-[320px]">
+        <div class="relative bg-gray-800 text-white rounded-lg overflow-hidden shadow min-h-[320px]">
+                <div class="bg-[#bebebe] w-fit px-2 absolute top-0">
+                    <livewire:timer :start-timestamp="$game->start_date->timestamp"
+                        :finish-timestamp="$game->finish_date->timestamp" :key="'timer-' . $game->id" />
+                </div>
 
-                @can('admin')
-                    <x-edit-link :class="'absolute top-2 right-2'" :href="route('game.edit', $game->id)">Edit game</x-edit-link>
-                @endcan
+                <a href="{{ route('game.detail', $game->id) }}" class="hover:shadow-lg transition hover:cursor-pointer">
+                    @can('admin')
+                        <x-edit-link :class="'absolute top-2 right-2'" :href="route('game.edit', $game->id)">Edit game</x-edit-link>
+                    @endcan
 
-                <img src="{{ $game->image ? asset('storage/' . $game->image) : '/games/game-icon.webp' }}"
-                    alt="{{ $game->title }}" title="{{ $game->title }}" class="w-full h-40 object-cover">
-
+                    <img src="{{ $game->image ? asset('storage/' . $game->image) : '/games/game-icon.webp' }}"
+                        alt="{{ $game->title }}" title="{{ $game->title }}" class="w-full h-40 object-cover">
+                </a>
                 <div>
                     <div class="text-xs">
                         <div class="text-white">
@@ -33,13 +37,23 @@
                         {{ $game->title }}
                     </h3>
                     <div class="mt-2.5"><span class="font-extrabold">Location:</span> <span>{{ $game->location?->title ?: 'not specified' }}</span></div>
+                    @if($game->is_in_progress)
+                    <a
+                        href="{{ route('game.play', $game->id) }}"
+                        class="enter-game-btn absolute bottom-0 left-5 right-3 inline-flex items-center justify-center
+                            w-full py-2 rounded-md
+                            bg-gradient-to-r from-green-500 to-emerald-600
+                            text-white font-semibold text-sm
+                            shadow-md transition
+                            hover:from-green-400 hover:to-emerald-500
+                            hover:shadow-lg
+                            hover:cursor-pointer
+                            active:scale-95">
+                        Enter the game
+                    </a>
+                    @endif
                 </div>
-
-                <div class="bg-[#bebebe] w-fit px-2 absolute bottom-0">
-                    <livewire:timer :start-timestamp="$game->start_date->timestamp"
-                        :finish-timestamp="$game->finish_date->timestamp" :key="'timer-' . $game->id" />
-                </div>
-            </a>
+            </div>
         @endforeach
     </div>
 </div>
