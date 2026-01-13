@@ -131,40 +131,14 @@
 
     @if($showMapModal)
     <div wire:click="$set('showMapModal', false)" 
-         class="map_overlay" 
-         style="z-index: 1001;">
+        class="map_overlay" 
+        style="z-index: 1001;">
         <div wire:click.stop 
-             class="map_popup" 
-             style="max-width: 800px; width: 90%;"
-             x-data="mapComponent()"
-             x-init="initMap()">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Select Location</h3>
-                <button 
-                    type="button"
-                    wire:click="$set('showMapModal', false)"
-                    class="text-gray-500 hover:text-gray-700 text-2xl leading-none">
-                    ×
-                </button>
-            </div>
-            
-            <div class="mb-4">
-                <div wire:ignore>
-                    <div x-ref="mapContainer" 
-                         style="height: 500px; width: 100%; border-radius: 8px;" 
-                         class="border border-gray-300"></div>
-                </div>
-            </div>
-            
-            <div class="flex gap-2 text-sm text-gray-600 mb-4">
-                <div class="flex-1">
-                    <strong>Latitude:</strong> <span x-text="$wire.latitude || 'Not selected'"></span>
-                </div>
-                <div class="flex-1">
-                    <strong>Longitude:</strong> <span x-text="$wire.longitude || 'Not selected'"></span>
-                </div>
-            </div>
-            
+            class="map_popup" 
+            style="max-width: 800px; width: 100%;"
+            x-data="mapComponent()"
+            x-init="initMap()"
+        >
             <div class="flex gap-2">
                 <button 
                     type="button"
@@ -179,6 +153,24 @@
                     Clear
                 </button>
             </div>
+
+            <div class="flex gap-2 text-sm text-gray-600 mt-4">
+                <div class="flex-1">
+                    <strong>Latitude:</strong> <span x-text="$wire.latitude || 'Not selected'"></span>
+                </div>
+                <div class="flex-1">
+                    <strong>Longitude:</strong> <span x-text="$wire.longitude || 'Not selected'"></span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div wire:ignore>
+                    <div x-ref="mapContainer" 
+                        style="height: 500px; width: 100%; border-radius: 8px;" 
+                        class="border border-gray-300"></div>
+                </div>
+            </div>
+            
         </div>
     </div>
     @endif
