@@ -1,7 +1,7 @@
 <div id="game-manager">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         @foreach($games as $game)
-            <a href="/game/{{$game->id}}"
+            <a href="{{ route('game.detail', $game->id) }}"
                 class="relative bg-gray-800 text-white rounded-lg overflow-hidden shadow hover:shadow-lg transition hover:cursor-pointer min-h-[320px]">
 
                 @can('admin')

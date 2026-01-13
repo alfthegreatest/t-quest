@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('welcome'))->name('welcome');
 
-Route::get('/game/{game}', [GameController::class, 'show']);
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', fn() => view('login'))->name('login');
@@ -42,4 +41,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 });
 
+Route::get('/game/{game}/detail', [GameController::class, 'show'])->name('game.detail');
 Route::get('game/{game}/edit', [GameController::class, 'edit'])->middleware('auth', 'admin')->name('game.edit');
