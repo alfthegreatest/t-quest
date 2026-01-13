@@ -22,7 +22,7 @@
                     <tr wire:key="game-{{ $game->id }}" class="hover:bg-gray-700">
                         <td>{{ $game->id }}</td>
                         <td class="text-center"><input type="checkbox" disabled {{ $game->active ? 'checked' : '' }} /></td>
-                        <td><a href="/game/{{ $game->id }}">{{ $game->title }}</a></td>
+                        <td><a href="{{ route('game.detail', $game->id) }}">{{ $game->title }}</a></td>
                         <td>{!! $game->description !!}</td>
                         <td>
                             <a 
