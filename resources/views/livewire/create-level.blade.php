@@ -100,7 +100,7 @@
                         <button 
                             type="button"
                             wire:click="$set('showMapModal', true)"
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 hover:cursor-pointer"
+                            class="select-on-map-btn"
                             title="Select on map">
                             📍
                         </button>
@@ -143,15 +143,16 @@
                 <button 
                     type="button"
                     wire:click="$set('showMapModal', false)"
-                    class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+                    class="confirm-btn">
                     Confirm
                 </button>
                 <button 
                     type="button"
                     wire:click="clearCoordinates"
-                    class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors">
+                    class="clear-btn">
                     Clear
                 </button>
+
             </div>
 
             <div class="flex gap-2 text-sm text-gray-600 mt-4">

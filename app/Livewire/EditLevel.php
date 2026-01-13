@@ -141,6 +141,8 @@ class EditLevel extends Component
 
     private function updateCoordinates() {
         if ($this->latitude === null || $this->longitude === null)
+            return;
+
         $this->dispatch('coordinates');
         $this->level->update([
             'coordinates' => [
@@ -148,6 +150,13 @@ class EditLevel extends Component
                 'lng' => $this->longitude,
             ]
         ]);
+    }
+
+    public function clearCoordinates()
+    {
+        $this->latitude = null;
+        $this->longitude = null;
+        $this->showMapModal = false;
     }
 
     public function render()
