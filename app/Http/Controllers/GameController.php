@@ -49,9 +49,9 @@ class GameController extends Controller
     {
     }
 
-    public function play()
+    public function play(Game $game)
     {
-        return view('games.play');
+        return view('games.play', compact('game') );
     }
 
     public function destroy(Game $game)
