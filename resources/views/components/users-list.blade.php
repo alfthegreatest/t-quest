@@ -1,1 +1,0 @@
-<div class="color:white">list of users</div>

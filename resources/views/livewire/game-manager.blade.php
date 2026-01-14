@@ -9,7 +9,11 @@
 
                 <a href="{{ route('game.detail', $game->id) }}" class="hover:shadow-lg transition hover:cursor-pointer">
                     @can('admin')
-                        <x-edit-link :class="'absolute top-2 right-2'" :href="route('game.edit', $game->id)">Edit game</x-edit-link>
+                        <x-edit-link 
+                            :class="'absolute top-2 right-2'" 
+                            href="{{ route('game.edit', $game->id) }}"
+                            title="Edit game"    
+                        ></x-edit-link>
                     @endcan
 
                     <img src="{{ $game->image ? asset('storage/' . $game->image) : '/games/game-icon.webp' }}"
