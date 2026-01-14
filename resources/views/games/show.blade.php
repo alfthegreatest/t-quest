@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-back-link :href="route('welcome')" :text="'Back to games'"/>
+
     <x-page-heading>
         @if($game->is_in_progress)
         <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
