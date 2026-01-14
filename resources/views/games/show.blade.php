@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-back-link :href="route('welcome')" :text="'Back to games'"/>
+
     <x-page-heading>
         @if($game->is_in_progress)
-            <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
+        <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
         @endif
         {{ $game->title }}
     </x-page-heading>
@@ -13,7 +15,11 @@
             <div class="mb-4 flex-1">
                 <div class="relative w-fit ">
                     @can('admin')
-                        <x-edit-link :class="'absolute top-2 left-2'" :href="route('game.edit', $game->id)">Edit game</x-edit-link>
+                    <x-edit-link
+                        :class="'absolute top-2 left-2'"
+                        href="{{ route('game.edit', $game->id) }}"
+                        title="Edit game"
+                    ></x-edit-link>
                     @endcan
                     <img class="mx-auto w-full md:flex-row max-w-[400px] h-auto object-cover rounded"
                         src="{{ asset('storage/' . $game->image) }}" alt="{{ $game->title }}" title="{{ $game->title }}">
