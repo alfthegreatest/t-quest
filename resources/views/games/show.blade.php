@@ -3,7 +3,7 @@
 @section('content')
     <x-page-heading>
         @if($game->is_in_progress)
-            <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
+        <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
         @endif
         {{ $game->title }}
     </x-page-heading>
