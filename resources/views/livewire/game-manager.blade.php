@@ -38,19 +38,10 @@
                     </h3>
                     <div class="mt-2.5"><span class="font-extrabold">Location:</span> <span>{{ $game->location?->title ?: 'not specified' }}</span></div>
                     @if($game->is_in_progress)
-                    <a
-                        href="{{ route('game.play', $game->id) }}"
-                        class="enter-game-btn absolute bottom-0 left-5 right-3 inline-flex items-center justify-center
-                            w-full py-2 rounded-md
-                            bg-gradient-to-r from-green-500 to-emerald-600
-                            text-white font-semibold text-sm
-                            shadow-md transition
-                            hover:from-green-400 hover:to-emerald-500
-                            hover:shadow-lg
-                            hover:cursor-pointer
-                            active:scale-95">
-                        Enter the game
-                    </a>
+                    <x-enter-game-btn 
+                        :gameId="$game->id" 
+                        :class="'absolute bottom-0 left-5 right-3 w-full '"
+                    />
                     @endif
                 </div>
             </div>

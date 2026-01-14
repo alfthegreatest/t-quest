@@ -24,9 +24,15 @@
         @endif
 
         <div class="flex flex-col flex-1 justify-center">
-            <div class="text-white"><span class="font-extrabold">Created by:</span>
-                <span>{{ $game->creator->name ?? '-' }}</span>
-            </div>
+                    
+
+            <div class="text-white">
+                @if($game->is_in_progress)
+                <x-enter-game-btn :gameId="$game->id" :class="'w-fit'" />
+                @endif    
+                <span class="font-extrabold">Created by:</span>
+                    <span>{{ $game->creator->name ?? '-' }}</span>
+                </div>
 
             <div class="text-white">
                 <span class="font-extrabold">Location: </span>
