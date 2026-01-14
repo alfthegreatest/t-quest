@@ -40,7 +40,7 @@
                     @if($game->is_in_progress)
                     <x-enter-game-btn 
                         :gameId="$game->id" 
-                        :class="'absolute bottom-0 left-5 right-3 w-full '"
+                        :class="'absolute bottom-0 left-5 right-3 w-full'"
                     />
                     @endif
                 </div>
