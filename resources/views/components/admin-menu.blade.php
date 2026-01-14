@@ -1,8 +1,6 @@
-@props(['mobile' => false])
-
 <h2 class="text-xl font-bold mt-8">Admin menu</h2>
 
-<ul class="menu mb-4" @click="mobile && (open = false)">
+<ul class="menu mb-4">
     <li>
         <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
             Admin dashboard

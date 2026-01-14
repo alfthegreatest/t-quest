@@ -1,13 +1,10 @@
-<div x-data="{
+<div
+    x-data="{
         open: $persist(false).as('nav_open'),
         mobile: window.innerWidth < 768,
         update() { this.mobile = window.innerWidth < 768 }
-    }" 
-    x-init="
-        const onResize = () => update()
-        window.addEventListener('resize', onResize)
-        x-init="update(); window.addEventListener('resize', update)"
-    "
+    }"
+    x-init="update(); window.addEventListener('resize', update)"
     class="absolute h-screen"
 >
     <button 
@@ -44,7 +41,7 @@
         </ul>
         <hr>
         @can('admin')
-            <x-admin-menu />
+            <x-admin-menu @click="mobile && (open = false)" />
         @endcan
         <ul class="menu-btns flex justify-between space-x-4 pt-4">
             <li><a href="{{ route('logout') }}" class="btn " @click="if(mobile) open = false">Logout</a></li>
