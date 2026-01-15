@@ -21,6 +21,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/game/{game}', [GameController::class, 'play'])->name('game.play');
     Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
     Route::get('/profile', fn() => view('profile'))->name('profile');
     Route::get('/logout', fn() => Auth::logout() ?: redirect('/'))->name('logout');
@@ -41,6 +42,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 });
 
-Route::get('/game/{game}', [GameController::class, 'play'])->name('game.play');
 Route::get('/game/{game}/detail', [GameController::class, 'show'])->name('game.detail');
 Route::get('game/{game}/edit', [GameController::class, 'edit'])->middleware('auth', 'admin')->name('game.edit');
