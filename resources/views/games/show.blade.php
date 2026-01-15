@@ -3,7 +3,7 @@
 @section('content')
     <x-back-link :href="route('welcome')" :text="'Back to games'"/>
 
-    <x-page-heading>
+    <x-page-heading class='truncate pl-2'>
         @if($game->is_in_progress)
         <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
         @endif
@@ -14,6 +14,7 @@
         @if ($game->image)
             <div class="mb-4 flex-1">
                 <div class="relative w-fit ">
+                    {!! $shareButtons !!} 
                     @can('admin')
                     <x-edit-link
                         :class="'absolute top-2 left-2'"
@@ -23,22 +24,20 @@
                     @endcan
                     <img class="mx-auto w-full md:flex-row max-w-[400px] h-auto object-cover rounded"
                         src="{{ asset('storage/' . $game->image) }}" alt="{{ $game->title }}" title="{{ $game->title }}">
-
-                    {!! $shareButtons !!}    
                 </div>
             </div>
         @endif
 
-        <div class="flex flex-col flex-1 justify-center">
-                    
 
+        <div class="flex flex-col flex-1 justify-center">
+            @if($game->is_in_progress)
+            <x-enter-game-btn :gameId="$game->id" :class="'w-fit'" />
+            @endif
+    
             <div class="text-white">
-                @if($game->is_in_progress)
-                <x-enter-game-btn :gameId="$game->id" :class="'w-fit'" />
-                @endif    
                 <span class="font-extrabold">Created by:</span>
-                    <span>{{ $game->creator->name ?? '-' }}</span>
-                </div>
+                <span>{{ $game->creator->name ?? '-' }}</span>
+            </div>
 
             <div class="text-white">
                 <span class="font-extrabold">Location: </span>
