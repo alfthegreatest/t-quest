@@ -112,7 +112,7 @@ class CreateLevel extends Component
             'availability_time' => $totalSeconds,
         ]);
 
-        $this->reset();
+        $this->resetExcept('gameId');
         $this->dispatch('refreshComponentLevelsList');
         $this->dispatch('toast', 'Level created!');
     }
