@@ -65,7 +65,7 @@
 }
 
 div#social-links {
-    margin: 0 auto;
+  @apply absolute right-0 mx-auto w-fit 
 }
 
 div#social-links ul li {
