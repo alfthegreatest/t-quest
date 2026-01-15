@@ -131,8 +131,8 @@
 
     @if($showMapModal)
     <div wire:click="$set('showMapModal', false)" 
-        class="map_overlay" 
-        style="z-1001">
+        class="map_overlay"
+    >
         <div wire:click.stop 
             class="map_popup relative" 
             style="max-width: 800px; width: 100%;"
@@ -149,7 +149,7 @@
             </div>
 
             <div>
-                <div class="absolute z-999 top-[50px] right-[30px]">
+                <div class="map-popup-btns">
                     <button 
                         type="button"
                         wire:click="$set('showMapModal', false)"

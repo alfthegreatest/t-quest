@@ -147,6 +147,10 @@ ul.levels > li {
     @apply px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2
   }
 
+  .map-popup-btns {
+    @apply absolute z-999 top-[40px] right-[20px]
+  }
+
 }
 
 

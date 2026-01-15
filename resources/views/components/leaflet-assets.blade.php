@@ -57,9 +57,10 @@
         align-items: center;
         justify-content: center;
         z-index: 1000;
-        }
+    }
 
     .map_popup {
+        position: relative;
         background: white;
         border-radius: 12px;
         padding: 10px;
