@@ -98,51 +98,62 @@ ul.levels > li {
   @apply bg-gray-800 text-white rounded-lg w-96 p-6 shadow-lg
 }
 
-.add-level-btn {
-    @apply block w-full px-4 py-2 bg-white text-black hover:bg-gray-700 hover:text-white hover:cursor-pointer
+@layer components {
+  [class$="-btn"] {
+    @apply hover:cursor-pointer;
+  }
+
+  .add-level-btn {
+      @apply block w-full px-4 py-2 bg-white text-black hover:bg-gray-700 hover:text-white
+  }
+
+  .add-new-btn {
+    @apply bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow
+  }
+
+  .btn-group {
+    @apply flex justify-end gap-2 mt-12
+  }
+
+  .save-btn {
+    @apply text-white py-2 px-4 rounded font-semibold transition-colors
+  }
+
+  .confirm-btn {
+    @apply flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors
+  }
+
+  .clear-btn {
+    @apply px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors
+  }
+
+  .cancel-btn {
+    @apply bg-gray-300 hover:bg-gray-500 text-white py-2 px-4 rounded font-semibold transition-colors
+  }
+
+  .del-btn {
+    @apply bg-red-700 hover:bg-red-600 text-white py-2 px-4 rounded font-semibold transition-colors
+  }
+
+  .yes-btn {
+    @apply bg-red-600 text-white px-3 py-1 rounded
+  }
+
+  .no-btn {
+    @apply ml-2 bg-gray-300 px-3 py-1 rounded
+  }
+
+  .select-on-map-btn {
+    @apply px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2
+  }
+
+  .map-popup-btns {
+    @apply absolute z-999 top-[40px] right-[20px]
+  }
+
 }
 
-.add-new-btn {
-  @apply bg-gray-700 hover:cursor-pointer hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow
-}
 
-.btn-group {
-  @apply flex justify-end gap-2 mt-12
-}
-
-.save-btn {
-  @apply text-white py-2 px-4 rounded font-semibold transition-colors
-}
-
-.confirm-btn {
-  @apply flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors
-}
-
-.clear-btn {
-  @apply px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors
-}
-
-.cancel-btn {
-  @apply bg-gray-300 hover:bg-gray-500 hover:cursor-pointer text-white py-2 px-4 rounded font-semibold transition-colors
-}
-
-.del-btn {
-  @apply bg-red-700 hover:bg-red-600 hover:cursor-pointer text-white py-2 px-4 rounded font-semibold transition-colors
-}
-
-.yes-btn {
-  @apply bg-red-600 text-white px-3 py-1 rounded cursor-pointer
-}
-
-.no-btn {
-  @apply ml-2 bg-gray-300 px-3 py-1 rounded cursor-pointer
-}
-
-.select-on-map-btn {
-  @apply px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 hover:cursor-pointer
-}
-
-/* Убираем стрелочки у input type="number" */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -166,5 +177,5 @@ input[type="number"] {
 }
 
 [x-cloak] {
-    display: none !important;
+  display: none !important;
 }

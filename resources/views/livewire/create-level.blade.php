@@ -131,31 +131,15 @@
 
     @if($showMapModal)
     <div wire:click="$set('showMapModal', false)" 
-        class="map_overlay" 
-        style="z-index: 1001;">
+        class="map_overlay"
+    >
         <div wire:click.stop 
-            class="map_popup" 
+            class="map_popup relative" 
             style="max-width: 800px; width: 100%;"
             x-data="mapComponent()"
             x-init="initMap()"
         >
-            <div class="flex gap-2">
-                <button 
-                    type="button"
-                    wire:click="$set('showMapModal', false)"
-                    class="confirm-btn">
-                    Confirm
-                </button>
-                <button 
-                    type="button"
-                    wire:click="clearCoordinates"
-                    class="clear-btn">
-                    Clear
-                </button>
-
-            </div>
-
-            <div class="flex gap-2 text-sm text-gray-600 mt-4">
+            <div class="flex gap-2 text-sm text-gray-600">
                 <div class="flex-1">
                     <strong>Latitude:</strong> <span x-text="$wire.latitude || 'Not selected'"></span>
                 </div>
@@ -164,19 +148,29 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div>
+                <div class="map-popup-btns">
+                    <button 
+                        type="button"
+                        wire:click="$set('showMapModal', false)"
+                        class="confirm-btn">
+                        Confirm
+                    </button>
+                    <button 
+                        type="button"
+                        wire:click="clearCoordinates"
+                        class="clear-btn">
+                        Clear
+                    </button>
+                </div>
+
                 <div wire:ignore>
                     <div x-ref="mapContainer" 
                         style="height: 500px; width: 100%; border-radius: 8px;" 
                         class="border border-gray-300"></div>
                 </div>
             </div>
-            
         </div>
     </div>
     @endif
-
-    @once
-    <x-leaflet-assets />
-    @endonce
 </div>
