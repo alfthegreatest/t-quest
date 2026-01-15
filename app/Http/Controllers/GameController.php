@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 
 class GameController extends Controller
 {
@@ -51,6 +53,27 @@ class GameController extends Controller
 
     public function play(Game $game)
     {
+        $cacheKey = "game.{$game->id}.levels";
+    
+    $levels = Cache::remember($cacheKey, 60, function () use ($game) {
+        return $game->levels()
+            ->selectRaw('
+                id,
+                game_id,
+                name,
+                description,
+                `order`,
+                availability_time,
+                ST_Y(coordinates) as lat,
+                ST_X(coordinates) as lng
+            ')
+            ->orderBy('order')
+            ->get();
+    });
+    
+        $game->setRelation('levels', $levels);
+
+
         return view('games.play', compact('game') );
     }
 

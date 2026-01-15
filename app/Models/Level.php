@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Game;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+
 
 class Level extends Model
 {
@@ -64,7 +67,15 @@ class Level extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::saved(function ($level) {
+            Cache::forget("game.{$level->game_id}.levels");
+        });
         
+        static::deleted(function ($level) {
+            Cache::forget("game.{$level->game_id}.levels");
+        });
+
         static::creating(function ($level) {
             if (is_null($level->order)) {
                 $maxOrder = static::where('game_id', $level->game_id)
@@ -72,5 +83,10 @@ class Level extends Model
                 $level->order = $maxOrder + 1;
             }
         });
+    }
+
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
     }
 }

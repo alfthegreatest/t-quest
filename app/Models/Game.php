@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Models\Location;
+use App\Models\Level;
 
 
 class Game extends Model
@@ -75,5 +76,10 @@ class Game extends Model
                     && $this->finish_date->timestamp > now()->timestamp;
             }
         );
+    }
+
+    public function levels()
+    {
+        return $this->hasMany(Level::class);
     }
 }
