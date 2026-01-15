@@ -142,10 +142,6 @@
     </div>
     @endif
 
-    @once
-    <x-leaflet-assets />
-    @endonce
-
     @if($showMapModal)
     <div wire:click="$set('showMapModal', false)" 
         class="map_overlay" 
