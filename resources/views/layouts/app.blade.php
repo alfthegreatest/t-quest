@@ -30,11 +30,11 @@
 <body
     class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
     <header class="w-full max-w-[1200px] text-sm mb-6 not-has-[nav]:hidden">
-        @guest
-        <div class="google-auth-btn">
-            @include('partials.google-auth')
-        </div>
-        @endauth
+        @if (Auth::guest() && !Route::is('login'))
+            <div class="google-auth-btn">
+                @include('partials.google-auth')
+            </div>
+        @endif
         <nav class="flex items-center justify-begin gap-4 dark:text-[#EDEDEC]">
             @auth
                 @if (Route::is('profile'))
