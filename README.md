@@ -1,4 +1,4 @@
-## t-quest - worldwide quest in the real life
+## t-quest  -  worldwide quest in the real life
 
 [![CI](https://github.com/alfthegreatest/t-quest/actions/workflows/main.yml/badge.svg)](https://github.com/alfthegreatest/t-quest/actions/workflows/main.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
