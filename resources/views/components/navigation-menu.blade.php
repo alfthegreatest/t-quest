@@ -9,7 +9,7 @@
 >
     <button 
         @click="open = !open"
-        class="fixed top-4 right-4 z-50 p-2 rounded text-white hover:bg-gray-700 cursor-pointer"
+        class="fixed top-4 right-4 z-99999 p-2 rounded text-white hover:bg-gray-700 cursor-pointer"
     >
         ☰
     </button>
@@ -24,7 +24,7 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="translate-x-full"
-        class="fixed top-0 right-0 w-full md:w-64 h-full dark:bg-gray-700 shadow-xl p-6 z-40 text-white"
+        class="fixed top-0 right-0 w-full md:w-64 h-full dark:bg-gray-700 shadow-xl p-6 z-9999 text-white"
     >
         <h2 class="text-xl font-bold">Menu</h2>
         <ul class="menu" @click="if(mobile) open = false">

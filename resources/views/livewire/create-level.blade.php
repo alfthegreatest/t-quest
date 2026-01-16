@@ -134,8 +134,7 @@
         class="map_overlay"
     >
         <div wire:click.stop 
-            class="map_popup relative" 
-            style="max-width: 800px; width: 100%;"
+            class="map_popup relative max-w-3xl w-full" 
             x-data="mapComponent()"
             x-init="initMap()"
         >
@@ -166,11 +165,56 @@
 
                 <div wire:ignore>
                     <div x-ref="mapContainer" 
-                        style="height: 500px; width: 100%; border-radius: 8px;" 
-                        class="border border-gray-300"></div>
+                        class="map-container"></div>
                 </div>
             </div>
         </div>
     </div>
     @endif
+
+    <script>
+        function mapComponent() {
+            return {
+                map: null,
+                marker: null,
+                initMap() {
+                    this.$nextTick(() => {
+                        setTimeout(() => {
+                            if (this.$refs.mapContainer && !this.map) {
+                                this.map = L.map(this.$refs.mapContainer).setView([52.2297, 21.0122], 13);
+                                
+                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: '© OpenStreetMap contributors'
+                                }).addTo(this.map);
+                                
+                                const currentLat = this.$wire.latitude;
+                                const currentLng = this.$wire.longitude;
+                                if (currentLat && currentLng) {
+                                    this.marker = L.marker([currentLat, currentLng]).addTo(this.map);
+                                    this.map.setView([currentLat, currentLng], 13);
+                                }
+                                
+                                this.map.on('click', (e) => {
+                                    const lat = e.latlng.lat;
+                                    const lng = e.latlng.lng;
+                                    
+                                    this.$wire.set('latitude', lat.toFixed(6));
+                                    this.$wire.set('longitude', lng.toFixed(6));
+                                    
+                                    if (this.marker) {
+                                        this.marker.setLatLng(e.latlng);
+                                    } else {
+                                        this.marker = L.marker(e.latlng).addTo(this.map);
+                                    }
+                                });
+                                
+                                setTimeout(() => this.map.invalidateSize(), 100);
+                            }
+                        }, 300);
+                    });
+                }
+            }
+        }
+    </script>
+
 </div>

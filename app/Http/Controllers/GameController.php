@@ -55,26 +55,36 @@ class GameController extends Controller
     {
         $cacheKey = "game.{$game->id}.levels";
     
-    $levels = Cache::remember($cacheKey, 60, function () use ($game) {
-        return $game->levels()
-            ->selectRaw('
-                id,
-                game_id,
-                name,
-                description,
-                `order`,
-                availability_time,
-                ST_Y(coordinates) as lat,
-                ST_X(coordinates) as lng
-            ')
-            ->orderBy('order')
-            ->get();
-    });
+        $levels = Cache::remember($cacheKey, 60, function () use ($game) {
+            return $game->levels()
+                ->selectRaw('
+                    id,
+                    game_id,
+                    name,
+                    description,
+                    `order`,
+                    availability_time,
+                    ST_Y(coordinates) as lat,
+                    ST_X(coordinates) as lng
+                ')
+                ->orderBy('order')
+                ->get();
+        });
+
+        $locations = [];
+        foreach($levels as $level) {
+            $locations[] = [
+                'name' => $level->name,
+                'description' => $level->description,
+                'lat' => $level->lat,
+                'lng' => $level->lng
+            ];
+        }
     
         $game->setRelation('levels', $levels);
 
 
-        return view('games.play', compact('game') );
+        return view('games.play', compact('game', 'locations') );
     }
 
     public function destroy(Game $game)
