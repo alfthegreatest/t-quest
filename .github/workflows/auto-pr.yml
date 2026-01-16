@@ -36,7 +36,7 @@ jobs:
               --label "automerge"
             echo "✅ PR was created"
           else
-            echo "ℹ️ PR already exists: #$existing_pr"
+            echo "ℹ️ PR exists: #$existing_pr"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
