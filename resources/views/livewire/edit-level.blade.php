@@ -147,8 +147,7 @@
         class="map_overlay"
     >
         <div wire:click.stop 
-            class="map_popup relative" 
-            style="max-width: 800px; width: 100%;"
+            class="map_popup relative max-w-3xl w-full" 
             x-data="mapComponent()"
             x-init="initMap()"
         >
@@ -173,8 +172,7 @@
 
                 <div wire:ignore>
                     <div x-ref="mapContainer" 
-                        style="height: 500px; width: 100%; border-radius: 8px;" 
-                        class="border border-gray-300"
+                        class="map-container"
                     ></div>
                 </div>
             </div>
