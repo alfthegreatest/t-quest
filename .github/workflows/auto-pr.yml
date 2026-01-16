@@ -1,0 +1,43 @@
+name: Auto Create PR to Develop
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+      - 'hotfix/**'
+      - 'workflow/**'
+      - 'refactoring/**'
+      - 'tests/**'
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create Pull Request
+        run: |
+          # Проверяем, существует ли уже PR для этой ветки
+          existing_pr=$(gh pr list --head "${{ github.ref_name }}" --base develop --json number --jq '.[0].number')
+          
+          if [ -z "$existing_pr" ]; then
+            # Создаём PR, если его ещё нет
+            gh pr create \
+              --base develop \
+              --head "${{ github.ref_name }}" \
+              --title "Auto PR: ${{ github.ref_name }}" \
+              --body "Автоматически созданный PR из ветки \`${{ github.ref_name }}\`" \
+              --label "automerge"
+            echo "✅ PR создан"
+          else
+            echo "ℹ️ PR уже существует: #$existing_pr"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
