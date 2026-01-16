@@ -7,8 +7,6 @@ on:
       - 'fix/**'
       - 'hotfix/**'
       - 'workflow/**'
-      - 'refactoring/**'
-      - 'tests/**'
 
 jobs:
   create-pr:
@@ -21,22 +19,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Create Pull Request
+      - name: Create Pull Request and Enable Auto-merge
         run: |
-          # Check, if a PR for the branch exists
           existing_pr=$(gh pr list --head "${{ github.ref_name }}" --base develop --json number --jq '.[0].number')
           
           if [ -z "$existing_pr" ]; then
-            # Create PR if it doesnt exist
-            gh pr create \
+            # Create PR
+            pr_number=$(gh pr create \
               --base develop \
               --head "${{ github.ref_name }}" \
               --title "Auto PR: ${{ github.ref_name }}" \
               --body "Auto created PR from branch \`${{ github.ref_name }}\`" \
-              --label "automerge"
-            echo "✅ PR was created"
+              --json number --jq '.number')
+            
+            echo "✅ PR #$pr_number was created"
+            
+            # Enable auto-merge immediately
+            gh pr merge --auto --squash "$pr_number"
+            echo "✅ Auto-merge enabled for PR #$pr_number"
           else
             echo "ℹ️ PR already exists: #$existing_pr"
+            # Enable auto-merge for existing PR
+            gh pr merge --auto --squash "$existing_pr"
+            echo "✅ Auto-merge enabled for existing PR #$existing_pr"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
