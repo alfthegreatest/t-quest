@@ -9,6 +9,7 @@
         {{ $game->title }}
     </x-page-heading>
 
+    
     <div class="flex md:flex-row flex-col text-white">
     </div>
 @endsection
