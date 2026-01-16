@@ -6,7 +6,6 @@ on:
   push:
     branches: [ "develop" ]
 
-
 jobs:
   quick-check:
     runs-on: ubuntu-latest
