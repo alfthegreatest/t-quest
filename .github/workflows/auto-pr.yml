@@ -6,14 +6,13 @@ on:
       - 'feature/**'
       - 'fix/**'
       - 'hotfix/**'
+      - 'refactoring/**'
+      - 'test/**'
       - 'workflow/**'
 
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
     
     steps:
       - name: Checkout code
@@ -36,8 +35,8 @@ jobs:
             # Extract PR number from URL
             pr_number=$(echo "$pr_url" | grep -oP '\d+$')
             
-            # Wait a bit for PR to be fully created
-            sleep 3
+            # Wait for PR to be fully created
+            sleep 5
             
             # Enable auto-merge
             gh pr merge --auto --squash "$pr_number"
@@ -49,5 +48,5 @@ jobs:
             echo "✅ Auto-merge enabled for existing PR #$existing_pr"
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
           GH_REPO: ${{ github.repository }}
