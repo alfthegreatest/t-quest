@@ -23,20 +23,20 @@ jobs:
       
       - name: Create Pull Request
         run: |
-          # Проверяем, существует ли уже PR для этой ветки
+          # Check, if a PR for the branch exists
           existing_pr=$(gh pr list --head "${{ github.ref_name }}" --base develop --json number --jq '.[0].number')
           
           if [ -z "$existing_pr" ]; then
-            # Создаём PR, если его ещё нет
+            # Create PR if it doesnt exist
             gh pr create \
               --base develop \
               --head "${{ github.ref_name }}" \
               --title "Auto PR: ${{ github.ref_name }}" \
-              --body "Автоматически созданный PR из ветки \`${{ github.ref_name }}\`" \
+              --body "Auto created PR from branch \`${{ github.ref_name }}\`" \
               --label "automerge"
-            echo "✅ PR создан"
+            echo "✅ PR was created"
           else
-            echo "ℹ️ PR уже существует: #$existing_pr"
+            echo "ℹ️ PR already exists: #$existing_pr"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
