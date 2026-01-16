@@ -1,4 +1,4 @@
-name: Auto Create PR to Develop
+name: Auto Create PR to Develop and Automerge
 
 on:
   push:
