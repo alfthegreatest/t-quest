@@ -3,8 +3,6 @@ name: Develop Quick Check
 on:
   pull_request:
     branches: [ "develop" ]
-  push:
-    branches: [ "develop" ]
 
 jobs:
   quick-check:
