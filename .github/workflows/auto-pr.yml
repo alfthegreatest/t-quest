@@ -6,14 +6,13 @@ on:
       - 'feature/**'
       - 'fix/**'
       - 'hotfix/**'
+      - 'refactoring/**'
+      - 'test/**'
       - 'workflow/**'
 
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
     
     steps:
       - name: Checkout code
@@ -24,17 +23,22 @@ jobs:
           existing_pr=$(gh pr list --head "${{ github.ref_name }}" --base develop --json number --jq '.[0].number')
           
           if [ -z "$existing_pr" ]; then
-            # Create PR
-            pr_number=$(gh pr create \
+            # Create PR and capture URL
+            pr_url=$(gh pr create \
               --base develop \
               --head "${{ github.ref_name }}" \
               --title "Auto PR: ${{ github.ref_name }}" \
-              --body "Auto created PR from branch \`${{ github.ref_name }}\`" \
-              --json number --jq '.number')
+              --body "Auto created PR from branch \`${{ github.ref_name }}\`")
             
-            echo "✅ PR #$pr_number was created"
+            echo "✅ PR was created: $pr_url"
             
-            # Enable auto-merge immediately
+            # Extract PR number from URL
+            pr_number=$(echo "$pr_url" | grep -oP '\d+$')
+            
+            # Wait for PR to be fully created
+            sleep 5
+            
+            # Enable auto-merge
             gh pr merge --auto --squash "$pr_number"
             echo "✅ Auto-merge enabled for PR #$pr_number"
           else
@@ -44,5 +48,5 @@ jobs:
             echo "✅ Auto-merge enabled for existing PR #$existing_pr"
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
           GH_REPO: ${{ github.repository }}
