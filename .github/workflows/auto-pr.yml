@@ -28,8 +28,9 @@ jobs:
               --base develop \
               --head "${{ github.ref_name }}" \
               --title "Auto PR: ${{ github.ref_name }}" \
-              --body "Auto created PR from branch \`${{ github.ref_name }}\`")
-            
+              --body "Auto created PR from branch \`${{ github.ref_name }}\`" \
+              --label "automerge")
+
             echo "✅ PR was created: $pr_url"
             
             # Extract PR number from URL
