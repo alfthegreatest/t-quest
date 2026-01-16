@@ -7,6 +7,8 @@ on:
       - 'fix/**'
       - 'hotfix/**'
       - 'workflow/**'
+      - 'refactoring/**'
+      - 'test/**'
 
 jobs:
   create-pr:
