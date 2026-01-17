@@ -82,9 +82,9 @@ class GameController extends Controller
         }
     
         $game->setRelation('levels', $levels);
+        $metaTitle = "{$game->title} - " . config('app.name');
 
-
-        return view('games.play', compact('game', 'locations') );
+        return view('games.play', compact('game', 'locations', 'metaTitle') );
     }
 
     public function destroy(Game $game)

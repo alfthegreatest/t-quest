@@ -6,6 +6,7 @@
         timer = setTimeout(() => show = false, 2500)"
     class="fixed top-4 left-4 z-50">
     <div 
+        x-cloak
         x-show="show" 
         x-transition 
         class="px-4 py-2 rounded-xl shadow-md 
