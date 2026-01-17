@@ -1,14 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.play')
 
 @section('content')
-    <x-page-heading class="truncate">
-        <x-back-link 
-            href="{{ route('game.detail', $game->id) }}" 
-            text=""
-         />
-        {{ $game->title }}
-    </x-page-heading>
-
     <div  
         class="fixed inset-0 w-full h-full" 
         x-data="mapComponent(@js($locations))"
