@@ -10,15 +10,13 @@
     </x-page-heading>
 
     <div  
-        class="mx-auto max-w-[800px]" 
+        class="fixed inset-0 w-full h-full" 
         x-data="mapComponent(@js($locations))"
         x-init="initMap()"
     >
-        <div wire:ignore>
-            <div x-ref="mapContainer"
-                class="map-container"
-            ></div>
-        </div>
+        <div x-ref="mapContainer"
+            class="h-full map-container"
+        ></div>
     </div>
 
     <script>
@@ -31,7 +29,6 @@
 
             
             async initMap() {
-                // Initialize map with default coordinates (will update once we get user location)
                 this.map = L.map(this.$refs.mapContainer).setView([51.1263106, 16.9781963], 12);
                 
                 // Add OpenStreetMap tiles
@@ -50,11 +47,17 @@
                             // Update map view to user location
                             this.map.setView([lat, lng], 13);
 
-                            // Add marker at user location
-                            this.userMarker = L.marker([lat, lng])
-                                .addTo(this.map)
-                                .bindPopup(`You are here!`)
-                                .openPopup();
+                            const userIcon = L.divIcon({
+                                className: 'you-are-here',
+                                html: `<div class="you-are-here"></div>`,
+                                iconSize: [15, 15],
+                                iconAnchor: [10, 10], // центр иконки
+                            });
+
+                            this.userMarker = L.marker([lat, lng], {
+                                icon: userIcon,
+                                interactive: false,
+                            }).addTo(this.map).bindPopup('You are here');
 
                             this.addOtherPoints();
                         },
@@ -91,4 +94,28 @@
         }
     }
     </script>
+
+<style>
+.you-are-here {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    background: #4285F4;
+    border-radius: 50%;
+}
+
+.you-are-here::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(66,133,244,0.5);
+    animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(3); opacity: 0; }
+}
+</style>
 @endsection
