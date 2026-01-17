@@ -9,7 +9,7 @@
 >
     <button 
         @click="open = !open"
-        class="fixed top-4 right-4 z-99999 p-2 rounded text-white hover:bg-gray-700 cursor-pointer"
+        class="fixed top-[12px] right-4 z-99999 p-2 rounded text-white dark:bg-gray-700 hover:bg-gray-700 cursor-pointer"
     >
         ☰
     </button>
