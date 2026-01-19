@@ -1,6 +1,6 @@
 ## t-quest  -  worldwide quest in the real life
 
-[![CI](https://github.com/alfthegreatest/t-quest/actions/workflows/main.yml/badge.svg)](https://github.com/alfthegreatest/t-quest/actions/workflows/main.yml)
+[![CI](https://github.com/alfthegreatest/t-quest/actions/workflows/develop.yml/badge.svg)](https://github.com/alfthegreatest/t-quest/actions/workflows/develop.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [![GitHub stars](https://img.shields.io/github/stars/alfthegreatest/t-quest)](https://github.com/alfthegreatest/t-quest/stargazers)
