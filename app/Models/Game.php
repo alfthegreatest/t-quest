@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Level;
+use App\Models\Location;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Models\Location;
-use App\Models\Level;
 
 
 class Game extends Model
@@ -82,4 +83,10 @@ class Game extends Model
     {
         return $this->hasMany(Level::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
 }
