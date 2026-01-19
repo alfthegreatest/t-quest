@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('user_levels_passed', function (Blueprint $table) {
+        Schema::create('user_level_passed', function (Blueprint $table) {
             $table->id();
             
             $table->foreignId('user_id')
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('user_levels_passed');
+        Schema::dropIfExists('user_level_passed');
     }
 };
