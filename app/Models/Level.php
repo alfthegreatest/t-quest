@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Game;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -89,4 +90,11 @@ class Level extends Model
     {
         return $this->belongsTo(Game::class);
     }
+
+    public function usersPassed()
+    {
+        return $this->belongsToMany(User::class, 'user_level_passed')
+                    ->withTimestamps();
+    }
+
 }
