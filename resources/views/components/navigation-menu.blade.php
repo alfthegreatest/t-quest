@@ -17,7 +17,7 @@
 >
     <button 
         @click="open = !open"
-        class="fixed top-[12px] right-4 z-99999 p-2 rounded text-white dark:bg-gray-700 hover:bg-gray-700 cursor-pointer"
+        class="fixed top-2 right-2 z-1000 p-2 rounded text-white dark:bg-gray-700 hover:bg-gray-700 cursor-pointer"
     >
         ☰
     </button>
@@ -33,7 +33,7 @@
         x-transition:leave="transition-opacity ease-linear duration-300"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
-        class="fixed inset-0 overlay-blur z-9998"
+        class="fixed inset-0 overlay-blur z-998"
     ></div>
 
     <!-- Menu panel -->
@@ -47,7 +47,7 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="translate-x-full"
-        class="fixed top-0 right-0 w-[90%] md:w-64 h-full dark:bg-gray-700 shadow-xl p-6 z-9999 text-white overflow-y-auto"
+        class="fixed top-0 right-0 w-[90%] md:w-64 h-full dark:bg-gray-700 shadow-xl p-6 z-999 text-white overflow-y-auto"
     >
         <h2 class="text-xl font-bold">Menu</h2>
         <ul class="menu" @click="if(mobile) open = false">
