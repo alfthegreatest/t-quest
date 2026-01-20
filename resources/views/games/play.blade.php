@@ -1,6 +1,20 @@
 @extends('layouts.play')
 
 @section('content')
+<div id=game-page>
+    <div class='fixed top-2 left-2 z-800
+        flex items-center bg-white shadow-md rounded-lg overflow-hidden'
+    >
+        <input
+            class="px-3 py-2 text-sm w-40 focus:outline-none"
+            placeholder="enter code"
+        />
+        <button
+            class="px-4 py-2 bg-green-600 text-white text-sm
+                hover:bg-green-700 cursor-pointer transition"
+        >✓</button>
+    </div>
+
     <div  
         class="fixed inset-0 w-full h-full" 
         x-data="mapComponent(@js($locations))"
@@ -52,10 +66,16 @@
 
             createMap() {
                 const center = this.calculateCenter();
-                this.map = L.map(this.$refs.mapContainer).setView(
+                this.map = L.map(this.$refs.mapContainer, {
+                    zoomControl: false
+                }).setView(
                     [center.lat, center.lng], 
                     center.zoom
                 );
+
+                L.control.zoom({
+                    position: 'bottomleft'
+                }).addTo(this.map);
                 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -269,35 +289,37 @@
     }
     </script>
 
-<style>
-.you-are-here {
-    position: relative;
-    width: 10px;
-    height: 10px;
-    background: #4285F4;
-    border-radius: 50%;
-}
+    <style>
+    .you-are-here {
+        position: relative;
+        width: 10px;
+        height: 10px;
+        background: #4285F4;
+        border-radius: 50%;
+    }
 
-.you-are-here::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: rgba(66, 133, 244, 0.5);
-    animation: pulse-ring 2s infinite;
-}
+    .you-are-here::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: rgba(66, 133, 244, 0.5);
+        animation: pulse-ring 2s infinite;
+    }
 
-@keyframes pulse-ring {
-    0% { transform: scale(1); opacity: 0.7; }
-    100% { transform: scale(3); opacity: 0; }
-}
+    @keyframes pulse-ring {
+        0% { transform: scale(1); opacity: 0.7; }
+        100% { transform: scale(3); opacity: 0; }
+    }
 
-.leaflet-control-custom:hover {
-    background-color: #f4f4f4 !important;
-}
+    .leaflet-control-custom:hover {
+        background-color: #f4f4f4 !important;
+    }
 
-.leaflet-bottom.leaflet-right {
-    margin-bottom: 10px;
-}
-</style>
+    .leaflet-bottom.leaflet-right {
+        margin-bottom: 10px;
+    }
+    </style>
+
+</div>
 @endsection
