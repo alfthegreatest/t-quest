@@ -54,6 +54,7 @@
             loading: true,
             map: null,
             markers: [],
+            range: 20,
             redIcon: null,
             watchId: null,
             userMarker: null,
@@ -76,11 +77,6 @@
                 this.redIcon = new L.Icon({
                     ...icon,
                     iconUrl: '/images/markers/marker-icon-red.png',
-                });
-
-                this.grayIcon = new L.Icon({
-                    ...icon,
-                    iconUrl: '/images/markers/marker-icon-gray.png',
                 });
                 
                 this.createMap();
@@ -213,6 +209,7 @@
                 this.locations.forEach(location => {
                     const marker = L.marker([location.lat, location.lng], {
                     icon: this.defaultIcon,
+                    opacity: location.passed ? 0.3 : 1,
                 })
                 .addTo(this.map)
                 .bindPopup(`<b>${location.title || location.name}</b><br>${location.description}`);
@@ -246,10 +243,11 @@
                     this.currentClosestMarker.marker.setIcon(this.defaultIcon);
                 }
 
-                if (closestMarker.distance <= 15) {
+                if (closestMarker.distance <= this.range) {
                     closestMarker.marker.setIcon(this.redIcon);
                     this.currentClosestMarker = closestMarker;
-                    this.isNear = true;
+                    if( !closestMarker.location.passed )
+                        this.isNear = true;
                 } else {
                     if (this.currentClosestMarker) {
                         this.currentClosestMarker.marker.setIcon(this.defaultIcon);
