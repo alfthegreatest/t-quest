@@ -153,10 +153,10 @@
         >
             <div class="flex gap-2 text-sm text-gray-600">
                 <div class="flex-1">
-                    <strong>Latitude:</strong> <span x-text="$wire.latitude || 'Not selected'"></span>
+                    <strong>Latitude:</strong> <span x-text="tempLatitude || 'Not selected'"></span>
                 </div>
                 <div class="flex-1">
-                    <strong>Longitude:</strong> <span x-text="$wire.longitude || 'Not selected'"></span>
+                    <strong>Longitude:</strong> <span x-text="tempLongitude || 'Not selected'"></span>
                 </div>
             </div>
 
@@ -164,16 +164,14 @@
                 <div class="map-popup-btns">
                     <button 
                         type="button"
-                        wire:click="$set('showMapModal', false)"
+                        @click="confirmSelection()"
                         class="confirm-btn"
                     >Confirm
                     </button>
                 </div>
 
                 <div wire:ignore>
-                    <div x-ref="mapContainer" 
-                        class="map-container"
-                    ></div>
+                    <div x-ref="mapContainer" class="map-container"></div>
                 </div>
             </div>
         </div>

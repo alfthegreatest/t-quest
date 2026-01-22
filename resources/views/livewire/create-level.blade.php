@@ -221,6 +221,7 @@
                 },
                 
                 confirmSelection() {
+                    console.log('set');
                     this.$wire.set('latitude', this.tempLatitude);
                     this.$wire.set('longitude', this.tempLongitude);
                     this.$wire.set('showMapModal', false);
