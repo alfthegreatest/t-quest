@@ -19,6 +19,8 @@ return new class extends Migration
                 ->constrained('levels')
                 ->onDelete('cascade');
             
+            $table->boolean('passed')->default(false);
+
             $table->timestamps();
             $table->unique(['user_id', 'level_id']);
         });
