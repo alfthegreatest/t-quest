@@ -59,16 +59,30 @@
             userMarker: null,
             
             async initMap() {
-                this.redIcon = new L.Icon({
-                    iconUrl: '/images/markers/marker-icon-red.png',
+                const icon = {
                     shadowUrl: '/images/markers/marker-shadow.png',
                     iconSize: [25, 41],
                     iconAnchor: [12, 41],
                     popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
-                });
-                this.defaultIcon = new L.Icon.Default();
+                    shadowSize: [41, 41],
+                    interactive: true,
+                };
 
+                this.defaultIcon = new L.Icon({
+                    ...icon,
+                    iconUrl: '/images/markers/marker-icon-blue.png',
+                });
+
+                this.redIcon = new L.Icon({
+                    ...icon,
+                    iconUrl: '/images/markers/marker-icon-red.png',
+                });
+
+                this.grayIcon = new L.Icon({
+                    ...icon,
+                    iconUrl: '/images/markers/marker-icon-gray.png',
+                });
+                
                 this.createMap();
                 this.addControls();
                 this.addLocationMarkers();
@@ -197,9 +211,11 @@
 
             addLocationMarkers() {
                 this.locations.forEach(location => {
-                    const marker = L.marker([location.lat, location.lng])
-                        .addTo(this.map)
-                        .bindPopup(`<b>${location.title || location.name}</b><br>${location.description}`);
+                    const marker = L.marker([location.lat, location.lng], {
+                    icon: this.defaultIcon,
+                })
+                .addTo(this.map)
+                .bindPopup(`<b>${location.title || location.name}</b><br>${location.description}`);
                     
                     this.markers.push({ marker, location });
                 });
@@ -227,7 +243,7 @@
 
                 if (this.currentClosestMarker && 
                     this.currentClosestMarker.marker !== closestMarker.marker) {
-                    this.currentClosestMarker.marker.setIcon(new L.Icon.Default());
+                    this.currentClosestMarker.marker.setIcon(this.defaultIcon);
                 }
 
                 if (closestMarker.distance <= 15) {
