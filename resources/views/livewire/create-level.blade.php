@@ -130,7 +130,7 @@
     @endif
 
     @if($showMapModal)
-    <div wire:click="$set('showMapModal', false)" 
+    <div wire:click="cancelMapSelection" 
         class="map_overlay"
     >
         <div wire:click.stop 
@@ -140,10 +140,10 @@
         >
             <div class="flex gap-2 text-sm text-gray-600">
                 <div class="flex-1">
-                    <strong>Latitude:</strong> <span x-text="$wire.latitude || 'Not selected'"></span>
+                    <strong>Latitude:</strong> <span x-text="tempLatitude || 'Not selected'"></span>
                 </div>
                 <div class="flex-1">
-                    <strong>Longitude:</strong> <span x-text="$wire.longitude || 'Not selected'"></span>
+                    <strong>Longitude:</strong> <span x-text="tempLongitude || 'Not selected'"></span>
                 </div>
             </div>
 
@@ -151,13 +151,13 @@
                 <div class="map-popup-btns">
                     <button 
                         type="button"
-                        wire:click="$set('showMapModal', false)"
+                        @click="confirmSelection()"
                         class="confirm-btn">
                         Confirm
                     </button>
                     <button 
                         type="button"
-                        wire:click="clearCoordinates"
+                        @click="clearSelection()"
                         class="clear-btn">
                         Clear
                     </button>
@@ -177,6 +177,9 @@
             return {
                 map: null,
                 marker: null,
+                tempLatitude: null,
+                tempLongitude: null,
+                
                 initMap() {
                     this.$nextTick(() => {
                         setTimeout(() => {
@@ -189,7 +192,10 @@
                                 
                                 const currentLat = this.$wire.latitude;
                                 const currentLng = this.$wire.longitude;
+                                
                                 if (currentLat && currentLng) {
+                                    this.tempLatitude = currentLat;
+                                    this.tempLongitude = currentLng;
                                     this.marker = L.marker([currentLat, currentLng]).addTo(this.map);
                                     this.map.setView([currentLat, currentLng], 13);
                                 }
@@ -198,8 +204,8 @@
                                     const lat = e.latlng.lat;
                                     const lng = e.latlng.lng;
                                     
-                                    this.$wire.set('latitude', lat.toFixed(6));
-                                    this.$wire.set('longitude', lng.toFixed(6));
+                                    this.tempLatitude = lat.toFixed(6);
+                                    this.tempLongitude = lng.toFixed(6);
                                     
                                     if (this.marker) {
                                         this.marker.setLatLng(e.latlng);
@@ -212,6 +218,24 @@
                             }
                         }, 300);
                     });
+                },
+                
+                confirmSelection() {
+                    //if (this.tempLatitude && this.tempLongitude) {
+                        this.$wire.set('latitude', this.tempLatitude);
+                        this.$wire.set('longitude', this.tempLongitude);
+                    //}
+                    this.$wire.set('showMapModal', false);
+                },
+                
+                clearSelection() {
+                    this.tempLatitude = null;
+                    this.tempLongitude = null;
+                    
+                    if (this.marker) {
+                        this.map.removeLayer(this.marker);
+                        this.marker = null;
+                    }
                 }
             }
         }

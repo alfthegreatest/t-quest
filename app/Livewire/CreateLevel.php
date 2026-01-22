@@ -122,6 +122,11 @@ class CreateLevel extends Component
         $this->validateOnly($propertyName);
     }
 
+    public function cancelMapSelection()
+    {
+        $this->showMapModal = false;
+    }
+
     public function render()
     {
         return view('livewire.create-level', ['availabilityTimeFormatted' => $this->availabilityTimeFormatted]);
