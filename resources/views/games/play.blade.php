@@ -76,14 +76,15 @@
                 await this.addUserLocation();
             },
 
-            createMap() {
-                const center = this.calculateCenter();
-                this.map = L.map(this.$refs.mapContainer, {
-                    zoomControl: false
-                }).setView(
-                    [center.lat, center.lng], 
-                    center.zoom
-                );
+            L.control.zoom({
+                position: 'bottomleft'
+            }).addTo(this.map);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 20
+            }).addTo(this.map);
+        },
 
                 L.control.zoom({
                     position: 'bottomleft'
@@ -95,42 +96,42 @@
                 }).addTo(this.map);
             },
 
-            calculateCenter() {
-                if (!this.locations?.length) {
-                    return { lat: 51.1263106, lng: 16.9781963, zoom: 12 };
-                }
+            if (this.locations.length === 1) {
+                return {
+                    lat: this.locations[0].lat,
+                    lng: this.locations[0].lng,
+                    zoom: 14
+                };
+            }
 
-                if (this.locations.length === 1) {
-                    return {
-                        lat: this.locations[0].lat,
-                        lng: this.locations[0].lng,
-                        zoom: 14
-                    };
-                }
+            const coords = this.locations.map(loc => ({
+                lat: parseFloat(loc.lat),
+                lng: parseFloat(loc.lng)
+            }));
 
-                const coords = this.locations.map(loc => ({
-                    lat: parseFloat(loc.lat),
-                    lng: parseFloat(loc.lng)
-                }));
+            const centerLat = coords.reduce((sum, c) => sum + c.lat, 0) / coords.length;
+            const centerLng = coords.reduce((sum, c) => sum + c.lng, 0) / coords.length;
 
-                const centerLat = coords.reduce((sum, c) => sum + c.lat, 0) / coords.length;
-                const centerLng = coords.reduce((sum, c) => sum + c.lng, 0) / coords.length;
+            const lats = coords.map(c => c.lat);
+            const lngs = coords.map(c => c.lng);
+            const maxDiff = Math.max(
+                Math.max(...lats) - Math.min(...lats),
+                Math.max(...lngs) - Math.min(...lngs)
+            );
 
-                const lats = coords.map(c => c.lat);
-                const lngs = coords.map(c => c.lng);
-                const maxDiff = Math.max(
-                    Math.max(...lats) - Math.min(...lats),
-                    Math.max(...lngs) - Math.min(...lngs)
-                );
+            const zoom = maxDiff > 1 ? 10 :
+                        maxDiff > 0.5 ? 11 :
+                        maxDiff > 0.1 ? 12 :
+                        maxDiff > 0.05 ? 13 :
+                        maxDiff > 0.01 ? 14 : 15;
 
-                const zoom = maxDiff > 1 ? 10 :
-                            maxDiff > 0.5 ? 11 :
-                            maxDiff > 0.1 ? 12 :
-                            maxDiff > 0.05 ? 13 :
-                            maxDiff > 0.01 ? 14 : 15;
+            return { lat: centerLat, lng: centerLng, zoom };
+        },
 
-                return { lat: centerLat, lng: centerLng, zoom };
-            },
+        addControls() {
+            this.addControl('bottomright', 'Show all locations', this.getShowAllIcon(), () => this.showAllLocations());
+            this.addControl('bottomright', 'Show my location', this.getGeolocationIcon(), () => this.centerOnUser());
+        },
 
             addControls() {
                 this.addControl('bottomright', 'Show all locations', this.getShowAllIcon(), () => this.showAllLocations());
@@ -261,13 +262,16 @@
                     ]);
                     this.initialBounds = L.latLngBounds(points);
                 }
-            },
+            });
+            
+            this.map.addControl(new Control());
+        },
 
-            async addUserLocation() {
-                if (!navigator.geolocation) {
-                    this.loading = false;
-                    return;
-                }
+        getShowAllIcon() {
+            return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/>
+            </svg>`;
+        },
 
                 // watchPosition to watch in real time
                 this.watchId = navigator.geolocation.watchPosition(
@@ -281,8 +285,27 @@
                 );
             },
 
-            handleUserPosition(position) {
-                const { latitude: lat, longitude: lng } = position.coords;
+        // calculating distance between 2 points (Haversine formula)
+        calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371e3; // Earth radius
+            const φ1 = lat1 * Math.PI / 180;
+            const φ2 = lat2 * Math.PI / 180;
+            const Δφ = (lat2 - lat1) * Math.PI / 180;
+            const Δλ = (lng2 - lng1) * Math.PI / 180;
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return R * c; // distance
+        },
+
+        addLocationMarkers() {
+            this.locations.forEach(location => {
+                const marker = L.marker([location.lat, location.lng])
+                    .addTo(this.map)
+                    .bindPopup(`<b>${location.title || location.name}</b><br>${location.description}`);
                 
                 // update or create user marker
                 if (this.userMarker) {
@@ -297,37 +320,52 @@
                 this.loading = false;
             },
 
-            handleGeolocationError(error) {
-                console.error('Geolocation error:', error);
-                this.loading = false;
-            },
+        handleGeolocationError(error) {
+            console.error('Geolocation error:', error);
+            this.loading = false;
+        },
 
-            createUserMarker(lat, lng) {
-                const userIcon = L.divIcon({
-                    className: 'you-are-here',
-                    html: '<div class="you-are-here"></div>',
-                    iconSize: [15, 15],
-                    iconAnchor: [10, 10],
-                });
+        createUserMarker(lat, lng) {
+            const userIcon = L.divIcon({
+                className: 'you-are-here',
+                html: '<div class="you-are-here"></div>',
+                iconSize: [15, 15],
+                iconAnchor: [10, 10],
+            });
 
-                this.userMarker = L.marker([lat, lng], {
-                    icon: userIcon,
-                    interactive: false,
-                }).addTo(this.map).bindPopup('You are here');
-            },
+            this.userMarker = L.marker([lat, lng], {
+                icon: userIcon,
+                interactive: false,
+            }).addTo(this.map).bindPopup('You are here');
+        },
 
-            fitBoundsWithUser(lat, lng) {
-                const allPoints = [
-                    ...this.locations.map(loc => [parseFloat(loc.lat), parseFloat(loc.lng)]),
-                    [lat, lng]
-                ];
-                
-                const bounds = L.latLngBounds(allPoints);
-                this.map.fitBounds(bounds, {
+        fitBoundsWithUser(lat, lng) {
+            const allPoints = [
+                ...this.locations.map(loc => [parseFloat(loc.lat), parseFloat(loc.lng)]),
+                [lat, lng]
+            ];
+            
+            const bounds = L.latLngBounds(allPoints);
+            this.map.fitBounds(bounds, {
+                padding: [50, 50],
+                maxZoom: 15
+            });
+        },
+
+        showAllLocations() {
+            if (this.initialBounds) {
+                this.map.flyToBounds(this.initialBounds, {
                     padding: [50, 50],
-                    maxZoom: 15
+                    maxZoom: 15,
+                    duration: 1
                 });
-            },
+            } else {
+                const center = this.calculateCenter();
+                this.map.flyTo([center.lat, center.lng], center.zoom, {
+                    duration: 1
+                });
+            }
+        },
 
             showAllLocations() {
                 if (this.initialBounds) {
@@ -378,6 +416,7 @@
             }
         }
     }
+}
     </script>
 
     <style>
