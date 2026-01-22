@@ -13,6 +13,7 @@ class UserLevelPassed extends Model
     protected $fillable = [
         'user_id',
         'level_id',
+        'passed',
     ];
     
     public function user()
