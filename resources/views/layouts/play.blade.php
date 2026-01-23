@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $metaTitle ?? 't-quest' }}</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/map-component.css'])
     @livewireStyles
     @stack('styles')
+
 </head>
 
 <body>
