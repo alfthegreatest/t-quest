@@ -23,6 +23,7 @@ class EditLevel extends Component
     public $longitude;
 
     public $level;
+    public $gameId;
     
     public $availability_time_days = 0;
     public $availability_time_hours = 0;
@@ -75,17 +76,18 @@ class EditLevel extends Component
         return implode(', ', $parts);
     }
 
-    public function showPopup($id = null, $name = null)
+    public function showPopup($id = null, $gameId = null)
     {
         $this->id = $id;
-        $this->name = $name;
+        $this->gameId = $gameId;
         
         $this->level = Level::find($this->id);
+        $this->name = $this->level->name;
         $this->description = $this->level->description;
         $this->points = $this->level->points;
         $this->latitude = $this->level->latitude;
         $this->longitude = $this->level->longitude;
-
+        
         $totalSeconds = $this->level->availability_time ?? 0;
         $this->availability_time_days = floor($totalSeconds / 86400);
         $this->availability_time_hours = floor(($totalSeconds % 86400) / 3600);
