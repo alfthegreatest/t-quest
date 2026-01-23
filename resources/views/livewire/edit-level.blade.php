@@ -127,6 +127,15 @@
                     @endif
                 </div>
 
+                <a 
+                    target="_blank" 
+                    href="{{ route('game.level.codes', [$gameId, $id]) }}"
+                    class="inline-flex items-center gap-1 text-gray-400 hover:text-white transition mb-4"
+                >codes<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+
                 @if(!$showDeleteLevelButtons)
                 <div class="btn-group">
                     <button type="button" wire:click.prevent="$set('showDeleteLevelButtons', true)"
