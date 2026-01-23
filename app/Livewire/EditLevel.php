@@ -18,6 +18,7 @@ class EditLevel extends Component
     public $id;
     public $name;
     public $description;
+    public $points;
     public $latitude;
     public $longitude;
 
@@ -32,6 +33,7 @@ class EditLevel extends Component
         return [
             'name' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
+            'points' => 'required|integer|min:0',
             'availability_time_minutes' => 'integer|min:0|max:59',
             'availability_time_hours' => 'integer|min:0|max:23',
             'availability_time_days' => 'integer|min:0|max:364',
@@ -80,6 +82,7 @@ class EditLevel extends Component
         
         $this->level = Level::find($this->id);
         $this->description = $this->level->description;
+        $this->points = $this->level->points;
         $this->latitude = $this->level->latitude;
         $this->longitude = $this->level->longitude;
 
@@ -109,6 +112,12 @@ class EditLevel extends Component
         $this->validateOnly('description');
         $this->level->update(['description' => trim($value)]);
         $this->dispatch('description');
+    }
+
+    public function updatedPoints($value) {
+        $this->validateOnly('points');
+        $this->level->update(['points' => $value]);
+        $this->dispatch('points');
     }
 
     public function updatedAvailabilityTimeDays($value) {

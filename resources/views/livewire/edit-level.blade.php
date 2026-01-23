@@ -20,6 +20,22 @@
                     placeholder="Description"
                     class="input-text"
                 ></textarea>
+
+                <div class="flex-1">
+                    <label class="block text-sm font-medium">Points <x-field-notification field="points" /></label>
+                    @error('points')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+
+                    <input 
+                        type="number" 
+                        wire:model.live.debounce.1000ms="points"
+                        min="0"
+                        placeholder="0" 
+                        class="input-number @error('points') border-red-500 @enderror"
+                    >
+                </div>
+
                
                 <div class="space-y-2">
                     <label class="block text-sm font-medium">Duration <x-field-notification field="availability_time" /></label>
@@ -64,7 +80,7 @@
                             <span class="input-suffiks">minutes</span>
                         </div>
                     </div>
-                    
+
                     @if($availability_time_days || $availability_time_hours || $availability_time_minutes)
                         <p class="text-sm text-gray-500">
                             Total: {{ $availabilityTimeFormatted }}
