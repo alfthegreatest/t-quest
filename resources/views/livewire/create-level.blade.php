@@ -19,6 +19,21 @@
                     placeholder="Description"
                     class="input-text"
                 ></textarea>
+
+                <div class="flex-1">
+                    <label class="block text-sm font-medium">Points <x-field-notification field="points" /></label>
+                    @error('points')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+
+                    <input 
+                        type="number" 
+                        wire:model.live.debounce.1000ms="points"
+                        min="0"
+                        placeholder="0" 
+                        class="input-number @error('points') border-red-500 @enderror"
+                    >
+                </div>
                
                 <div class="space-y-2">
                     <label class="block text-sm font-medium">Duration</label>
