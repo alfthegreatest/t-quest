@@ -75,7 +75,6 @@ class GameController extends Controller
         ->get();
         
 
-
         $levelIds = $levels->pluck('id')->toArray();
         $exists = UserLevelPassed::where('user_id', $userId)
             ->whereIn('level_id', $levelIds)
