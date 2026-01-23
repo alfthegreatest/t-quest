@@ -1,5 +1,6 @@
 export default function mapComponent(locations) {
     return {
+        activeLevelId: null,
         currentClosestMarker: null,
         defaultIcon: null,
         initialBounds: null,
@@ -200,13 +201,16 @@ export default function mapComponent(locations) {
             if (closestMarker.distance <= this.range) {
                 closestMarker.marker.setIcon(this.redIcon);
                 this.currentClosestMarker = closestMarker;
-                if( !closestMarker.location.passed )
+                if( !closestMarker.location.passed ) {
+                    this.activeLevelId = closestMarker.location.id;
                     this.isNear = true;
+                }
             } else {
                 if (this.currentClosestMarker) {
                     this.currentClosestMarker.marker.setIcon(this.defaultIcon);
                     this.currentClosestMarker = null;
                 }
+                this.activeLevelId = null;
                 this.isNear = false;
             }
         },
