@@ -10,6 +10,7 @@
         x-show="isNear" 
         x-transition.opacity.duration.300ms
         x-cloak
+        x-effect="if (isNear && activeLevelId) Livewire.dispatch('level-changed', { levelId: activeLevelId })"
     >
         <livewire:enter-code-field />
     </div>
@@ -48,8 +49,7 @@
 @push('scripts')
     <script type="module">
         import mapComponent from '{{ Vite::asset('resources/js/components/mapComponent.js') }}';
-        
-        // Регистрируем ДО инициализации Alpine
+        // register before Alpine initialisation
         window.mapComponent = mapComponent;
     </script>
 @endpush

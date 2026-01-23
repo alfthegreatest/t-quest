@@ -100,6 +100,7 @@ class GameController extends Controller
         $locations = [];
         foreach($levels as $level) {
             $locations[] = [
+                'id' => $level->id,
                 'name' => $level->name,
                 'description' => $level->description,
                 'passed' => $level->passed,
