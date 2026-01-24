@@ -11,6 +11,6 @@
 
         <livewire:add-code :levelId="$levelId" />
 
-        <livewire:codes-list />
+        <livewire:codes-list :levelId="$levelId" />
     </div>
 @endsection
