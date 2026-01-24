@@ -4,6 +4,7 @@
 <div id="game-page"
     x-data="mapComponent(@js($locations))"
     x-init="initMap()"
+    @level-completed.window="markLevelAsPassed($event.detail.levelId)"
 >
 
     <div 

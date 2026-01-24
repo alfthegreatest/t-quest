@@ -330,6 +330,21 @@ export default function mapComponent(locations) {
             );
         },
 
+        markLevelAsPassed(levelId) {
+            const markerData = this.markers.find(({ location }) => location.id === levelId);
+            
+            if (markerData) {
+                markerData.location.passed = true;
+                markerData.marker.setOpacity(0.3);
+                
+                if (this.currentClosestMarker?.location.id === levelId) {
+                    this.currentClosestMarker = null;
+                    this.activeLevelId = null;
+                    this.isNear = false;
+                }
+            }
+        },
+
         stopWatching() {
             if (this.watchId) {
                 navigator.geolocation.clearWatch(this.watchId);

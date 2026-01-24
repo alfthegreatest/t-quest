@@ -4,7 +4,10 @@
         message = $event.detail; 
         show = true; 
         timer = setTimeout(() => show = false, 2500)"
-    class="fixed top-4 left-4 z-50">
+        {{ $attributes->class([
+            'fixed z-50'
+        ]) }}
+        >
     <div 
         x-cloak
         x-show="show" 
