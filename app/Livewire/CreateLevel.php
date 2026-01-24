@@ -18,6 +18,7 @@ class CreateLevel extends Component
     public $showMapModal = false;
     public $name;
     public $description;
+    public $points;
     public $latitude;
     public $longitude;
     
@@ -32,6 +33,7 @@ class CreateLevel extends Component
         return [
             'name' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
+            'points' => 'required|integer|min:0',
             'availability_time_minutes' => 'integer|min:0|max:59',
             'availability_time_hours' => 'integer|min:0|max:23',
             'availability_time_days' => 'integer|min:0|max:364',
@@ -107,6 +109,7 @@ class CreateLevel extends Component
                 $this->description,
                 ['HTML.Allowed' => Constants\Html::ALLOWED_TAGS]
             ),
+            'points' => $this->points,
             'game_id' => $this->gameId,
             'coordinates' => $coordinates,
             'availability_time' => $totalSeconds,

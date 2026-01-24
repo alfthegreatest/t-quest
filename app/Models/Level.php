@@ -16,6 +16,7 @@ class Level extends Model
         'game_id',
         'name',
         'description',
+        'points',
         'coordinates',
         'availability_time',
     ];

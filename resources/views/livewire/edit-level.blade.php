@@ -20,6 +20,22 @@
                     placeholder="Description"
                     class="input-text"
                 ></textarea>
+
+                <div class="flex-1">
+                    <label class="block text-sm font-medium">Points <x-field-notification field="points" /></label>
+                    @error('points')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+
+                    <input 
+                        type="number" 
+                        wire:model.live.debounce.1000ms="points"
+                        min="0"
+                        placeholder="0" 
+                        class="input-number @error('points') border-red-500 @enderror"
+                    >
+                </div>
+
                
                 <div class="space-y-2">
                     <label class="block text-sm font-medium">Duration <x-field-notification field="availability_time" /></label>
@@ -64,7 +80,7 @@
                             <span class="input-suffiks">minutes</span>
                         </div>
                     </div>
-                    
+
                     @if($availability_time_days || $availability_time_hours || $availability_time_minutes)
                         <p class="text-sm text-gray-500">
                             Total: {{ $availabilityTimeFormatted }}
@@ -110,6 +126,15 @@
                         </p>
                     @endif
                 </div>
+
+                <a 
+                    target="_blank" 
+                    href="{{ route('game.level.codes', [$gameId, $id]) }}"
+                    class="inline-flex items-center gap-1 text-gray-400 hover:text-white transition mb-4"
+                >codes<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
 
                 @if(!$showDeleteLevelButtons)
                 <div class="btn-group">

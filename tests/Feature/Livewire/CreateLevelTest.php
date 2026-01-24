@@ -40,6 +40,7 @@ class CreateLevelTest extends TestCase
         Livewire::test(CreateLevel::class, ['gameId' => $game->id])
             ->set('name', 'test level')
             ->set('description', 'some level description')
+            ->set('points', 1)
             ->set('longitude', $longitude)
             ->set('latitude', $latitude)
             ->set('availability_time_days', $days)
@@ -119,6 +120,7 @@ class CreateLevelTest extends TestCase
         $game = Game::factory()->create();
         Livewire::test(CreateLevel::class, ['gameId' => $game->id])
             ->set('name', 'Test Level')
+            ->set('points', 0)
             ->set('latitude', 52.0)
             ->set('longitude', 21.0)
             ->set('availability_time_days', 0)
@@ -167,6 +169,7 @@ class CreateLevelTest extends TestCase
         Livewire::test(CreateLevel::class, ['gameId' => $game->id])
             ->set('name', 'Test Level')
             ->set('description', '<script>alert("xss")</script><p>Safe text</p>')
+            ->set('points', 1)
             ->set('latitude', 52.0)
             ->set('longitude', 21.0)
             ->set('availability_time_hours', 1)
@@ -178,11 +181,27 @@ class CreateLevelTest extends TestCase
         $this->assertStringContainsString('Safe text', $level->description);
     }
 
+    public function testpoints_must_be_greater_or_equal_than_zero()
+    {
+        $game = Game::factory()->create();
+        Livewire::test(CreateLevel::class, ['gameId' => $game->id])
+            ->set('name', 'Test Level')
+            ->set('points', -1)
+            ->set('latitude', 52.0)
+            ->set('longitude', 21.0)
+            ->set('availability_time_days', 0)
+            ->set('availability_time_hours', 0)
+            ->set('availability_time_minutes', 0)
+            ->call('save')
+            ->assertHasErrors(['points']);
+    }
+
     public function test_dispatches_events_after_successful_save()
     {
         $game = Game::factory()->create();
         Livewire::test(CreateLevel::class, ['gameId' => $game->id])
             ->set('name', 'Test Level')
+            ->set('points', 1)
             ->set('latitude', 52.0)
             ->set('longitude', 21.0)
             ->set('availability_time_hours', 1)
@@ -197,6 +216,7 @@ class CreateLevelTest extends TestCase
         Livewire::test(CreateLevel::class, ['gameId' => $game->id])
             ->set('name', 'Test Level')
             ->set('description', 'Description')
+            ->set('points', 0)
             ->set('latitude', 52.0)
             ->set('longitude', 21.0)
             ->set('availability_time_hours', 1)

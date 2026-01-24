@@ -14,7 +14,8 @@
   @apply text-4xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-[#EDEDEC];
 }
 
-.users-table {
+.users-table,
+.codes-table {
   thead {
     th {
       @apply px-3 py-3 text-center text-sm font-medium text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600;
@@ -53,7 +54,7 @@
 }
 
 .input-base {
-  @apply w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded focus:ring focus:ring-indigo-600/30;
+  @apply w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded focus:ring focus:ring-indigo-600/30 text-white;
 }
 
 .input-text {
@@ -108,7 +109,7 @@ ul.levels > li {
   }
 
   .add-new-btn {
-    @apply bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow
+    @apply bg-gray-700 hover:bg-gray-600 hover:cursor-pointer text-white font-semibold py-2 px-4 rounded shadow
   }
 
   .btn-group {
