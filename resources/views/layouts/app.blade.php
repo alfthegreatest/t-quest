@@ -64,7 +64,7 @@
         <x-navigation-menu />
     @endauth
 
-    <x-toast />
+    <x-toast class="top-4 left-4" />
 
     <x-leaflet-assets />
 

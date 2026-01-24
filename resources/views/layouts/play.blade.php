@@ -19,7 +19,7 @@
 
     <x-navigation-menu />
 
-    <x-toast />
+    <x-toast class="top-12 left-2 z-1000" />
 
     <x-leaflet-assets />
 
