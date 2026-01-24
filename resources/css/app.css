@@ -53,7 +53,7 @@
 }
 
 .input-base {
-  @apply w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded focus:ring focus:ring-indigo-600/30;
+  @apply w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded focus:ring focus:ring-indigo-600/30 text-white;
 }
 
 .input-text {
@@ -108,7 +108,7 @@ ul.levels > li {
   }
 
   .add-new-btn {
-    @apply bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded shadow
+    @apply bg-gray-700 hover:bg-gray-600 hover:cursor-pointer text-white font-semibold py-2 px-4 rounded shadow
   }
 
   .btn-group {
