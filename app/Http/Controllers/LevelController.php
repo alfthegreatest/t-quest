@@ -11,7 +11,8 @@ class LevelController extends Controller
     public function index(Game $game, Level $level)
     {
         $title = "$game->title - $level->name";
+        $levelId = $level->id;
 
-        return view('levels.index', compact('title'));
+        return view('levels.index', compact(['title', 'levelId']));
     }
 }
