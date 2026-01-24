@@ -16,6 +16,13 @@ class CodesList extends Component
         $this->levelId = $levelId;
     }
 
+    public function delete(int $id)
+    {
+        Code::destroy($id);
+        $this->dispatch('refreshComponentCodeList');
+        $this->dispatch('toast', 'Code deleted');
+    }
+
     public function render()
     {
         return view(

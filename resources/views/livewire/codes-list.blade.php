@@ -13,7 +13,7 @@
                     <td class="text-right">
                         <button 
                             type="button" 
-                            wire:click=""
+                            wire:click="delete({{ $code->id }})"
                             class="del-btn"
                         >del</button>
                     </td>
