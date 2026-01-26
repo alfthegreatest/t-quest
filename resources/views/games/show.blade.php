@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <x-page-heading>
+    <x-back-link :href="route('welcome')" :text="'Back to games'"/>
+
+    <x-page-heading class='truncate pl-2'>
         @if($game->is_in_progress)
-            <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
+        <x-in-progress-indicator class="bottom-[5px] right-[5px]" />
         @endif
         {{ $game->title }}
     </x-page-heading>
@@ -11,20 +13,29 @@
     <div class="flex md:flex-row flex-col">
         @if ($game->image)
             <div class="mb-4 flex-1">
-                <div class="relative w-fit">
+                <div class="relative w-fit ">
+                    {!! $shareButtons !!} 
                     @can('admin')
-                        <x-edit-link :class="'absolute top-2 left-2'" :href="route('game.edit', $game->id)">Edit game</x-edit-link>
+                    <x-edit-link
+                        :class="'absolute top-2 left-2'"
+                        href="{{ route('game.edit', $game->id) }}"
+                        title="Edit game"
+                    ></x-edit-link>
                     @endcan
-                    <img class="mx-auto w-auto max-w-[400px] h-auto object-cover rounded"
+                    <img class="mx-auto w-full md:flex-row max-w-[400px] h-auto object-cover rounded"
                         src="{{ asset('storage/' . $game->image) }}" alt="{{ $game->title }}" title="{{ $game->title }}">
-
-                    {!! $shareButtons !!}    
                 </div>
             </div>
         @endif
 
+
         <div class="flex flex-col flex-1 justify-center">
-            <div class="text-white"><span class="font-extrabold">Created by:</span>
+            @if($game->is_in_progress)
+            <x-enter-game-btn :gameId="$game->id" :class="'w-fit'" />
+            @endif
+    
+            <div class="text-white">
+                <span class="font-extrabold">Created by:</span>
                 <span>{{ $game->creator->name ?? '-' }}</span>
             </div>
 

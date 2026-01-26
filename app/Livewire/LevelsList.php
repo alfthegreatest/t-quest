@@ -9,13 +9,8 @@ use Livewire\Component;
 class LevelsList extends Component
 {
     protected $listeners = ['refreshComponentLevelsList' => '$refresh'];
-    public $showModal = false;
-    public $name;
     public $gameId;
-
-    protected $rules = [
-        'name' => 'required|string|min:1|max:255',
-    ];
+    public $levels;
 
     public function mount($gameId)
     {
@@ -24,8 +19,15 @@ class LevelsList extends Component
 
     public function render()
     {
-        return view('livewire.levels-list', [
-            //'levels' => Level::where('game_id', $this->gameId)->orderBy('order', 'asc')->get(),
-        ]);
+        $this->levels = Level::query()
+            ->where('game_id', $this->gameId)
+            ->orderBy('order', 'asc')
+            ->select('*')
+            ->selectRaw('ST_X(coordinates) as longitude')
+            ->selectRaw('ST_Y(coordinates) as latitude')
+            ->get();
+            
+        return view('livewire.levels-list');
     }
+
 }

@@ -1,5 +1,3 @@
-<h1
-	{{ $attributes->merge(['class' => 'page-heading text-center']) }}
->
+<h1	{{ $attributes->class(['page-heading text-center']) }}>
 	{{ $slot }}
 </h1>

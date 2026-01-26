@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Game;
+use App\Models\Level;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,4 +51,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function levelPassеd()
+    {
+        return $this->belongsToMany(Level::class, 'user_level_passed')
+                    ->withTimestamps();
+    }
+
+    public function gameComplited()
+    {
+        return $this->belongsToMany(Game::class, 'user_game_complited')
+                    ->withTimestamps();
+    }
+
 }

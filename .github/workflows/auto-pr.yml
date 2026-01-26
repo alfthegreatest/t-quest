@@ -1,0 +1,53 @@
+name: Auto Create PR to Develop and Automerge
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+      - 'hotfix/**'
+      - 'refactoring/**'
+      - 'test/**'
+      - 'workflow/**'
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create Pull Request and Enable Auto-merge
+        run: |
+          existing_pr=$(gh pr list --head "${{ github.ref_name }}" --base develop --json number --jq '.[0].number')
+          
+          if [ -z "$existing_pr" ]; then
+            # Create PR and capture URL
+            pr_url=$(gh pr create \
+              --base develop \
+              --head "${{ github.ref_name }}" \
+              --title "Auto PR: ${{ github.ref_name }}" \
+              --body "Auto created PR from branch \`${{ github.ref_name }}\`" \
+              --label "automerge")
+
+            echo "✅ PR was created: $pr_url"
+            
+            # Extract PR number from URL
+            pr_number=$(echo "$pr_url" | grep -oP '\d+$')
+            
+            # Wait for PR to be fully created
+            sleep 5
+            
+            # Enable auto-merge
+            gh pr merge --auto --squash "$pr_number"
+            echo "✅ Auto-merge enabled for PR #$pr_number"
+          else
+            echo "ℹ️ PR already exists: #$existing_pr"
+            # Enable auto-merge for existing PR
+            gh pr merge --auto --squash "$existing_pr"
+            echo "✅ Auto-merge enabled for existing PR #$existing_pr"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GH_REPO: ${{ github.repository }}

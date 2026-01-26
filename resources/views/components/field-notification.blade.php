@@ -1,6 +1,18 @@
-@props(['field'])
+@props(['field', 'timeout' => 2000])
 
-<span x-data="{ show: false }" x-show="show" x-on:{{ $field }}.window="show = true; setTimeout(() => show = false, 2000)" x-transition.duration.500ms
-    class="text-green-600 text-sm">
+<span
+    x-cloak
+    x-data="{
+        show: false,
+        trigger() {
+            this.show = true
+            setTimeout(() => this.show = false, {{ $timeout }})
+        }
+    }"
+    x-show="show"
+    x-on:{{ $field }}.window="trigger()"
+    x-transition.duration.500ms
+    class="text-green-600 text-sm"
+>
     updated
 </span>

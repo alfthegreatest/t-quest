@@ -15,10 +15,6 @@ class CreateLocation extends Component
         'title' => 'required|string|min:3|max:255|unique:locations,title',
     ];
 
-    public function mount()
-    {
-    }
-
     public function save()
     {
         $this->validate();

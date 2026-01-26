@@ -14,7 +14,8 @@
   @apply text-4xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-[#EDEDEC];
 }
 
-.users-table {
+.users-table,
+.codes-table {
   thead {
     th {
       @apply px-3 py-3 text-center text-sm font-medium text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600;
@@ -53,16 +54,19 @@
 }
 
 .input-base {
-  @apply w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded focus:ring focus:ring-indigo-600/30;
+  @apply w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded focus:ring focus:ring-indigo-600/30 text-white;
+}
+
+.input-text {
+  @apply w-full p-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500
 }
 
 .google-auth-btn > div {
   @apply p-0 float-right
 }
 
-
 div#social-links {
-    margin: 0 auto;
+  @apply absolute right-0 mx-auto w-fit 
 }
 
 div#social-links ul li {
@@ -82,7 +86,101 @@ ul.levels > li {
   border: 1px solid;
 
   @apply rounded;
-  a {
-    @apply block w-full px-4 py-2 hover:bg-gray-100 hover:text-black
+  a.level {
+    @apply block w-full px-4 py-2 hover:bg-gray-300 hover:text-black hover:cursor-pointer
   }
+}
+
+.overlay {
+  @apply fixed inset-0 bg-black/90 flex items-center justify-center z-60
+}
+
+.popup {
+  @apply bg-gray-800 text-white rounded-lg w-96 p-6 shadow-lg
+}
+
+@layer components {
+  [class$="-btn"] {
+    @apply hover:cursor-pointer;
+  }
+
+  .add-level-btn {
+      @apply block w-full px-4 py-2 bg-white text-black hover:bg-gray-700 hover:text-white
+  }
+
+  .add-new-btn {
+    @apply bg-gray-700 hover:bg-gray-600 hover:cursor-pointer text-white font-semibold py-2 px-4 rounded shadow
+  }
+
+  .btn-group {
+    @apply flex justify-end gap-2 mt-12
+  }
+
+  .save-btn {
+    @apply text-white py-2 px-4 rounded font-semibold transition-colors
+  }
+
+  .confirm-btn {
+    @apply flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors
+  }
+
+  .clear-btn {
+    @apply px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors
+  }
+
+  .cancel-btn {
+    @apply bg-gray-300 hover:bg-gray-500 text-white py-2 px-4 rounded font-semibold transition-colors
+  }
+
+  .del-btn {
+    @apply bg-red-700 hover:bg-red-600 text-white py-2 px-4 rounded font-semibold transition-colors
+  }
+
+  .yes-btn {
+    @apply bg-red-600 text-white px-3 py-1 rounded
+  }
+
+  .no-btn {
+    @apply ml-2 bg-gray-300 px-3 py-1 rounded
+  }
+
+  .map-container {
+    @apply h-[500px] border border-gray-300
+  }
+
+  .select-on-map-btn {
+    @apply px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2
+  }
+
+  .map-popup-btns {
+    @apply absolute z-999 top-[40px] right-[20px]
+  }
+
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.input-number {
+  @apply w-full pr-10 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+}
+
+.input-suffiks {
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none
+}
+
+.error {
+  @apply text-red-500 text-sm
+}
+
+[x-cloak] {
+  display: none !important;
 }
