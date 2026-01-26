@@ -28,6 +28,16 @@
                         </select>
                     </div>
 
+                    <div class="w-full sm:flex-1">
+                        <label class="label-base">Location </label>
+                        <select wire:model.lazy="location_id" class="input-base">
+                            <option value=''>not chosen</option>
+                            @foreach($locations as $loc)
+                            <option value="{{ $loc->id }}">{{ $loc->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="w-full">
                         <label class="label-base">Start ({{ $user_timezone }})</label>
                         <input type="datetime-local" wire:model.lazy="start_date" class="input-base">
