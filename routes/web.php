@@ -5,7 +5,6 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
