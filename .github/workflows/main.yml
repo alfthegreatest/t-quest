@@ -1,18 +1,25 @@
-name: Laravel Tests (SQLite)
-
+name: Laravel Tests (MySQL)
 on:
   pull_request:
     branches: [ "main" ]
-
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # ----- Composer cache -----
+      
       - name: Cache Composer packages
         uses: actions/cache@v4
         with:
@@ -20,35 +27,38 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-
+      
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: mbstring, sqlite, sqlite3, pdo_sqlite, gd, bcmath
+          extensions: mbstring, pdo_mysql, gd, bcmath
           coverage: none
-
-
-      # ----- Composer install -----
+      
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
-
-      # ----- Laravel prep -----
+      
       - name: Prepare environment
         run: |
           cp .env.example .env
           php artisan key:generate
-          mkdir -p database
-          touch database/database.sqlite
-
+      
       - name: Run migrations
         env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          DB_PASSWORD: password
         run: php artisan migrate --force
-
+      
       - name: Run tests
         env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          DB_PASSWORD: password
         run: php artisan test --testdox
