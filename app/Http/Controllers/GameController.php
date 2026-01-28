@@ -73,7 +73,10 @@ class GameController extends Controller
         })
         ->orderBy('levels.order')
         ->get();
-        
+
+        if ( !$levels->count() )
+            return view('games.nolevels' );
+
 
         $levelIds = $levels->pluck('id')->toArray();
         $exists = UserLevelPassed::where('user_id', $userId)
