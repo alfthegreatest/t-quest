@@ -46,11 +46,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-    <script type="module">
-        import mapComponent from '{{ Vite::asset('resources/js/components/mapComponent.js') }}';
-        // register before Alpine initialisation
-        window.mapComponent = mapComponent;
-    </script>
-@endpush
