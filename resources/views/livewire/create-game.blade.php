@@ -62,14 +62,14 @@
                     </div>
 
                     <div class="btn-group">
+                        <button type="button" wire:click="$set('showAddGameModal', false)"
+                            class="cancel-btn">
+                            Cancel
+                        </button>
                         <button type="submit"
                             class="save-btn {{ $errors->any() ? 'cursor-not-allowed bg-gray-500' : 'hover:cursor-pointer bg-green-700 hover:bg-green-600'}}"
                             {{ $errors->any() ? 'disabled' : '' }}>
                             Save
-                        </button>
-                        <button type="button" wire:click="$set('showAddGameModal', false)"
-                            class="cancel-btn">
-                            Cancel
                         </button>
                     </div>
                 </form>
