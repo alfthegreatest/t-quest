@@ -17,8 +17,8 @@ fi
 
 git reset --hard origin/$BRANCH
 
-echo "Installing dependencies..."
-composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
+#echo "Installing dependencies..."
+#composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
 npm ci --prefer-offline --no-audit
 
 echo "Building assets..."
