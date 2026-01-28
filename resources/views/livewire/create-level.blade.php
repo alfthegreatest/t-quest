@@ -150,7 +150,7 @@
     >
         <div wire:click.stop 
             class="map_popup relative max-w-3xl w-full" 
-            x-data="mapComponent()"
+            x-data="mapComponent2()"
             x-init="initMap()"
         >
             <div class="flex gap-2 text-sm text-gray-600">
@@ -188,7 +188,7 @@
     @endif
 
     <script>
-        function mapComponent() {
+        function mapComponent2() {
             return {
                 map: null,
                 marker: null,
