@@ -1,4 +1,4 @@
-export default function mapComponent(locations) {
+const mapComponent = function mapComponent(locations) {
     return {
         activeLevelId: null,
         currentClosestMarker: null,
@@ -351,4 +351,10 @@ export default function mapComponent(locations) {
             }
         }
     }
+}
+
+export default mapComponent;
+
+if (typeof window !== 'undefined') {
+    window.mapComponent = mapComponent;
 }
