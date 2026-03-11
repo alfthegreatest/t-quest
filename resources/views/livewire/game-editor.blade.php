@@ -12,233 +12,123 @@
         <label class="label-base">Title <x-field-notification field="title" /></label>
         <input type="text" wire:model.live.debounce.2000="title" class="input-base">
     </div>
-    <div class="w-full sm:flex-1">
-        <label class="label-base">Location <x-field-notification field="location_id" /></label>
-        <select wire:model.lazy="location_id" class="input-base">
-            <option value=''>not chosen</option>
-            @foreach($locations as $loc)
-                <option value="{{ $loc->id }}">{{ $loc->title }}</option>
-            @endforeach
-        </select>
-    </div>
 
-    <div class="w-full sm:flex-1">
-        <label class="label-base">Base location <x-field-notification field="base_location" /></label>
-        @error('base_location')
-            <div class="error">{{ $message }}</div>
-        @enderror
+    <div class="w-full sm:flex-1 rounded-lg border border-gray-600 p-4 space-y-3">
+        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Location</h3>
 
-        <div class="flex gap-2">
-            <input type="number" wire:model.live="latitude" step="any" placeholder="Latitude"
-                class="input-text flex-1 @error('latitude') border-red-500 @enderror" disabled>
-            <input type="number" wire:model.live="longitude" step="any" placeholder="Longitude"
-                class="input-text flex-1 @error('longitude') border-red-500 @enderror" disabled>
-            <button type="button" wire:click="$set('showMapModal', true)" class="select-on-map-btn"
-                title="Select on map">
-                📍
-            </button>
-        </div>
-
-        @if($showMapModal)
-            <div wire:click="$set('showMapModal', false)" class="map_overlay">
-                <div wire:click.stop class="map_popup relative max-w-3xl w-full" x-data="mapComponent3()"
-                    x-init="initMap()">
-                    <div class="flex gap-2 text-sm text-gray-600">
-                        <div class="flex-1">
-                            <strong>Latitude:</strong> <span x-text="tempLatitude || 'Not selected'"></span>
-                        </div>
-                        <div class="flex-1">
-                            <strong>Longitude:</strong> <span x-text="tempLongitude || 'Not selected'"></span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="map-popup-btns">
-                            <button type="button" @click="confirmSelection()" class="confirm-btn">Confirm
-                            </button>
-                        </div>
-
-                        <div wire:ignore>
-                            <div x-ref="mapContainer" class="map-container"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        @once
-            <script>
-                function mapComponent3() {
-                    return {
-                        map: null,
-                        marker: null,
-                        tempLatitude: null,
-                        tempLongitude: null,
-
-                        initMap() {
-                            this.$nextTick(() => {
-                                setTimeout(() => {
-                                    if (this.$refs.mapContainer && !this.map) {
-                                        this.map = L.map(this.$refs.mapContainer).setView([52.2297, 21.0122], 13);
-
-                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                            attribution: '© OpenStreetMap contributors'
-                                        }).addTo(this.map);
-
-                                        const currentLat = this.$wire.latitude;
-                                        const currentLng = this.$wire.longitude;
-
-                                        if (currentLat && currentLng) {
-                                            this.tempLatitude = currentLat;
-                                            this.tempLongitude = currentLng;
-                                            this.marker = L.marker([currentLat, currentLng]).addTo(this.map);
-                                            this.map.setView([currentLat, currentLng], 13);
-                                        }
-
-                                        this.map.on('click', (e) => {
-                                            const lat = e.latlng.lat;
-                                            const lng = e.latlng.lng;
-
-                                            this.tempLatitude = lat.toFixed(6);
-                                            this.tempLongitude = lng.toFixed(6);
-
-                                            if (this.marker) {
-                                                this.marker.setLatLng(e.latlng);
-                                            } else {
-                                                this.marker = L.marker(e.latlng).addTo(this.map);
-                                            }
-                                        });
-
-                                        setTimeout(() => this.map.invalidateSize(), 100);
-                                    }
-                                }, 300);
-                            });
-                        },
-
-                        confirmSelection() {
-                            this.$wire.set('latitude', this.tempLatitude);
-                            this.$wire.set('longitude', this.tempLongitude);
-                            this.$wire.set('showMapModal', false);
-                        },
-                    }
-                }
-            </script>
-        @endonce
-
-
-    </div>
-    <div class="flex flex-col sm:flex-row gap-4">
-        <div class="w-full sm:flex-1">
-            <label class="label-base">City / Region <x-field-notification field="location_id" /></label>
-            <select wire:model.lazy="location_id" class="input-base">
-                <option value=''>not chosen</option>
-                @foreach($locations as $loc)
-                    <option value="{{ $loc->id }}">{{ $loc->title }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="w-full sm:flex-1">
-            <label class="label-base">Base coordinates <x-field-notification field="base_location" /></label>
-            @error('base_location')
-                <div class="error">{{ $message }}</div>
-            @enderror
-
-            <div class="flex gap-2">
-                <input type="number" wire:model.live="latitude" step="any" placeholder="Latitude"
-                    class="input-text flex-1 @error('latitude') border-red-500 @enderror" disabled>
-                <input type="number" wire:model.live="longitude" step="any" placeholder="Longitude"
-                    class="input-text flex-1 @error('longitude') border-red-500 @enderror" disabled>
-                <button type="button" wire:click="$set('showMapModal', true)" class="select-on-map-btn"
-                    title="Select on map">
-                    📍
-                </button>
+        <div class="flex flex-col sm:flex-row gap-4">
+            <div class="w-full sm:flex-1">
+                <label class="label-base">City / Region <x-field-notification field="location_id" /></label>
+                <select wire:model.lazy="location_id" class="input-base">
+                    <option value=''>not chosen</option>
+                    @foreach($locations as $loc)
+                        <option value="{{ $loc->id }}">{{ $loc->title }}</option>
+                    @endforeach
+                </select>
             </div>
 
-            @if($showMapModal)
-                <div wire:click="$set('showMapModal', false)" class="map_overlay">
-                    <div wire:click.stop class="map_popup relative max-w-3xl w-full" x-data="mapComponent3()"
-                        x-init="initMap()">
-                        <div class="flex gap-2 text-sm text-gray-600">
-                            <div class="flex-1">
-                                <strong>Latitude:</strong> <span x-text="tempLatitude || 'Not selected'"></span>
-                            </div>
-                            <div class="flex-1">
-                                <strong>Longitude:</strong> <span x-text="tempLongitude || 'Not selected'"></span>
-                            </div>
-                        </div>
+            <div class="w-full sm:flex-1">
+                <label class="label-base">Base coordinates <x-field-notification field="base_location" /></label>
+                @error('base_location')
+                    <div class="error">{{ $message }}</div>
+                @enderror
 
-                        <div>
-                            <div class="map-popup-btns">
-                                <button type="button" @click="confirmSelection()" class="confirm-btn">Confirm
-                                </button>
+                <div class="flex gap-2">
+                    <input type="number" wire:model.live="latitude" step="any" placeholder="Latitude"
+                        class="input-text flex-1 @error('latitude') border-red-500 @enderror" disabled>
+                    <input type="number" wire:model.live="longitude" step="any" placeholder="Longitude"
+                        class="input-text flex-1 @error('longitude') border-red-500 @enderror" disabled>
+                    <button type="button" wire:click="$set('showMapModal', true)" class="select-on-map-btn"
+                        title="Select on map">
+                        📍
+                    </button>
+                </div>
+
+                @if($showMapModal)
+                    <div wire:click="$set('showMapModal', false)" class="map_overlay">
+                        <div wire:click.stop class="map_popup relative max-w-3xl w-full" x-data="mapComponent3()"
+                            x-init="initMap()">
+                            <div class="flex gap-2 text-sm text-gray-600">
+                                <div class="flex-1">
+                                    <strong>Latitude:</strong> <span x-text="tempLatitude || 'Not selected'"></span>
+                                </div>
+                                <div class="flex-1">
+                                    <strong>Longitude:</strong> <span x-text="tempLongitude || 'Not selected'"></span>
+                                </div>
                             </div>
 
-                            <div wire:ignore>
-                                <div x-ref="mapContainer" class="map-container"></div>
+                            <div>
+                                <div class="map-popup-btns">
+                                    <button type="button" @click="confirmSelection()" class="confirm-btn">Confirm
+                                    </button>
+                                </div>
+
+                                <div wire:ignore>
+                                    <div x-ref="mapContainer" class="map-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endif
+                @endif
 
-            @once
-                <script>
-                    function mapComponent3() {
-                        return {
-                            map: null,
-                            marker: null,
-                            tempLatitude: null,
-                            tempLongitude: null,
+                @once
+                    <script>
+                        function mapComponent3() {
+                            return {
+                                map: null,
+                                marker: null,
+                                tempLatitude: null,
+                                tempLongitude: null,
 
-                            initMap() {
-                                this.$nextTick(() => {
-                                    setTimeout(() => {
-                                        if (this.$refs.mapContainer && !this.map) {
-                                            this.map = L.map(this.$refs.mapContainer).setView([52.2297, 21.0122], 13);
+                                initMap() {
+                                    this.$nextTick(() => {
+                                        setTimeout(() => {
+                                            if (this.$refs.mapContainer && !this.map) {
+                                                this.map = L.map(this.$refs.mapContainer).setView([52.2297, 21.0122], 13);
 
-                                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                                attribution: '© OpenStreetMap contributors'
-                                            }).addTo(this.map);
+                                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                    attribution: '© OpenStreetMap contributors'
+                                                }).addTo(this.map);
 
-                                            const currentLat = this.$wire.latitude;
-                                            const currentLng = this.$wire.longitude;
+                                                const currentLat = this.$wire.latitude;
+                                                const currentLng = this.$wire.longitude;
 
-                                            if (currentLat && currentLng) {
-                                                this.tempLatitude = currentLat;
-                                                this.tempLongitude = currentLng;
-                                                this.marker = L.marker([currentLat, currentLng]).addTo(this.map);
-                                                this.map.setView([currentLat, currentLng], 13);
-                                            }
-
-                                            this.map.on('click', (e) => {
-                                                const lat = e.latlng.lat;
-                                                const lng = e.latlng.lng;
-
-                                                this.tempLatitude = lat.toFixed(6);
-                                                this.tempLongitude = lng.toFixed(6);
-
-                                                if (this.marker) {
-                                                    this.marker.setLatLng(e.latlng);
-                                                } else {
-                                                    this.marker = L.marker(e.latlng).addTo(this.map);
+                                                if (currentLat && currentLng) {
+                                                    this.tempLatitude = currentLat;
+                                                    this.tempLongitude = currentLng;
+                                                    this.marker = L.marker([currentLat, currentLng]).addTo(this.map);
+                                                    this.map.setView([currentLat, currentLng], 13);
                                                 }
-                                            });
 
-                                            setTimeout(() => this.map.invalidateSize(), 100);
-                                        }
-                                    }, 300);
-                                });
-                            },
-                            confirmSelection() {
-                                this.$wire.set('latitude', this.tempLatitude);
-                                this.$wire.set('longitude', this.tempLongitude);
-                                this.$wire.set('showMapModal', false);
-                            },
+                                                this.map.on('click', (e) => {
+                                                    const lat = e.latlng.lat;
+                                                    const lng = e.latlng.lng;
+
+                                                    this.tempLatitude = lat.toFixed(6);
+                                                    this.tempLongitude = lng.toFixed(6);
+
+                                                    if (this.marker) {
+                                                        this.marker.setLatLng(e.latlng);
+                                                    } else {
+                                                        this.marker = L.marker(e.latlng).addTo(this.map);
+                                                    }
+                                                });
+
+                                                setTimeout(() => this.map.invalidateSize(), 100);
+                                            }
+                                        }, 300);
+                                    });
+                                },
+                                confirmSelection() {
+                                    this.$wire.set('latitude', this.tempLatitude);
+                                    this.$wire.set('longitude', this.tempLongitude);
+                                    this.$wire.set('showMapModal', false);
+                                },
+                            }
                         }
-                    }
-                </script>
-            @endonce
+                    </script>
+                @endonce
+            </div>
         </div>
     </div>
 
