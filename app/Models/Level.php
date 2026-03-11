@@ -16,6 +16,7 @@ class Level extends Model
         'game_id',
         'name',
         'description',
+        'image',
         'points',
         'coordinates',
         'availability_time',
@@ -48,7 +49,7 @@ class Level extends Model
     private function getCoordsPart($part)
     {
         $value = $this->getRawOriginal('coordinates');
-    
+
         if (!$value) {
             return null;
         }
@@ -58,7 +59,7 @@ class Level extends Model
                 ->selectRaw('ST_Y(coordinates) as lat, ST_X(coordinates) as lng')
                 ->where('id', $this->id)
                 ->first();
-            
+
             return $part === 'lat' ? (float) $result->lat : (float) $result->lng;
         } catch (\Exception $e) {
             \Log::error('Coordinates parsing error: ' . $e->getMessage());
@@ -73,7 +74,7 @@ class Level extends Model
         static::saved(function ($level) {
             Cache::forget("game.{$level->game_id}.levels");
         });
-        
+
         static::deleted(function ($level) {
             Cache::forget("game.{$level->game_id}.levels");
         });
@@ -95,7 +96,7 @@ class Level extends Model
     public function usersPassed()
     {
         return $this->belongsToMany(User::class, 'user_level_passed')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
 }
