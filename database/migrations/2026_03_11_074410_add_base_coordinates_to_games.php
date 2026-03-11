@@ -8,7 +8,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('games', function (Blueprint $table) {
-            $table->geometry('base_location', subtype: 'point', srid: 4326); // 4326 = WGS84 (стандарт GPS)
+            $table->geometry('base_location', subtype: 'point', srid: 4326)
+                ->default(DB::raw("ST_GeomFromText('POINT(21.039 52.236)', 4326)"));
         });
     }
 
