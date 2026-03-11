@@ -94,8 +94,9 @@ class GameEditor extends Component
                 Storage::disk('public')->delete($this->game->image);
             }
 
+            $path = $this->image->store('games', 'public');
             $this->game->update([
-                'image' => $this->image->store('games', 'public')
+                'image' => basename($path)
             ]);
         });
 
@@ -106,7 +107,7 @@ class GameEditor extends Component
     public function removeImage()
     {
         if ($this->game->image) {
-            Storage::disk('public')->delete($this->game->image);
+            Storage::disk('public')->delete('/games/' . $this->game->image);
         }
 
         $this->image = null;
@@ -174,7 +175,7 @@ class GameEditor extends Component
         }
 
         return $this->game?->image
-            ? asset('storage/' . $this->game->image)
+            ? asset('storage/games/' . $this->game->image)
             : null;
     }
 
