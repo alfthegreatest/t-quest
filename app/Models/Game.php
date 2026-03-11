@@ -28,6 +28,7 @@ class Game extends Model
         'image',
         'location',
         'location_id',
+        'base_location',
         'start_date',
         'finish_date',
         'created_by',
@@ -72,8 +73,8 @@ class Game extends Model
                 if (!$this->start_date || !$this->finish_date) {
                     return false;
                 }
-                
-                return $this->start_date->timestamp < now()->timestamp 
+
+                return $this->start_date->timestamp < now()->timestamp
                     && $this->finish_date->timestamp > now()->timestamp;
             }
         );
