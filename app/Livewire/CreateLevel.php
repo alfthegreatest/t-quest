@@ -21,13 +21,14 @@ class CreateLevel extends Component
     public $points;
     public $latitude;
     public $longitude;
-    
+    public $base_latitude;
+    public $base_longitude;
     public $availability_time_days = 0;
     public $availability_time_hours = 0;
     public $availability_time_minutes = 0;
-    
-    public $gameId; 
-    
+
+    public $gameId;
+
     protected function rules()
     {
         return [
@@ -51,6 +52,11 @@ class CreateLevel extends Component
 
     public function mount($gameId)
     {
+        $this->game = Game::selectRaw('*, ST_Y(base_location) as latitude, ST_X(base_location) as longitude')
+            ->findOrFail($gameId);
+        $this->base_latitude = $this->game->latitude;
+        $this->base_longitude = $this->game->longitude;
+
         $this->gameId = $gameId;
     }
 
@@ -60,7 +66,7 @@ class CreateLevel extends Component
         $days = (int) $this->availability_time_days;
         $hours = (int) $this->availability_time_hours;
         $minutes = (int) $this->availability_time_minutes;
-        
+
         return ($days * 86400) + ($hours * 3600) + ($minutes * 60);
     }
 
@@ -68,29 +74,29 @@ class CreateLevel extends Component
     public function availabilityTimeFormatted(): string
     {
         $parts = [];
-        
+
         if ($this->availability_time_days > 0) {
-            $parts[] = $this->availability_time_days . ' ' . 
+            $parts[] = $this->availability_time_days . ' ' .
                 ($this->availability_time_days == 1 ? 'day' : 'days');
         }
-        
+
         if ($this->availability_time_hours > 0) {
-            $parts[] = $this->availability_time_hours . ' ' . 
+            $parts[] = $this->availability_time_hours . ' ' .
                 ($this->availability_time_hours == 1 ? 'hour' : 'hours');
         }
-        
+
         if ($this->availability_time_minutes > 0) {
-            $parts[] = $this->availability_time_minutes . ' ' . 
+            $parts[] = $this->availability_time_minutes . ' ' .
                 ($this->availability_time_minutes == 1 ? 'minute' : 'minutes');
         }
-        
+
         return implode(', ', $parts);
     }
 
     public function save()
     {
         $this->validate();
-        
+
         if ($this->availabilityTime <= 0) {
             $this->addError('availability_time', 'Please specify at least some time.');
             return;
