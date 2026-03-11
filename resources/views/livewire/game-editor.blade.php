@@ -3,12 +3,8 @@
     $wire.call('timezoneDetected');">
     <div>
         <label class="label-base w-fit cursor-pointer">
-            <input
-                type="checkbox"
-                wire:model.live="active"
-                id="active"
-                class="cursor-pointer w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
-            >
+            <input type="checkbox" wire:model.live="active" id="active"
+                class="cursor-pointer w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
             Active <x-field-notification field="active" />
         </label>
     </div>
@@ -21,9 +17,115 @@
         <select wire:model.lazy="location_id" class="input-base">
             <option value=''>not chosen</option>
             @foreach($locations as $loc)
-            <option value="{{ $loc->id }}">{{ $loc->title }}</option>
+                <option value="{{ $loc->id }}">{{ $loc->title }}</option>
             @endforeach
         </select>
+    </div>
+
+    <div class="w-full sm:flex-1">
+        <label class="label-base">Base location <x-field-notification field="base_location" /></label>
+        @error('base_location')
+            <div class="error">{{ $message }}</div>
+        @enderror
+
+        <div class="flex gap-2">
+            <input type="number" wire:model.live="latitude" step="any" placeholder="Latitude"
+                class="input-text flex-1 @error('latitude') border-red-500 @enderror" disabled>
+            <input type="number" wire:model.live="longitude" step="any" placeholder="Longitude"
+                class="input-text flex-1 @error('longitude') border-red-500 @enderror" disabled>
+            <button type="button" wire:click="$set('showMapModal', true)" class="select-on-map-btn"
+                title="Select on map">
+                📍
+            </button>
+        </div>
+
+        @if($showMapModal)
+            <div wire:click="$set('showMapModal', false)" class="map_overlay">
+                <div wire:click.stop class="map_popup relative max-w-3xl w-full" x-data="mapComponent3()"
+                    x-init="initMap()">
+                    <div class="flex gap-2 text-sm text-gray-600">
+                        <div class="flex-1">
+                            <strong>Latitude:</strong> <span x-text="tempLatitude || 'Not selected'"></span>
+                        </div>
+                        <div class="flex-1">
+                            <strong>Longitude:</strong> <span x-text="tempLongitude || 'Not selected'"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="map-popup-btns">
+                            <button type="button" @click="confirmSelection()" class="confirm-btn">Confirm
+                            </button>
+                        </div>
+
+                        <div wire:ignore>
+                            <div x-ref="mapContainer" class="map-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @once
+            <script>
+                function mapComponent3() {
+                    return {
+                        map: null,
+                        marker: null,
+                        tempLatitude: null,
+                        tempLongitude: null,
+
+                        initMap() {
+                            this.$nextTick(() => {
+                                setTimeout(() => {
+                                    if (this.$refs.mapContainer && !this.map) {
+                                        this.map = L.map(this.$refs.mapContainer).setView([52.2297, 21.0122], 13);
+
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                            attribution: '© OpenStreetMap contributors'
+                                        }).addTo(this.map);
+
+                                        const currentLat = this.$wire.latitude;
+                                        const currentLng = this.$wire.longitude;
+
+                                        if (currentLat && currentLng) {
+                                            this.tempLatitude = currentLat;
+                                            this.tempLongitude = currentLng;
+                                            this.marker = L.marker([currentLat, currentLng]).addTo(this.map);
+                                            this.map.setView([currentLat, currentLng], 13);
+                                        }
+
+                                        this.map.on('click', (e) => {
+                                            const lat = e.latlng.lat;
+                                            const lng = e.latlng.lng;
+
+                                            this.tempLatitude = lat.toFixed(6);
+                                            this.tempLongitude = lng.toFixed(6);
+
+                                            if (this.marker) {
+                                                this.marker.setLatLng(e.latlng);
+                                            } else {
+                                                this.marker = L.marker(e.latlng).addTo(this.map);
+                                            }
+                                        });
+
+                                        setTimeout(() => this.map.invalidateSize(), 100);
+                                    }
+                                }, 300);
+                            });
+                        },
+
+                        confirmSelection() {
+                            this.$wire.set('latitude', this.tempLatitude);
+                            this.$wire.set('longitude', this.tempLongitude);
+                            this.$wire.set('showMapModal', false);
+                        },
+                    }
+                }
+            </script>
+        @endonce
+
+
     </div>
     <div class="flex flex-col sm:flex-row gap-4">
         <div class="w-full sm:flex-1">
@@ -65,8 +167,7 @@
             <textarea x-model="description" wire:model.blur="description"
                 x-init="$el.style.height = $el.scrollHeight + 'px'"
                 @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
-                @input.debounce.2000ms="$wire.set('description', description)"
-                class="input-base"
+                @input.debounce.2000ms="$wire.set('description', description)" class="input-base"
                 style="overflow:hidden; resize:none; min-height: 6rem;"></textarea>
         </div>
     </div>
