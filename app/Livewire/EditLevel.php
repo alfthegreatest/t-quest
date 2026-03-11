@@ -178,6 +178,13 @@ class EditLevel extends Component
         ]);
     }
 
+    public function clearCoordinates()
+    {
+        $this->latitude = null;
+        $this->longitude = null;
+        $this->showMapModal = false;
+    }
+
     public function updatedImage()
     {
         $rules['image'] = $this->image instanceof \Livewire\TemporaryUploadedFile
@@ -199,13 +206,6 @@ class EditLevel extends Component
 
         $this->imagePath = $this->level->image;
         $this->dispatch('level_image');
-    }
-
-    public function clearCoordinates()
-    {
-        $this->latitude = null;
-        $this->longitude = null;
-        $this->showMapModal = false;
     }
 
     public function getImageUrlProperty()
