@@ -37,7 +37,7 @@ class EditLevel extends Component
     protected $rules = [
         'name' => 'required|string|min:3|max:255',
         'description' => 'nullable|string',
-        'image' => 'nullable|image|max:2048',
+        'image' => 'nullable|image|max:1024',
         'points' => 'required|integer|min:0',
         'availability_time_minutes' => 'integer|min:0|max:59',
         'availability_time_hours' => 'integer|min:0|max:23',
@@ -131,34 +131,34 @@ class EditLevel extends Component
         $this->dispatch('points');
     }
 
-    public function updatedAvailabilityTimeDays($value)
+    public function updatedAvailabilityTimeDays()
     {
         $this->validateOnly('availability_time_days');
         $this->dispatch('availability_time');
         $this->level->update(['availability_time' => $this->availabilityTime]);
     }
 
-    public function updatedAvailabilityTimeHours($value)
+    public function updatedAvailabilityTimeHours()
     {
         $this->validateOnly('availability_time_hours');
         $this->dispatch('availability_time');
         $this->level->update(['availability_time' => $this->availabilityTime]);
     }
 
-    public function updatedAvailabilityTimeMinutes($value)
+    public function updatedAvailabilityTimeMinutes()
     {
         $this->validateOnly('availability_time_minutes');
         $this->dispatch('availability_time');
         $this->level->update(['availability_time' => $this->availabilityTime]);
     }
 
-    public function updatedLongitude($value)
+    public function updatedLongitude()
     {
         $this->validateOnly('longitude');
         $this->updateCoordinates();
     }
 
-    public function updatedLatitude($value)
+    public function updatedLatitude()
     {
         $this->validateOnly('latitude');
         $this->updateCoordinates();
@@ -178,10 +178,10 @@ class EditLevel extends Component
         ]);
     }
 
-    public function updatedImage($value)
+    public function updatedImage()
     {
         $rules['image'] = $this->image instanceof \Livewire\TemporaryUploadedFile
-            ? 'image|max:2048'
+            ? 'image|max:1024'
             : 'nullable';
 
         $this->validate($rules);
