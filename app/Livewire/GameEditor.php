@@ -25,6 +25,7 @@ class GameEditor extends Component
     public $image;
     public $imagePath;
     public $location_id;
+    public $base_location;
     public $locations;
     public $latitude;
     public $longitude;
