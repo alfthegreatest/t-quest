@@ -1,7 +1,8 @@
 <div id="edit-level-popup">
     @if($showEditLevelPopup)
-        <div wire:click="$set('showEditLevelPopup', false)" class="overlay">
-            <div wire:click.stop class="popup">
+        <div wire:click="$set('showEditLevelPopup', false)"
+            class="overlay flex items-start justify-center overflow-y-auto py-4">
+            <div wire:click.stop class="popup overflow-y-auto max-h-[90vh]">
                 <h2 class="text-xl font-bold mb-4">Edit level "{{$name}}"</h2>
                 <form wire:submit.prevent="save" class="space-y-4">
                     <label class="label-base">Name <x-field-notification field="name" /></label>
@@ -100,7 +101,7 @@
                             @enderror
 
                             @if ($this->imageUrl)
-                                <img src="{{ $this->imageUrl }}" class="w-full h-full object-cover" alt="Game image">
+                                <img src="{{ $this->imageUrl }}" class="mx-auto mw-full object-cover" alt="Game image">
                                 <button type="button" wire:click="removeImage"
                                     class="absolute bottom-0 w-full  bg-gray-500 text-white p-2 shadow-lg transition-all duration-200 opacity-90 hover:cursor-pointer hover:opacity-100">
                                     remove image
