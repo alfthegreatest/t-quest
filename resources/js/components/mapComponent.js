@@ -1,5 +1,6 @@
 const mapComponent = function mapComponent(locations) {
     return {
+        activeDescription: null,
         activeLevelId: null,
         currentClosestMarker: null,
         defaultIcon: null,
@@ -13,7 +14,7 @@ const mapComponent = function mapComponent(locations) {
         redIcon: null,
         watchId: null,
         userMarker: null,
-        
+
         async initMap() {
             const icon = {
                 shadowUrl: '/images/markers/marker-shadow.png',
@@ -33,7 +34,7 @@ const mapComponent = function mapComponent(locations) {
                 ...icon,
                 iconUrl: '/images/markers/marker-icon-red.png',
             });
-            
+
             this.createMap();
             this.addControls();
             this.addLocationMarkers();
@@ -52,7 +53,7 @@ const mapComponent = function mapComponent(locations) {
             L.control.zoom({
                 position: 'bottomleft'
             }).addTo(this.map);
-            
+
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
                 maxZoom: 20
@@ -84,10 +85,10 @@ const mapComponent = function mapComponent(locations) {
             );
 
             const zoom = maxDiff > 1 ? 10 :
-                        maxDiff > 0.5 ? 11 :
-                        maxDiff > 0.1 ? 12 :
+                maxDiff > 0.5 ? 11 :
+                    maxDiff > 0.1 ? 12 :
                         maxDiff > 0.05 ? 13 :
-                        maxDiff > 0.01 ? 14 : 15;
+                            maxDiff > 0.01 ? 14 : 15;
 
             return { lat: centerLat, lng: centerLng, zoom };
         },
@@ -103,7 +104,7 @@ const mapComponent = function mapComponent(locations) {
                 onAdd: () => {
                     const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
                     const button = L.DomUtil.create('a', 'leaflet-control-custom', container);
-                    
+
                     button.innerHTML = iconHTML;
                     button.href = '#';
                     button.title = title;
@@ -118,17 +119,17 @@ const mapComponent = function mapComponent(locations) {
                         backgroundColor: 'white',
                         borderRadius: '4px'
                     });
-                    
+
                     L.DomEvent.on(button, 'click', (e) => {
                         L.DomEvent.stopPropagation(e);
                         L.DomEvent.preventDefault(e);
                         onClick.call(this);
                     });
-                    
+
                     return container;
                 }
             });
-            
+
             this.map.addControl(new Control());
         },
 
@@ -153,8 +154,8 @@ const mapComponent = function mapComponent(locations) {
             const Δλ = (lng2 - lng1) * Math.PI / 180;
 
             const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                    Math.cos(φ1) * Math.cos(φ2) *
-                    Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
             return R * c;
@@ -163,12 +164,12 @@ const mapComponent = function mapComponent(locations) {
         addLocationMarkers() {
             this.locations.forEach(location => {
                 const marker = L.marker([location.lat, location.lng], {
-                icon: this.defaultIcon,
-                opacity: location.passed ? 0.3 : 1,
-            })
-            .addTo(this.map)
-            .bindPopup(`<b>${location.title || location.name}</b><br>${location.description}`);
-                
+                    icon: this.defaultIcon,
+                    opacity: location.passed ? 0.3 : 1,
+                })
+                    .addTo(this.map)
+                    .bindPopup(`<div class='font-bold'>${location.name}</div>`);
+
                 this.markers.push({ marker, location });
             });
         },
@@ -181,9 +182,9 @@ const mapComponent = function mapComponent(locations) {
 
             this.markers.forEach(({ marker, location }) => {
                 const distance = this.calculateDistance(
-                    userLat, 
-                    userLng, 
-                    parseFloat(location.lat), 
+                    userLat,
+                    userLng,
+                    parseFloat(location.lat),
                     parseFloat(location.lng)
                 );
 
@@ -193,17 +194,32 @@ const mapComponent = function mapComponent(locations) {
                 }
             });
 
-            if (this.currentClosestMarker && 
+            if (this.currentClosestMarker &&
                 this.currentClosestMarker.marker !== closestMarker.marker) {
                 this.currentClosestMarker.marker.setIcon(this.defaultIcon);
             }
 
             if (closestMarker.distance <= this.range) {
+                closestMarker.marker.setPopupContent(
+                    `
+                    <div class='font-bold'>${closestMarker.location.name}</div>
+                    <div class='py-2 text-justify'>
+                        ${closestMarker.location.image
+                        ? `<image class='float-left w-20 mr-2 mb-1' src='/storage/levels/${closestMarker.location.image}'>`
+                        : ''
+                    }
+                        ${closestMarker.location.description}
+                    </div>
+                    `
+                );
                 closestMarker.marker.setIcon(this.redIcon);
                 this.currentClosestMarker = closestMarker;
-                if( !closestMarker.location.passed ) {
+                if (!closestMarker.location.passed) {
                     this.activeLevelId = closestMarker.location.id;
+                    this.activeDescription = closestMarker.location.description;
                     this.isNear = true;
+
+
                 }
             } else {
                 if (this.currentClosestMarker) {
@@ -211,6 +227,7 @@ const mapComponent = function mapComponent(locations) {
                     this.currentClosestMarker = null;
                 }
                 this.activeLevelId = null;
+                this.activeDescription = null;
                 this.isNear = false;
             }
         },
@@ -218,7 +235,7 @@ const mapComponent = function mapComponent(locations) {
         saveInitialBounds() {
             if (this.locations?.length) {
                 const points = this.locations.map(loc => [
-                    parseFloat(loc.lat), 
+                    parseFloat(loc.lat),
                     parseFloat(loc.lng)
                 ]);
                 this.initialBounds = L.latLngBounds(points);
@@ -244,14 +261,14 @@ const mapComponent = function mapComponent(locations) {
 
         handleUserPosition(position) {
             const { latitude: lat, longitude: lng } = position.coords;
-            
+
             if (this.userMarker) {
                 this.userMarker.setLatLng([lat, lng]);
             } else {
                 this.createUserMarker(lat, lng);
                 this.fitBoundsWithUser(lat, lng);
             }
-            
+
             this.updateClosestMarkerColor(lat, lng);
             this.loading = false;
         },
@@ -280,7 +297,7 @@ const mapComponent = function mapComponent(locations) {
                 ...this.locations.map(loc => [parseFloat(loc.lat), parseFloat(loc.lng)]),
                 [lat, lng]
             ];
-            
+
             const bounds = L.latLngBounds(allPoints);
             this.map.fitBounds(bounds, {
                 padding: [50, 50],
@@ -308,7 +325,7 @@ const mapComponent = function mapComponent(locations) {
                 alert('Geolocation is not supported');
                 return;
             }
-            
+
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude: lat, longitude: lng } = position.coords;
@@ -317,10 +334,10 @@ const mapComponent = function mapComponent(locations) {
                     } else {
                         this.createUserMarker(lat, lng);
                     }
-                    
+
                     this.updateClosestMarkerColor(lat, lng);
                     this.userMarker.openPopup();
-                    
+
                     this.map.flyTo([lat, lng], 15, { duration: 1 });
                 },
                 (error) => {
@@ -332,11 +349,11 @@ const mapComponent = function mapComponent(locations) {
 
         markLevelAsPassed(levelId) {
             const markerData = this.markers.find(({ location }) => location.id === levelId);
-            
+
             if (markerData) {
                 markerData.location.passed = true;
                 markerData.marker.setOpacity(0.3);
-                
+
                 if (this.currentClosestMarker?.location.id === levelId) {
                     this.currentClosestMarker = null;
                     this.activeLevelId = null;

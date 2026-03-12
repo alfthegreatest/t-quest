@@ -61,21 +61,22 @@ class GameController extends Controller
             levels.game_id,
             levels.name,
             levels.description,
+            levels.image,
             levels.`order`,
             levels.availability_time,
             ST_Y(levels.coordinates) as lat,
             ST_X(levels.coordinates) as lng,
             COALESCE(user_level_passed.passed, 0) as passed
         ')
-        ->leftJoin('user_level_passed', function($join) use ($userId) {
-            $join->on('levels.id', '=', 'user_level_passed.level_id')
-                ->where('user_level_passed.user_id', '=', $userId);
-        })
-        ->orderBy('levels.order')
-        ->get();
+            ->leftJoin('user_level_passed', function ($join) use ($userId) {
+                $join->on('levels.id', '=', 'user_level_passed.level_id')
+                    ->where('user_level_passed.user_id', '=', $userId);
+            })
+            ->orderBy('levels.order')
+            ->get();
 
-        if ( !$levels->count() )
-            return view('games.nolevels' );
+        if (!$levels->count())
+            return view('games.nolevels');
 
 
         $levelIds = $levels->pluck('id')->toArray();
@@ -83,39 +84,39 @@ class GameController extends Controller
             ->whereIn('level_id', $levelIds)
             ->exists();
 
-        if ( !$exists ) {
+        if (!$exists) {
             $records = [];
             $now = now();
-            
+
             foreach ($levelIds as $levelId) {
                 $records[] = [
                     'user_id' => $userId,
                     'level_id' => $levelId,
                     'passed' => false,
                     'created_at' => $now,
-                    'updated_at' => $now,    
+                    'updated_at' => $now,
                 ];
             }
-            
+
             UserLevelPassed::insert($records);
-        }    
-        
+        }
+
         $locations = [];
-        foreach($levels as $level) {
+        foreach ($levels as $level) {
             $locations[] = [
                 'id' => $level->id,
                 'name' => $level->name,
                 'description' => $level->description,
+                'image' => $level->image,
                 'passed' => $level->passed,
                 'lat' => $level->lat,
                 'lng' => $level->lng
             ];
         }
-    
+
         $game->setRelation('levels', $levels);
         $metaTitle = "{$game->title} - " . config('app.name');
-
-        return view('games.play', compact('game', 'locations', 'metaTitle') );
+        return view('games.play', compact('game', 'locations', 'metaTitle'));
     }
 
     public function destroy(Game $game)
