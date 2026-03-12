@@ -222,7 +222,7 @@ class EditLevel extends Component
     public function removeImage()
     {
         if ($this->level->image) {
-            Storage::disk('public')->delete($this->level->image);
+            Storage::disk('public')->delete('levels/' . $this->level->image);
         }
 
         $this->image = null;
