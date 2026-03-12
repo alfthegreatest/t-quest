@@ -104,6 +104,10 @@ class EditLevel extends Component
     public function deleteLevel($id)
     {
         Level::destroy($id);
+        if ($this->level->image) {
+            Storage::disk('public')->delete('levels/' . $this->level->image);
+        }
+
         $this->dispatch('refreshComponentLevelsList');
         $this->dispatch('toast', "Level deleted");
 
