@@ -22,7 +22,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/game/{game}', [GameController::class, 'play'])->name('game.play');
+    Route::middleware(['check_game_status'])->group(function () {
+        Route::get('/game/{game}', [GameController::class, 'play'])->name('game.play');
+    });
+
     Route::get('/game/{game}/finish', [GameController::class, 'finish'])->name('game.finish');
     Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
     Route::get('/profile', fn() => view('profile'))->name('profile');
