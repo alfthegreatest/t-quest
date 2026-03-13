@@ -14,14 +14,6 @@ class GameController extends Controller
         return view('games.index');
     }
 
-    public function create()
-    {
-    }
-
-    public function store(Request $request)
-    {
-    }
-
     public function show(Game $game, Request $request)
     {
         $shareButtons = \Share::page($request->url(), $game->title, ['target' => '_blank'])
@@ -45,10 +37,6 @@ class GameController extends Controller
     public function edit(Game $game)
     {
         return view('games.edit', compact('game'));
-    }
-
-    public function update(Request $request, Game $game)
-    {
     }
 
     public function play(Game $game)
@@ -119,7 +107,21 @@ class GameController extends Controller
         return view('games.play', compact('game', 'locations', 'metaTitle'));
     }
 
-    public function destroy(Game $game)
+    public function finish(Game $game)
     {
+        $status = '';
+        $now = now();
+
+        if (!(bool) $game->active) {
+            $status = 'inactive';
+        } elseif ($game->start_date > $now) {
+            $status = 'upcoming';
+        } elseif ($game->finish_date < $now) {
+            $status = 'finished';
+        } else { // game is in progress
+            return redirect()->route('game.play', $game);
+        }
+
+        return view('games.finish', compact('game', 'status'));
     }
 }
