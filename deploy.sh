@@ -16,6 +16,7 @@ if [ "$LOCAL" = "$REMOTE" ]; then
 fi
 
 git reset --hard origin/$BRANCH
+chmod +x deploy.sh
 
 #echo "Installing dependencies..."
 #composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
