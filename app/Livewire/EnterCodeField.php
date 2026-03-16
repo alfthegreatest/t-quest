@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Code;
-use App\Models\UserLevelPassed;
 use App\Models\Level;
+use App\Models\UserGameCompleted;
+use App\Models\UserGameCpmpleted;
+use App\Models\UserLevelPassed;
 
 use Livewire\Component;
 
@@ -52,7 +54,10 @@ class EnterCodeField extends Component
             ->count();
 
         if ($notPassedCount === 0) {
-
+            UserGameCompleted::firstOrCreate([
+                'user_id' => $userId,
+                'game_id' => $gameId,
+            ]);
             $this->dispatch('toast', 'All levels completed.');
         }
     }
