@@ -42,7 +42,7 @@ class GoogleAuthTest extends TestCase
 
         $response = $this->get(route('auth.google.callback'));
 
-        $response->assertRedirect('/dashboard');
+        $response->assertRedirect('/');
         $this->assertAuthenticated();
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
@@ -77,7 +77,7 @@ class GoogleAuthTest extends TestCase
 
         $response = $this->get(route('auth.google.callback'));
 
-        $response->assertRedirect('/dashboard');
+        $response->assertRedirect('/');
         $this->assertAuthenticatedAs($user);
         $this->assertEquals(1, User::count());
     }
