@@ -5,7 +5,14 @@
         Game: {{ $game->title }}
     </h1>
 
-    <div class="rounded-2xl bg-gray-800 border border-white/10 p-6 max-w-sm shadow-lg">
+    <div class="rounded-2xl bg-gray-800 border border-white/10 p-4 max-w-sm shadow-lg">
+        @if ($status === 'completed')
+            <div class="mb-4 overflow-hidden rounded-xl aspect-video">
+                <video class="w-full h-full object-cover" controls autoplay>
+                    <source src="{{ asset('storage/dancing_gnome.mp4') }}" type="video/mp4">
+                </video>
+            </div>
+        @endif
         <div class="mb-4">
             <span
                 class="inline-block rounded-md bg-white/10 px-3 py-1 text-sm font-semibold text-white/80 uppercase tracking-wide">

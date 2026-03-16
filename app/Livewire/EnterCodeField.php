@@ -57,6 +57,7 @@ class EnterCodeField extends Component
                 'game_id' => $gameId,
             ]);
             $this->dispatch('toast', 'All levels completed.');
+            $this->redirect(route('game.finish', $gameId));
         }
     }
 
