@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\UserGameCompleted;
 use App\Models\UserLevelPassed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -12,14 +13,6 @@ class GameController extends Controller
     public function index()
     {
         return view('games.index');
-    }
-
-    public function create()
-    {
-    }
-
-    public function store(Request $request)
-    {
     }
 
     public function show(Game $game, Request $request)
@@ -47,10 +40,6 @@ class GameController extends Controller
         return view('games.edit', compact('game'));
     }
 
-    public function update(Request $request, Game $game)
-    {
-    }
-
     public function play(Game $game)
     {
         $cacheKey = "game.{$game->id}.levels";
@@ -61,21 +50,22 @@ class GameController extends Controller
             levels.game_id,
             levels.name,
             levels.description,
+            levels.image,
             levels.`order`,
             levels.availability_time,
             ST_Y(levels.coordinates) as lat,
             ST_X(levels.coordinates) as lng,
             COALESCE(user_level_passed.passed, 0) as passed
         ')
-        ->leftJoin('user_level_passed', function($join) use ($userId) {
-            $join->on('levels.id', '=', 'user_level_passed.level_id')
-                ->where('user_level_passed.user_id', '=', $userId);
-        })
-        ->orderBy('levels.order')
-        ->get();
+            ->leftJoin('user_level_passed', function ($join) use ($userId) {
+                $join->on('levels.id', '=', 'user_level_passed.level_id')
+                    ->where('user_level_passed.user_id', '=', $userId);
+            })
+            ->orderBy('levels.order')
+            ->get();
 
-        if ( !$levels->count() )
-            return view('games.nolevels' );
+        if (!$levels->count())
+            return view('games.nolevels');
 
 
         $levelIds = $levels->pluck('id')->toArray();
@@ -83,42 +73,64 @@ class GameController extends Controller
             ->whereIn('level_id', $levelIds)
             ->exists();
 
-        if ( !$exists ) {
+        if (!$exists) {
             $records = [];
             $now = now();
-            
+
             foreach ($levelIds as $levelId) {
                 $records[] = [
                     'user_id' => $userId,
                     'level_id' => $levelId,
                     'passed' => false,
                     'created_at' => $now,
-                    'updated_at' => $now,    
+                    'updated_at' => $now,
                 ];
             }
-            
+
             UserLevelPassed::insert($records);
-        }    
-        
+        }
+
         $locations = [];
-        foreach($levels as $level) {
+        foreach ($levels as $level) {
             $locations[] = [
                 'id' => $level->id,
                 'name' => $level->name,
                 'description' => $level->description,
+                'image' => $level->image,
                 'passed' => $level->passed,
                 'lat' => $level->lat,
                 'lng' => $level->lng
             ];
         }
-    
+
         $game->setRelation('levels', $levels);
         $metaTitle = "{$game->title} - " . config('app.name');
-
-        return view('games.play', compact('game', 'locations', 'metaTitle') );
+        return view('games.play', compact('game', 'locations', 'metaTitle'));
     }
 
-    public function destroy(Game $game)
+    public function finish(Game $game)
     {
+        $status = '';
+        $userId = auth()->id();
+        $now = now();
+
+        if (!(bool) $game->active) {
+            $status = 'inactive';
+        } elseif ($game->start_date > $now) {
+            $status = 'upcoming';
+        } elseif ($game->finish_date < $now) {
+            $status = 'finished';
+        } else { // game is in progress
+            $gameCompleted = UserGameCompleted::where('user_id', $userId)
+                ->where('game_id', $game->id)
+                ->exists();
+
+            if (!$gameCompleted)
+                return redirect()->route('game.play', $game);
+
+            $status = 'completed';
+        }
+
+        return view('games.finish', compact('game', 'status'));
     }
 }

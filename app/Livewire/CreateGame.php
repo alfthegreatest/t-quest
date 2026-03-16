@@ -65,11 +65,11 @@ class CreateGame extends Component
             $this->title,
             ['HTML.Allowed' => '']
         );
-        $path = $this->image ? $this->image->store('games', 'public') : null;
+        $path = $this->image ? basename($this->image->store('games', 'public')) : null;
 
         $startDateUtc = Carbon::parse($this->start_date, $this->user_timezone)->setTimezone('UTC');
         $finishDateUtc = Carbon::parse($this->finish_date, $this->user_timezone)->setTimezone('UTC');
-        $game = Game::create([
+        Game::create([
             'title' => trim($this->title),
             'location_id' => $this->location_id,
             'start_date' => $startDateUtc,

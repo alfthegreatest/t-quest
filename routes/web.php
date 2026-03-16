@@ -22,7 +22,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/game/{game}', [GameController::class, 'play'])->name('game.play');
+    Route::middleware(['check_game_status'])->group(function () {
+        Route::get('/game/{game}', [GameController::class, 'play'])->name('game.play');
+    });
+
+    Route::get('/game/{game}/finish', [GameController::class, 'finish'])->name('game.finish');
     Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
     Route::get('/profile', fn() => view('profile'))->name('profile');
     Route::get('/logout', fn() => Auth::logout() ?: redirect('/'))->name('logout');
@@ -38,14 +42,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/delete', [GameController::class, 'delete'])->name('delete');
     });
 
-    Route::prefix('locations')->name('locations.')->group(function() {
+    Route::prefix('locations')->name('locations.')->group(function () {
         Route::get('/', [LocationController::class, 'index'])->name('index');
     });
 });
 
 Route::get('/game/{game}/detail', [GameController::class, 'show'])->name('game.detail');
 
-Route::middleware(['auth', 'admin'])->group(function() {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('game/{game}/edit', [GameController::class, 'edit'])->name('game.edit');
     Route::get('game/{game}/level/{level}/codes', [LevelController::class, 'index'])->name('game.level.codes');
 });

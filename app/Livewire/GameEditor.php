@@ -25,16 +25,24 @@ class GameEditor extends Component
     public $image;
     public $imagePath;
     public $location_id;
+    public $base_location;
     public $locations;
+    public $latitude;
+    public $longitude;
+
     public $start_date;
     public $finish_date;
     public $user_timezone = 'UTC';
+
+    public $showMapModal = false;
 
     protected $rules = [
         'title' => 'required|string|max:255',
         'description' => 'required|string',
         'image' => 'nullable|image|max:2048',
         'location_id' => 'nullable',
+        'latitude' => 'required|numeric|between:-90,90',
+        'longitude' => 'required|numeric|between:-180,180',
         'start_date' => 'required|date',
         'finish_date' => 'required|date|after:start_date',
     ];
@@ -48,8 +56,12 @@ class GameEditor extends Component
         $this->imagePath = $game->image;
         $this->location_id = $game->location_id;
         $this->locations = \App\Models\Location::orderBy('title')->get();
+        $this->latitude = $game->latitude;
+        $this->longitude = $game->longitude;
         $this->initializeDates();
     }
+
+
 
     private function initializeDates()
     {
@@ -82,8 +94,9 @@ class GameEditor extends Component
                 Storage::disk('public')->delete($this->game->image);
             }
 
+            $path = $this->image->store('games', 'public');
             $this->game->update([
-                'image' => $this->image->store('games', 'public')
+                'image' => basename($path)
             ]);
         });
 
@@ -94,7 +107,7 @@ class GameEditor extends Component
     public function removeImage()
     {
         if ($this->game->image) {
-            Storage::disk('public')->delete($this->game->image);
+            Storage::disk('public')->delete('/games/' . $this->game->image);
         }
 
         $this->image = null;
@@ -162,8 +175,34 @@ class GameEditor extends Component
         }
 
         return $this->game?->image
-            ? asset('storage/' . $this->game->image)
+            ? asset('storage/games/' . $this->game->image)
             : null;
+    }
+
+    public function updatedLongitude($value)
+    {
+        $this->validateOnly('longitude');
+        $this->updateBaseLocation();
+    }
+
+    public function updatedLatitude($value)
+    {
+        $this->validateOnly('latitude');
+        $this->updateBaseLocation();
+    }
+
+    private function updateBaseLocation()
+    {
+        if ($this->latitude === null || $this->longitude === null)
+            return;
+
+        $this->dispatch('base_location');
+        $this->game->update([
+            'base_location' => [
+                'lat' => $this->latitude,
+                'lng' => $this->longitude,
+            ]
+        ]);
     }
 
     public function render()
