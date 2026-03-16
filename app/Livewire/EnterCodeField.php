@@ -35,11 +35,20 @@ class EnterCodeField extends Component
             UserLevelPassed::where('user_id', $userId)
                 ->where('level_id', $this->levelId)
                 ->update(['passed' => 1]);
-                
+
             $this->dispatch('level-completed', levelId: $this->levelId);
             $this->dispatch('toast', 'Success! Level completed.');
         } else {
             $this->dispatch('toast', 'Wrong code');
+        }
+
+        $notPassedCount = UserLevelPassed::where('user_id', $userId)
+            ->where('level_id', $this->levelId)
+            ->where('passed', 0)
+            ->count();
+
+        if ($notPassedCount === 0) {
+            $this->dispatch('toast', 'All levels completed.');
         }
     }
 
