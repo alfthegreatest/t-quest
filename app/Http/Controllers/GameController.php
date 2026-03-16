@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\UserGameCompleted;
 use App\Models\UserLevelPassed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -110,6 +111,7 @@ class GameController extends Controller
     public function finish(Game $game)
     {
         $status = '';
+        $userId = auth()->id();
         $now = now();
 
         if (!(bool) $game->active) {
@@ -119,7 +121,14 @@ class GameController extends Controller
         } elseif ($game->finish_date < $now) {
             $status = 'finished';
         } else { // game is in progress
-            return redirect()->route('game.play', $game);
+            $gameCompleted = UserGameCompleted::where('user_id', $userId)
+                ->where('game_id', $game->id)
+                ->exists();
+
+            if (!$gameCompleted)
+                return redirect()->route('game.play', $game);
+
+            $status = 'completed';
         }
 
         return view('games.finish', compact('game', 'status'));
